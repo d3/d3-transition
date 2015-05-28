@@ -1,0 +1,20 @@
+{
+  "name": "d3-transition",
+  "version": "0.0.1",
+  "description": "Animated transitions for D3 selections.",
+  "main": "dist/d3-transition",
+  "jsnext:main": "index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d3/d3-transition.git"
+  },
+  "devDependencies": {
+    "d3-bundler": "~0.2.1",
+    "d3-selection": "~0.4.2",
+    "faucet": "0.0",
+    "jsdom": "3",
+    "requirejs": "2",
+    "tape": "4",
+    "uglify-js": "2"
+  }
+}
