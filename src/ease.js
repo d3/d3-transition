@@ -1,6 +1,10 @@
 var halfPi = Math.PI / 2;
 
 export default {
+  in: identity,
+  out: reverse,
+  inOut: reflect,
+  outIn: reverseReflect,
   linear: linearIn,
   linearIn: linearIn,
   linearOut: linearIn,
@@ -17,6 +21,28 @@ export default {
   cubicInOut: cubicInOut,
   cubicOutIn: cubicOutIn
 };
+
+function identity(f) {
+  return f;
+}
+
+function reverse(f) {
+  return function(t) {
+    return 1 - f(1 - t);
+  };
+}
+
+function reflect(f) {
+  return function(t) {
+    return t *= 2, (t <= 1 ? f(t) : 2 - f(2 - t)) / 2;
+  };
+}
+
+function reverseReflect(f) {
+  return function(t) {
+    return t *= 2, (t <= 1 ? 1 - f(1 - t) : 1 + f(t - 1)) / 2;
+  };
+}
 
 function linearIn(t) {
   return t <= 0 ? 0

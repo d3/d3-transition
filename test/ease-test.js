@@ -73,7 +73,7 @@ tape("d3.ease.quadIn is an alias for d3.ease.quad", function(test) {
 });
 
 tape("d3.ease.quadOut returns the expected results", function(test) {
-  var quadOut = outOf(d3.ease.quad);
+  var quadOut = d3.ease.out(d3.ease.quad);
   test.equal(d3.ease.quadOut(-.01), 0);
   test.equal(d3.ease.quadOut(0), 0);
   test.inDelta(d3.ease.quadOut(.1), quadOut(.1));
@@ -91,7 +91,7 @@ tape("d3.ease.quadOut returns the expected results", function(test) {
 });
 
 tape("d3.ease.quadInOut returns the expected results", function(test) {
-  var quadInOut = inOutOf(d3.ease.quad);
+  var quadInOut = d3.ease.inOut(d3.ease.quad);
   test.equal(d3.ease.quadInOut(-.01), 0);
   test.equal(d3.ease.quadInOut(0), 0);
   test.inDelta(d3.ease.quadInOut(.1), quadInOut(.1));
@@ -109,7 +109,7 @@ tape("d3.ease.quadInOut returns the expected results", function(test) {
 });
 
 tape("d3.ease.quadOutIn returns the expected results", function(test) {
-  var quadOutIn = outInOf(d3.ease.quad);
+  var quadOutIn = d3.ease.outIn(d3.ease.quad);
   test.equal(d3.ease.quadOutIn(-.01), 0);
   test.equal(d3.ease.quadOutIn(0), 0);
   test.inDelta(d3.ease.quadOutIn(.1), quadOutIn(.1));
@@ -149,7 +149,7 @@ tape("d3.ease.cubicIn is an alias for d3.ease.cubic", function(test) {
 });
 
 tape("d3.ease.cubicOut returns the expected results", function(test) {
-  var cubicOut = outOf(d3.ease.cubic);
+  var cubicOut = d3.ease.out(d3.ease.cubic);
   test.equal(d3.ease.cubicOut(-.01), 0);
   test.equal(d3.ease.cubicOut(0), 0);
   test.inDelta(d3.ease.cubicOut(.1), cubicOut(.1));
@@ -167,7 +167,7 @@ tape("d3.ease.cubicOut returns the expected results", function(test) {
 });
 
 tape("d3.ease.cubicInOut returns the expected results", function(test) {
-  var cubicInOut = inOutOf(d3.ease.cubic);
+  var cubicInOut = d3.ease.inOut(d3.ease.cubic);
   test.equal(d3.ease.cubicInOut(-.01), 0);
   test.equal(d3.ease.cubicInOut(0), 0);
   test.inDelta(d3.ease.cubicInOut(.1), cubicInOut(.1));
@@ -185,7 +185,7 @@ tape("d3.ease.cubicInOut returns the expected results", function(test) {
 });
 
 tape("d3.ease.cubicOutIn returns the expected results", function(test) {
-  var cubicOutIn = outInOf(d3.ease.cubic);
+  var cubicOutIn = d3.ease.outIn(d3.ease.cubic);
   test.equal(d3.ease.cubicOutIn(-.01), 0);
   test.equal(d3.ease.cubicOutIn(0), 0);
   test.inDelta(d3.ease.cubicOutIn(.1), cubicOutIn(.1));
@@ -201,23 +201,3 @@ tape("d3.ease.cubicOutIn returns the expected results", function(test) {
   test.equal(d3.ease.cubicOutIn(1.01), 1);
   test.end();
 });
-
-function inOf(ease) {
-  return ease;
-}
-
-function outOf(ease) {
-  return function(t) {
-    return 1 - ease(1 - t);
-  };
-}
-
-function inOutOf(ease) {
-  return function(t) {
-    return t *= 2, (t <= 1 ? ease(t) : 2 - ease(2 - t)) / 2;
-  };
-}
-
-function outInOf(ease) {
-  return inOutOf(outOf(ease));
-}
