@@ -152,13 +152,24 @@
     };
   }
 
+  var bounce1 = 4 / 11,
+      bounce2 = 6 / 11,
+      bounce3 = 8 / 11,
+      bounce4 = 3 / 4,
+      bounce5 = 9 / 11,
+      bounce6 = 10 / 11,
+      bounce7 = 15 / 16,
+      bounce8 = 21 / 22,
+      bounce9 = 63 / 64,
+      bounce0 = 1 / bounce1 / bounce1;
+
   function bounce(t) {
     return t <= 0 ? 0
         : t >= 1 ? 1
-        : t < 1 / 2.75 ? 7.5625 * t * t
-        : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + .75
-        : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + .9375
-        : 7.5625 * (t -= 2.625 / 2.75) * t + .984375;
+        : t < bounce1 ? bounce0 * t * t
+        : t < bounce3 ? bounce0 * (t -= bounce2) * t + bounce4
+        : t < bounce6 ? bounce0 * (t -= bounce5) * t + bounce7
+        : bounce0 * (t -= bounce8) * t + bounce9;
   }
 
   function Transition(root, depth) {
