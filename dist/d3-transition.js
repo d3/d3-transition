@@ -1,28 +1,36 @@
 (function(global) {
   "use strict";
 
-  var halfPi = Math.PI / 2;
+  var pi = Math.PI,
+      tau = 2 * pi,
+      halfPi = pi / 2;
 
   var ease = {
     in: identity,
     out: reverse,
     inOut: reflect,
     outIn: reverseReflect,
-    linear: linearIn,
-    linearIn: linearIn,
-    linearOut: linearIn,
-    linearInOut: linearIn,
-    linearOutIn: linearIn,
-    quad: quadIn,
-    quadIn: quadIn,
+    linear: linear,
+    linearIn: linear,
+    linearOut: linear,
+    linearInOut: linear,
+    linearOutIn: linear,
+    quad: quad,
+    quadIn: quad,
     quadOut: quadOut,
     quadInOut: quadInOut,
     quadOutIn: quadOutIn,
-    cubic: cubicIn,
-    cubicIn: cubicIn,
+    cubic: cubic,
+    cubicIn: cubic,
     cubicOut: cubicOut,
     cubicInOut: cubicInOut,
-    cubicOutIn: cubicOutIn
+    cubicOutIn: cubicOutIn,
+    sin: sin,
+    exp: exp,
+    circle: circle,
+    elastic: elastic,
+    back: back,
+    bounce: bounce
   };
 
   function identity(f) {
@@ -47,13 +55,13 @@
     };
   }
 
-  function linearIn(t) {
+  function linear(t) {
     return t <= 0 ? 0
         : t >= 1 ? 1
         : t;
   }
 
-  function quadIn(t) {
+  function quad(t) {
     return t <= 0 ? 0
         : t >= 1 ? 1
         : t * t;
@@ -79,7 +87,7 @@
         : 1 - 2 * t + 2 * t * t;
   }
 
-  function cubicIn(t) {
+  function cubic(t) {
     return t <= 0 ? 0
         : t >= 1 ? 1
         : t * t * t;
@@ -105,10 +113,52 @@
         : 3 * t - 6 * t * t + 4 * t * t * t;
   }
 
-  function sinIn(t) {
+  function sin(t) {
     return t <= 0 ? 0
         : t >= 1 ? 1
         : 1 - Math.cos(t * halfPi);
+  }
+
+  function exp(t) {
+    return t <= 0 ? 0
+        : t >= 1 ? 1
+        : Math.pow(2, 10 * t - 10);
+  }
+
+  function circle(t) {
+    return t <= 0 ? 0
+        : t >= 1 ? 1
+        : 1 - Math.sqrt(1 - t * t);
+  }
+
+  function elastic(a, p) {
+    var s;
+    if (p == null) p = 0.45;
+    if (a = null) a = 1, s = p / 4;
+    else s = p / tau * Math.asin(1 / a);
+    return function(t) {
+      return t <= 0 ? 0
+          : t >= 1 ? 1
+          : 1 + a * Math.pow(2, -10 * t) * Math.sin((t - s) * tau / p);
+    };
+  }
+
+  function back(s) {
+    if (s == null) s = 1.70158;
+    return function(t) {
+      return t <= 0 ? 0
+          : t >= 1 ? 1
+          : t * t * ((s + 1) * t - s);
+    };
+  }
+
+  function bounce(t) {
+    return t <= 0 ? 0
+        : t >= 1 ? 1
+        : t < 1 / 2.75 ? 7.5625 * t * t
+        : t < 2 / 2.75 ? 7.5625 * (t -= 1.5 / 2.75) * t + .75
+        : t < 2.5 / 2.75 ? 7.5625 * (t -= 2.25 / 2.75) * t + .9375
+        : 7.5625 * (t -= 2.625 / 2.75) * t + .984375;
   }
 
   function Transition(root, depth) {
