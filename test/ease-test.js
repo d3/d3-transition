@@ -13,8 +13,6 @@ tape.Test.prototype.inDelta = function(actual, expected) {
 
 tape('d3.ease("linear") returns the expected results', function(test) {
   var ease = d3.ease("linear");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.1);
   test.inDelta(ease(0.2), 0.2);
   test.inDelta(ease(0.3), 0.3);
@@ -24,9 +22,11 @@ tape('d3.ease("linear") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.7);
   test.inDelta(ease(0.8), 0.8);
   test.inDelta(ease(0.9), 0.9);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
@@ -52,8 +52,6 @@ tape('d3.ease("linear-out-in") is an alias for d3.ease("linear")', function(test
 
 tape('d3.ease("quad") returns the expected results', function(test) {
   var ease = d3.ease("quad");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.01);
   test.inDelta(ease(0.2), 0.04);
   test.inDelta(ease(0.3), 0.09);
@@ -63,9 +61,11 @@ tape('d3.ease("quad") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.49);
   test.inDelta(ease(0.8), 0.64);
   test.inDelta(ease(0.9), 0.81);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
@@ -76,8 +76,6 @@ tape('d3.ease("quad-in") is an alias for d3.ease("quad")', function(test) {
 
 tape('d3.ease("quad-out") returns the expected results', function(test) {
   var ease = d3.ease("quad-out");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.19);
   test.inDelta(ease(0.2), 0.36);
   test.inDelta(ease(0.3), 0.51);
@@ -87,16 +85,16 @@ tape('d3.ease("quad-out") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.91);
   test.inDelta(ease(0.8), 0.96);
   test.inDelta(ease(0.9), 0.99);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("quad-in-out") returns the expected results', function(test) {
   var ease = d3.ease("quad-in-out");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.02);
   test.inDelta(ease(0.2), 0.08);
   test.inDelta(ease(0.3), 0.18);
@@ -106,16 +104,16 @@ tape('d3.ease("quad-in-out") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.82);
   test.inDelta(ease(0.8), 0.92);
   test.inDelta(ease(0.9), 0.98);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("quad-out-in") returns the expected results', function(test) {
   var ease = d3.ease("quad-out-in");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.18);
   test.inDelta(ease(0.2), 0.32);
   test.inDelta(ease(0.3), 0.42);
@@ -125,16 +123,16 @@ tape('d3.ease("quad-out-in") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.58);
   test.inDelta(ease(0.8), 0.68);
   test.inDelta(ease(0.9), 0.82);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("cubic") returns the expected results', function(test) {
   var ease = d3.ease("cubic");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.001);
   test.inDelta(ease(0.2), 0.008);
   test.inDelta(ease(0.3), 0.027);
@@ -144,9 +142,11 @@ tape('d3.ease("cubic") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.343);
   test.inDelta(ease(0.8), 0.512);
   test.inDelta(ease(0.9), 0.729);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
@@ -157,8 +157,6 @@ tape('d3.ease("cubic-in") is an alias for d3.ease("cubic")', function(test) {
 
 tape('d3.ease("cubic-out") returns the expected results', function(test) {
   var ease = d3.ease("cubic-out");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.271);
   test.inDelta(ease(0.2), 0.488);
   test.inDelta(ease(0.3), 0.657);
@@ -168,16 +166,16 @@ tape('d3.ease("cubic-out") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.973);
   test.inDelta(ease(0.8), 0.992);
   test.inDelta(ease(0.9), 0.999);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("cubic-in-out") returns the expected results', function(test) {
   var ease = d3.ease("cubic-in-out");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.004);
   test.inDelta(ease(0.2), 0.032);
   test.inDelta(ease(0.3), 0.108);
@@ -187,16 +185,16 @@ tape('d3.ease("cubic-in-out") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.892);
   test.inDelta(ease(0.8), 0.968);
   test.inDelta(ease(0.9), 0.996);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("cubic-out-in") returns the expected results', function(test) {
   var ease = d3.ease("cubic-out-in");
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.244);
   test.inDelta(ease(0.2), 0.392);
   test.inDelta(ease(0.3), 0.468);
@@ -206,9 +204,11 @@ tape('d3.ease("cubic-out-in") returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.532);
   test.inDelta(ease(0.8), 0.608);
   test.inDelta(ease(0.9), 0.756);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
@@ -239,8 +239,6 @@ tape('d3.ease("poly-out-in") is an alias for d3.ease("cubic-out-in")', function(
 
 tape('d3.ease("poly", 2.5) returns the expected results', function(test) {
   var ease = d3.ease("poly", 2.5);
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.003162);
   test.inDelta(ease(0.2), 0.017889);
   test.inDelta(ease(0.3), 0.049295);
@@ -250,16 +248,16 @@ tape('d3.ease("poly", 2.5) returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.409963);
   test.inDelta(ease(0.8), 0.572433);
   test.inDelta(ease(0.9), 0.768433);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("poly-in", 2.5) returns the expected results', function(test) {
   var ease = d3.ease("poly-in", 2.5);
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.003162);
   test.inDelta(ease(0.2), 0.017889);
   test.inDelta(ease(0.3), 0.049295);
@@ -269,16 +267,16 @@ tape('d3.ease("poly-in", 2.5) returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.409963);
   test.inDelta(ease(0.8), 0.572433);
   test.inDelta(ease(0.9), 0.768433);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("poly-out", 2.5) returns the expected results', function(test) {
   var ease = d3.ease("poly-out", 2.5);
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.231567);
   test.inDelta(ease(0.2), 0.427567);
   test.inDelta(ease(0.3), 0.590037);
@@ -288,16 +286,16 @@ tape('d3.ease("poly-out", 2.5) returns the expected results', function(test) {
   test.inDelta(ease(0.7), 0.950705);
   test.inDelta(ease(0.8), 0.982111);
   test.inDelta(ease(0.9), 0.996838);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("poly-in-out", 2.5) returns the expected results', function(test) {
   var ease = d3.ease("poly-in-out", 2.5);
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.008944);
   test.inDelta(ease(0.2), 0.050596);
   test.inDelta(ease(0.3), 0.139427);
@@ -307,16 +305,16 @@ tape('d3.ease("poly-in-out", 2.5) returns the expected results', function(test) 
   test.inDelta(ease(0.7), 0.860573);
   test.inDelta(ease(0.8), 0.949404);
   test.inDelta(ease(0.9), 0.991056);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
 
 tape('d3.ease("poly-out-in", 2.5) returns the expected results', function(test) {
   var ease = d3.ease("poly-out-in", 2.5);
-  test.equal(ease(-0.01), 0);
-  test.equal(ease(0), 0);
   test.inDelta(ease(0.1), 0.213783);
   test.inDelta(ease(0.2), 0.360573);
   test.inDelta(ease(0.3), 0.449404);
@@ -326,8 +324,10 @@ tape('d3.ease("poly-out-in", 2.5) returns the expected results', function(test) 
   test.inDelta(ease(0.7), 0.550596);
   test.inDelta(ease(0.8), 0.639427);
   test.inDelta(ease(0.9), 0.786217);
-  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
-  test.equal(ease(1), 1);
-  test.equal(ease(1.01), 1);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
