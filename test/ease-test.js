@@ -493,3 +493,84 @@ tape('d3.ease("exp-out-in") returns the expected results', function(test) {
   test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
+
+tape('d3.ease("circle") returns the circleected results', function(test) {
+  var ease = d3.ease("circle");
+  test.inDelta(ease(0.1), 0.005013);
+  test.inDelta(ease(0.2), 0.020204);
+  test.inDelta(ease(0.3), 0.046061);
+  test.inDelta(ease(0.4), 0.083485);
+  test.inDelta(ease(0.5), 0.133975);
+  test.inDelta(ease(0.6), 0.200000);
+  test.inDelta(ease(0.7), 0.285857);
+  test.inDelta(ease(0.8), 0.400000);
+  test.inDelta(ease(0.9), 0.564110);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("circle-in") is an alias for d3.ease("circle")', function(test) {
+  test.equal(d3.ease("circle-in"), d3.ease("circle"));
+  test.end();
+});
+
+tape('d3.ease("circle-out") returns the circleected results', function(test) {
+  var ease = d3.ease("circle-out");
+  test.inDelta(ease(0.1), 0.435890);
+  test.inDelta(ease(0.2), 0.600000);
+  test.inDelta(ease(0.3), 0.714143);
+  test.inDelta(ease(0.4), 0.800000);
+  test.inDelta(ease(0.5), 0.866025);
+  test.inDelta(ease(0.6), 0.916515);
+  test.inDelta(ease(0.7), 0.953939);
+  test.inDelta(ease(0.8), 0.979796);
+  test.inDelta(ease(0.9), 0.994987);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("circle-in-out") returns the circleected results', function(test) {
+  var ease = d3.ease("circle-in-out");
+  test.inDelta(ease(0.1), 0.010102);
+  test.inDelta(ease(0.2), 0.041742);
+  test.inDelta(ease(0.3), 0.100000);
+  test.inDelta(ease(0.4), 0.200000);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.800000);
+  test.inDelta(ease(0.7), 0.900000);
+  test.inDelta(ease(0.8), 0.958258);
+  test.inDelta(ease(0.9), 0.989898);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("circle-out-in") returns the circleected results', function(test) {
+  var ease = d3.ease("circle-out-in");
+  test.inDelta(ease(0.1), 0.300000);
+  test.inDelta(ease(0.2), 0.400000);
+  test.inDelta(ease(0.3), 0.458258);
+  test.inDelta(ease(0.4), 0.489898);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.510102);
+  test.inDelta(ease(0.7), 0.541742);
+  test.inDelta(ease(0.8), 0.600000);
+  test.inDelta(ease(0.9), 0.700000);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
