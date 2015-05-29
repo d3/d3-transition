@@ -331,3 +331,165 @@ tape('d3.ease("poly-out-in", 2.5) returns the expected results', function(test) 
   test.equal(ease(1.01), 1, "clamp above one");
   test.end();
 });
+
+tape('d3.ease("sin") returns the expected results', function(test) {
+  var ease = d3.ease("sin");
+  test.inDelta(ease(0.1), 0.012312);
+  test.inDelta(ease(0.2), 0.048943);
+  test.inDelta(ease(0.3), 0.108993);
+  test.inDelta(ease(0.4), 0.190983);
+  test.inDelta(ease(0.5), 0.292893);
+  test.inDelta(ease(0.6), 0.412215);
+  test.inDelta(ease(0.7), 0.546010);
+  test.inDelta(ease(0.8), 0.690983);
+  test.inDelta(ease(0.9), 0.843566);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("sin-in") is an alias for d3.ease("sin")', function(test) {
+  test.equal(d3.ease("sin-in"), d3.ease("sin"));
+  test.end();
+});
+
+tape('d3.ease("sin-out") returns the expected results', function(test) {
+  var ease = d3.ease("sin-out");
+  test.inDelta(ease(0.1), 0.156434);
+  test.inDelta(ease(0.2), 0.309017);
+  test.inDelta(ease(0.3), 0.453990);
+  test.inDelta(ease(0.4), 0.587785);
+  test.inDelta(ease(0.5), 0.707107);
+  test.inDelta(ease(0.6), 0.809017);
+  test.inDelta(ease(0.7), 0.891007);
+  test.inDelta(ease(0.8), 0.951057);
+  test.inDelta(ease(0.9), 0.987688);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("sin-in-out") returns the expected results', function(test) {
+  var ease = d3.ease("sin-in-out");
+  test.inDelta(ease(0.1), 0.024472);
+  test.inDelta(ease(0.2), 0.095492);
+  test.inDelta(ease(0.3), 0.206107);
+  test.inDelta(ease(0.4), 0.345492);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.654508);
+  test.inDelta(ease(0.7), 0.793893);
+  test.inDelta(ease(0.8), 0.904508);
+  test.inDelta(ease(0.9), 0.975528);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("sin-out-in") returns the expected results', function(test) {
+  var ease = d3.ease("sin-out-in");
+  test.inDelta(ease(0.1), 0.154508);
+  test.inDelta(ease(0.2), 0.293893);
+  test.inDelta(ease(0.3), 0.404508);
+  test.inDelta(ease(0.4), 0.475528);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.524472);
+  test.inDelta(ease(0.7), 0.595492);
+  test.inDelta(ease(0.8), 0.706107);
+  test.inDelta(ease(0.9), 0.845492);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("exp") returns the expected results', function(test) {
+  var ease = d3.ease("exp");
+  test.inDelta(ease(0.1), 0.001953);
+  test.inDelta(ease(0.2), 0.003906);
+  test.inDelta(ease(0.3), 0.007813);
+  test.inDelta(ease(0.4), 0.015625);
+  test.inDelta(ease(0.5), 0.031250);
+  test.inDelta(ease(0.6), 0.062500);
+  test.inDelta(ease(0.7), 0.125000);
+  test.inDelta(ease(0.8), 0.250000);
+  test.inDelta(ease(0.9), 0.500000);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("exp-in") is an alias for d3.ease("exp")', function(test) {
+  test.equal(d3.ease("exp-in"), d3.ease("exp"));
+  test.end();
+});
+
+tape('d3.ease("exp-out") returns the expected results', function(test) {
+  var ease = d3.ease("exp-out");
+  test.inDelta(ease(0.1), 0.500000);
+  test.inDelta(ease(0.2), 0.750000);
+  test.inDelta(ease(0.3), 0.875000);
+  test.inDelta(ease(0.4), 0.937500);
+  test.inDelta(ease(0.5), 0.968750);
+  test.inDelta(ease(0.6), 0.984375);
+  test.inDelta(ease(0.7), 0.992188);
+  test.inDelta(ease(0.8), 0.996094);
+  test.inDelta(ease(0.9), 0.998047);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("exp-in-out") returns the expected results', function(test) {
+  var ease = d3.ease("exp-in-out");
+  test.inDelta(ease(0.1), 0.001953);
+  test.inDelta(ease(0.2), 0.007813);
+  test.inDelta(ease(0.3), 0.031250);
+  test.inDelta(ease(0.4), 0.125000);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.875000);
+  test.inDelta(ease(0.7), 0.968750);
+  test.inDelta(ease(0.8), 0.992188);
+  test.inDelta(ease(0.9), 0.998047);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
+
+tape('d3.ease("exp-out-in") returns the expected results', function(test) {
+  var ease = d3.ease("exp-out-in");
+  test.inDelta(ease(0.1), 0.375000);
+  test.inDelta(ease(0.2), 0.468750);
+  test.inDelta(ease(0.3), 0.492188);
+  test.inDelta(ease(0.4), 0.498047);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.501953);
+  test.inDelta(ease(0.7), 0.507813);
+  test.inDelta(ease(0.8), 0.531250);
+  test.inDelta(ease(0.9), 0.625000);
+  test.equal(ease(0), 0, "exact zero");
+  test.equal(ease(1), 1, "exact one");
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.equal(ease(-0.01), 0, "clamp below zero");
+  test.equal(ease(1.01), 1, "clamp above one");
+  test.end();
+});
