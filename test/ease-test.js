@@ -211,3 +211,123 @@ tape('d3.ease("cubic-out-in") returns the expected results', function(test) {
   test.equal(ease(1.01), 1);
   test.end();
 });
+
+tape('d3.ease("poly") is an alias for d3.ease("cubic")', function(test) {
+  test.equal(d3.ease("poly"), d3.ease("cubic"));
+  test.end();
+});
+
+tape('d3.ease("poly-in") is an alias for d3.ease("cubic")', function(test) {
+  test.equal(d3.ease("poly-in"), d3.ease("cubic"));
+  test.end();
+});
+
+tape('d3.ease("poly-out") is an alias for d3.ease("cubic-out")', function(test) {
+  test.equal(d3.ease("poly-out"), d3.ease("cubic-out"));
+  test.end();
+});
+
+tape('d3.ease("poly-in-out") is an alias for d3.ease("cubic-in-out")', function(test) {
+  test.equal(d3.ease("poly-in-out"), d3.ease("cubic-in-out"));
+  test.end();
+});
+
+tape('d3.ease("poly-out-in") is an alias for d3.ease("cubic-out-in")', function(test) {
+  test.equal(d3.ease("poly-out-in"), d3.ease("cubic-out-in"));
+  test.end();
+});
+
+tape('d3.ease("poly", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly", 2.5);
+  test.equal(ease(-0.01), 0);
+  test.equal(ease(0), 0);
+  test.inDelta(ease(0.1), 0.003162);
+  test.inDelta(ease(0.2), 0.017889);
+  test.inDelta(ease(0.3), 0.049295);
+  test.inDelta(ease(0.4), 0.101193);
+  test.inDelta(ease(0.5), 0.176777);
+  test.inDelta(ease(0.6), 0.278855);
+  test.inDelta(ease(0.7), 0.409963);
+  test.inDelta(ease(0.8), 0.572433);
+  test.inDelta(ease(0.9), 0.768433);
+  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
+  test.equal(ease(1), 1);
+  test.equal(ease(1.01), 1);
+  test.end();
+});
+
+tape('d3.ease("poly-in", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly-in", 2.5);
+  test.equal(ease(-0.01), 0);
+  test.equal(ease(0), 0);
+  test.inDelta(ease(0.1), 0.003162);
+  test.inDelta(ease(0.2), 0.017889);
+  test.inDelta(ease(0.3), 0.049295);
+  test.inDelta(ease(0.4), 0.101193);
+  test.inDelta(ease(0.5), 0.176777);
+  test.inDelta(ease(0.6), 0.278855);
+  test.inDelta(ease(0.7), 0.409963);
+  test.inDelta(ease(0.8), 0.572433);
+  test.inDelta(ease(0.9), 0.768433);
+  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
+  test.equal(ease(1), 1);
+  test.equal(ease(1.01), 1);
+  test.end();
+});
+
+tape('d3.ease("poly-out", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly-out", 2.5);
+  test.equal(ease(-0.01), 0);
+  test.equal(ease(0), 0);
+  test.inDelta(ease(0.1), 0.231567);
+  test.inDelta(ease(0.2), 0.427567);
+  test.inDelta(ease(0.3), 0.590037);
+  test.inDelta(ease(0.4), 0.721145);
+  test.inDelta(ease(0.5), 0.823223);
+  test.inDelta(ease(0.6), 0.898807);
+  test.inDelta(ease(0.7), 0.950705);
+  test.inDelta(ease(0.8), 0.982111);
+  test.inDelta(ease(0.9), 0.996838);
+  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
+  test.equal(ease(1), 1);
+  test.equal(ease(1.01), 1);
+  test.end();
+});
+
+tape('d3.ease("poly-in-out", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly-in-out", 2.5);
+  test.equal(ease(-0.01), 0);
+  test.equal(ease(0), 0);
+  test.inDelta(ease(0.1), 0.008944);
+  test.inDelta(ease(0.2), 0.050596);
+  test.inDelta(ease(0.3), 0.139427);
+  test.inDelta(ease(0.4), 0.286217);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.713783);
+  test.inDelta(ease(0.7), 0.860573);
+  test.inDelta(ease(0.8), 0.949404);
+  test.inDelta(ease(0.9), 0.991056);
+  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
+  test.equal(ease(1), 1);
+  test.equal(ease(1.01), 1);
+  test.end();
+});
+
+tape('d3.ease("poly-out-in", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly-out-in", 2.5);
+  test.equal(ease(-0.01), 0);
+  test.equal(ease(0), 0);
+  test.inDelta(ease(0.1), 0.213783);
+  test.inDelta(ease(0.2), 0.360573);
+  test.inDelta(ease(0.3), 0.449404);
+  test.inDelta(ease(0.4), 0.491056);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.508944);
+  test.inDelta(ease(0.7), 0.550596);
+  test.inDelta(ease(0.8), 0.639427);
+  test.inDelta(ease(0.9), 0.786217);
+  test.equal(ease(".9"), ease(0.9)); // test numeric coercion
+  test.equal(ease(1), 1);
+  test.equal(ease(1.01), 1);
+  test.end();
+});
