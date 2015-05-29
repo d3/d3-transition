@@ -1,6 +1,6 @@
 var tape = require("tape"),
     jsdom = require("jsdom"),
-    d3 = require("d3-selection");
+    d3 = require("../build/d3");
 
 tape.Test.prototype.inDelta = function(actual, expected) {
   this._assert(expected - 1e-6 < actual && actual < expected + 1e-6, {
@@ -10,8 +10,6 @@ tape.Test.prototype.inDelta = function(actual, expected) {
     expected: expected
   });
 };
-
-require("../");
 
 tape("d3.ease.linear returns the expected results", function(test) {
   test.equal(d3.ease.linear(-.01), 0);
