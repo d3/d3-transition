@@ -34,21 +34,33 @@ var eases = (new Map)
     .set("poly-in-out", cubicInOut)
     .set("sin", sin)
     .set("sin-in", sin)
+    .set("sin-out", outOf(sin))
+    .set("sin-in-out", inOutOf(sin))
     .set("exp", exp)
     .set("exp-in", exp)
+    .set("exp-out", outOf(exp))
+    .set("exp-in-out", inOutOf(exp))
     .set("circle", circle)
     .set("circle-in", circle)
+    .set("circle-out", outOf(circle))
+    .set("circle-in-out", inOutOf(circle))
     .set("elastic", elasticDefault)
     .set("elastic-in", elasticDefault)
+    .set("elastic-out", outOf(elasticDefault))
+    .set("elastic-in-out", inOutOf(elasticDefault))
     .set("back", backDefault)
     .set("back-in", backDefault)
+    .set("back-out", outOf(backDefault))
+    .set("back-in-out", inOutOf(backDefault))
     .set("bounce", bounce)
-    .set("bounce-in", bounce);
+    .set("bounce-in", bounce)
+    .set("bounce-out", outOf(bounce))
+    .set("bounce-in-out", inOutOf(bounce));
 
 export default function(type, a, b) {
   type += "";
 
-  if (arguments.length < 2 && (ease = eases.get(type))) return ease;
+  if (arguments.length < 2) return eases.get(type) || linear;
 
   var ease,
       i = type.indexOf("-"),
@@ -56,16 +68,10 @@ export default function(type, a, b) {
       mode = i < 0 ? null : (base = type.slice(0, i), type.slice(i + 1));
 
   switch (base) {
-    case "quad": ease = quad; break;
-    case "cubic": ease = cubic; break;
-    case "poly": ease = poly(a); break;
-    case "sin": ease = sin; break;
-    case "exp": ease = exp; break;
-    case "circle": ease = circle; break;
     case "elastic": ease = elastic(a, b); break;
+    case "poly": ease = poly(a); break;
     case "back": ease = back(a); break;
-    case "bounce": ease = bounce; break;
-    default: ease = linear; break;
+    default: return eases.get(type);
   }
 
   switch (mode) {
