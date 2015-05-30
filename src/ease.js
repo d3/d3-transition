@@ -12,151 +12,203 @@ var pi = Math.PI,
     b9 = 63 / 64,
     b0 = 1 / b1 / b1;
 
-var elasticDefault = elastic(),
-    backDefault = back();
-
-var eases = (new Map)
-    .set("linear", linear)
-    .set("linear-in", linear)
-    .set("linear-out", linear)
-    .set("linear-in-out", linear)
-    .set("quad", quad)
-    .set("quad-in", quad)
+var standardEases = (new Map)
+    .set("linear-in", linearIn)
+    .set("linear-out", linearIn)
+    .set("linear-in-out", linearIn)
+    .set("quad-in", quadIn)
     .set("quad-out", quadOut)
     .set("quad-in-out", quadInOut)
-    .set("cubic", cubic)
-    .set("cubic-in", cubic)
+    .set("cubic-in", cubicIn)
     .set("cubic-out", cubicOut)
     .set("cubic-in-out", cubicInOut)
-    .set("poly", cubic)
-    .set("poly-in", cubic)
+    .set("poly-in", cubicIn)
     .set("poly-out", cubicOut)
     .set("poly-in-out", cubicInOut)
-    .set("sin", sin)
-    .set("sin-in", sin)
-    .set("sin-out", outOf(sin))
-    .set("sin-in-out", inOutOf(sin))
-    .set("exp", exp)
-    .set("exp-in", exp)
-    .set("exp-out", outOf(exp))
-    .set("exp-in-out", inOutOf(exp))
-    .set("circle", circle)
-    .set("circle-in", circle)
-    .set("circle-out", outOf(circle))
-    .set("circle-in-out", inOutOf(circle))
-    .set("elastic", elasticDefault)
-    .set("elastic-in", elasticDefault)
-    .set("elastic-out", outOf(elasticDefault))
-    .set("elastic-in-out", inOutOf(elasticDefault))
-    .set("back", backDefault)
-    .set("back-in", backDefault)
-    .set("back-out", outOf(backDefault))
-    .set("back-in-out", inOutOf(backDefault))
-    .set("bounce", bounce)
-    .set("bounce-in", bounce)
-    .set("bounce-out", outOf(bounce))
-    .set("bounce-in-out", inOutOf(bounce));
+    .set("sin-in", sinIn)
+    .set("sin-out", sinOut)
+    .set("sin-in-out", sinInOut)
+    .set("exp-in", expIn)
+    .set("exp-out", expOut)
+    .set("exp-in-out", expInOut)
+    .set("circle-in", circleIn)
+    .set("circle-out", circleOut)
+    .set("circle-in-out", circleInOut)
+    .set("bounce-in", bounceIn)
+    .set("bounce-out", bounceOut)
+    .set("bounce-in-out", bounceInOut)
+    .set("back-in", backIn())
+    .set("back-out", backOut())
+    .set("back-in-out", backInOut())
+    .set("elastic-in", elasticIn())
+    .set("elastic-out", elasticOut())
+    .set("elastic-in-out", elasticInOut());
+
+var customEases = (new Map)
+    .set("poly-in", polyIn)
+    .set("poly-out", polyOut)
+    .set("poly-in-out", polyInOut)
+    .set("back-in", backIn)
+    .set("back-out", backOut)
+    .set("back-in-out", backInOut)
+    .set("elastic-in", elasticIn)
+    .set("elastic-out", elasticOut)
+    .set("elastic-in-out", elasticInOut);
 
 export default function(type, a, b) {
-  type += "";
-
-  if (arguments.length < 2) return eases.get(type) || linear;
-
-  var ease,
-      i = type.indexOf("-"),
-      base = type,
-      mode = i < 0 ? null : (base = type.slice(0, i), type.slice(i + 1));
-
-  switch (base) {
-    case "elastic": ease = elastic(a, b); break;
-    case "poly": ease = poly(a); break;
-    case "back": ease = back(a); break;
-    default: return eases.get(type);
-  }
-
-  switch (mode) {
-    case "out": ease = outOf(ease); break;
-    case "in-out": ease = inOutOf(ease); break;
-  }
-
-  return ease;
+  var i = (type += "").indexOf("-");
+  if (i < 0) type += "-in";
+  return arguments.length > 1 && customEases.has(type)
+      ? customEases.get(type)(a, b)
+      : standardEases.get(type) || linearIn;
 };
 
-function outOf(f) {
-  return function(t) {
-    return 1 - f(1 - t);
-  };
-}
-
-function inOutOf(f) {
-  return function(t) {
-    return t *= 2, (t <= 1 ? f(t) : 2 - f(2 - t)) / 2;
-  };
-}
-
-function linear(t) {
+function linearIn(t) {
   return +t;
 }
 
-function quad(t) {
+function quadIn(t) {
   return t * t;
 }
 
 function quadOut(t) {
-  return 2 * t - t * t;
+  return t * (2 - t);
 }
 
 function quadInOut(t) {
-  return t <= .5 ? 2 * t * t : 4 * t - 2 * t * t - 1;
+  return ((t *= 2) <= 1 ? t * t : --t * (2 - t) + 1) / 2;
 }
 
-function cubic(t) {
+function cubicIn(t) {
   return t * t * t;
 }
 
 function cubicOut(t) {
-  return 3 * t - 3 * t * t + t * t * t;
+  return --t * t * t + 1;
 }
 
 function cubicInOut(t) {
-  return t <= .5 ? 4 * t * t * t : 12 * t - 12 * t * t + 4 * t * t * t - 3;
+  return ((t *= 2) <= 1 ? t * t * t : (t -= 2) * t * t + 2) / 2;
 }
 
-function sin(t) {
+function sinIn(t) {
   return 1 - Math.cos(t * halfPi);
 }
 
-function exp(t) {
+function sinOut(t) {
+  return Math.sin(t * halfPi);
+}
+
+function sinInOut(t) {
+  return (1 - Math.cos(pi * t)) / 2;
+}
+
+function expIn(t) {
   return Math.pow(2, 10 * t - 10);
 }
 
-function circle(t) {
+function expOut(t) {
+  return 1 - Math.pow(2, -10 * t);
+}
+
+function expInOut(t) {
+  return ((t *= 2) <= 1 ? Math.pow(2, 10 * t - 10) : 2 - Math.pow(2, 10 - 10 * t)) / 2;
+}
+
+function circleIn(t) {
   return 1 - Math.sqrt(1 - t * t);
 }
 
-function bounce(t) {
-  return t = 1 - t, 1 - (t < b1 ? b0 * t * t : t < b3 ? b0 * (t -= b2) * t + b4 : t < b6 ? b0 * (t -= b5) * t + b7 : b0 * (t -= b8) * t + b9);
+function circleOut(t) {
+  return Math.sqrt(1 - --t * t);
 }
 
-function poly(e) {
+function circleInOut(t) {
+  return ((t *= 2) <= 1 ? 1 - Math.sqrt(1 - t * t) : Math.sqrt(1 - (t -= 2) * t) + 1) / 2;
+}
+
+function bounceIn(t) {
+  return 1 - bounceOut(1 - t);
+}
+
+function bounceOut(t) {
+  return t < b1 ? b0 * t * t : t < b3 ? b0 * (t -= b2) * t + b4 : t < b6 ? b0 * (t -= b5) * t + b7 : b0 * (t -= b8) * t + b9;
+}
+
+function bounceInOut(t) {
+  return ((t *= 2) <= 1 ? 1 - bounceOut(1 - t) : bounceOut(t - 1) + 1) / 2;
+}
+
+function polyIn(e) {
+  e = +e;
   return function(t) {
     return Math.pow(t, e);
   };
 }
 
-function elastic(a, p) {
-  var s;
-  if (p == null) p = .45;
-  if (a == null) a = 1, s = p / 4;
-  else s = p / tau * Math.asin(1 / a);
+function polyOut(e) {
+  e = +e;
   return function(t) {
-    return t = 1 - t, -a * Math.pow(2, -10 * t) * Math.sin((t - s) * tau / p);
+    return 1 - Math.pow(1 - t, e);
   };
 }
 
-function back(s) {
-  if (s == null) s = 1.70158;
+function polyInOut(e) {
+  e = +e;
+  return function(t) {
+    return ((t *= 2) <= 1 ? Math.pow(t, e) : 1 - Math.pow(1 - t, e)) / 2;
+  };
+}
+
+function backIn(s) {
+  s = s == null ? 1.70158 : +s;
   return function(t) {
     return t * t * ((s + 1) * t - s);
+  };
+}
+
+function backOut(s) {
+  s = s == null ? 1.70158 : +s;
+  return function(t) {
+    return --t * t * ((s + 1) * t + s) + 1;
+  };
+}
+
+function backInOut(s) {
+  s = (s == null ? 1.70158 : s) * 1.525;
+  return function(t) {
+    return ((t *= 2) < 1 ? t * t * ((s + 1) * t - s) : (t -= 2) * t * ((s + 1) * t + s) + 2) / 2;
+  };
+}
+
+function elasticIn(a, p) {
+  var s;
+  p = p == null ? .3 : +p;
+  if (a == null || a <= 1) a = 1, s = p / 4;
+  else a = +a, s = p / tau * Math.asin(1 / a);
+  return function(t) {
+    return -a * Math.pow(2, 10 * --t) * Math.sin((t - s) * tau / p);
+  };
+}
+
+function elasticOut(a, p) {
+  var s;
+  p = p == null ? .3 : +p;
+  if (a == null || a <= 1) a = 1, s = p / 4;
+  else a = +a, s = p / tau * Math.asin(1 / a);
+  return function(t) {
+    return a * Math.pow(2, -10 * t) * Math.sin((t - s) * tau / p) + 1;
+  };
+}
+
+function elasticInOut(a, p) {
+  var s;
+  p = (p == null ? .3 : p) * 1.5; // Note: treatment differs from Penner!
+  if (a == null || a <= 1) a = 1, s = p / 4;
+  else a = +a, s = p / tau * Math.asin(1 / a);
+  return function(t) {
+    return a * ((t = t * 2 - 1) < 0
+        ? Math.pow(2, 10 * t) * Math.sin((s - t) * tau / p)
+        : Math.pow(2, -10 * t) * Math.sin((t - s) * tau / p) + 2) / 2;
   };
 }
