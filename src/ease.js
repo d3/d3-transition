@@ -63,6 +63,10 @@ export default function(type, a, b) {
       : standardEases.get(type) || linearIn;
 };
 
+function number(x, defaultValue) {
+  return x == null || isNaN(x) ? defaultValue : +x;
+}
+
 function linearIn(t) {
   return +t;
 }
@@ -140,75 +144,63 @@ function bounceInOut(t) {
 }
 
 function polyIn(e) {
-  e = +e;
-  return function(t) {
+  return e = number(e, 3), function(t) {
     return Math.pow(t, e);
   };
 }
 
 function polyOut(e) {
-  e = +e;
-  return function(t) {
+  return e = number(e, 3), function(t) {
     return 1 - Math.pow(1 - t, e);
   };
 }
 
 function polyInOut(e) {
-  e = +e;
-  return function(t) {
-    return ((t *= 2) <= 1 ? Math.pow(t, e) : 1 - Math.pow(1 - t, e)) / 2;
+  return e = number(e, 3), function(t) {
+    return ((t *= 2) <= 1 ? Math.pow(t, e) : 2 - Math.pow(2 - t, e)) / 2;
   };
 }
 
 function backIn(s) {
-  s = s == null ? 1.70158 : +s;
-  return function(t) {
+  return s = number(s, 1.70158), function(t) {
     return t * t * ((s + 1) * t - s);
   };
 }
 
 function backOut(s) {
-  s = s == null ? 1.70158 : +s;
-  return function(t) {
+  return s = number(s, 1.70158), function(t) {
     return --t * t * ((s + 1) * t + s) + 1;
   };
 }
 
 function backInOut(s) {
-  s = (s == null ? 1.70158 : s) * 1.525;
-  return function(t) {
+  return s = number(s, 1.70158) * 1.525, function(t) {
     return ((t *= 2) < 1 ? t * t * ((s + 1) * t - s) : (t -= 2) * t * ((s + 1) * t + s) + 2) / 2;
   };
 }
 
 function elasticIn(a, p) {
-  var s;
-  p = p == null ? .3 : +p;
-  if (a == null || a <= 1) a = 1, s = p / 4;
-  else a = +a, s = p / tau * Math.asin(1 / a);
+  a = Math.max(1, number(a, 1)), p = number(p, .3) / tau;
+  var s = p * Math.asin(1 / a);
   return function(t) {
-    return a * Math.pow(2, 10 * --t) * Math.sin((s - t) * tau / p);
+    return a * Math.pow(2, 10 * --t) * Math.sin((s - t) / p);
   };
 }
 
 function elasticOut(a, p) {
-  var s;
-  p = p == null ? .3 : +p;
-  if (a == null || a <= 1) a = 1, s = p / 4;
-  else a = +a, s = p / tau * Math.asin(1 / a);
+  a = Math.max(1, number(a, 1)), p = number(p, .3) / tau;
+  var s = p * Math.asin(1 / a);
   return function(t) {
-    return a * Math.pow(2, -10 * t) * Math.sin((t - s) * tau / p) + 1;
+    return a * Math.pow(2, -10 * t) * Math.sin((t - s) / p) + 1;
   };
 }
 
 function elasticInOut(a, p) {
-  var s;
-  p = (p == null ? .3 : p) * 1.5; // Note: treatment differs from Penner!
-  if (a == null || a <= 1) a = 1, s = p / 4;
-  else a = +a, s = p / tau * Math.asin(1 / a);
+  a = Math.max(1, number(a, 1)), p = number(p, .3) * 1.5 / tau; // Note: treatment differs from Penner!
+  var s = p * Math.asin(1 / a);
   return function(t) {
     return a * ((t = t * 2 - 1) < 0
-        ? Math.pow(2, 10 * t) * Math.sin((s - t) * tau / p)
-        : Math.pow(2, -10 * t) * Math.sin((t - s) * tau / p) + 2) / 2;
+        ? Math.pow(2, 10 * t) * Math.sin((s - t) / p)
+        : Math.pow(2, -10 * t) * Math.sin((t - s) / p) + 2) / 2;
   };
 }

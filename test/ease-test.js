@@ -180,73 +180,73 @@ tape('d3.ease("poly-in-out") is an alias for d3.ease("cubic-in-out")', function(
   test.end();
 });
 
-// tape('d3.ease("poly", 2.5) returns the expected results', function(test) {
-//   var ease = d3.ease("poly", 2.5);
-//   test.inDelta(ease(0.0), 0.000000);
-//   test.inDelta(ease(0.1), 0.003162);
-//   test.inDelta(ease(0.2), 0.017889);
-//   test.inDelta(ease(0.3), 0.049295);
-//   test.inDelta(ease(0.4), 0.101193);
-//   test.inDelta(ease(0.5), 0.176777);
-//   test.inDelta(ease(0.6), 0.278855);
-//   test.inDelta(ease(0.7), 0.409963);
-//   test.inDelta(ease(0.8), 0.572433);
-//   test.inDelta(ease(0.9), 0.768433);
-//   test.inDelta(ease(1.0), 1.000000);
-//   test.equal(ease(".9"), ease(0.9), "numeric coercion");
-//   test.end();
-// });
+tape('d3.ease("poly", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly", 2.5);
+  test.inDelta(ease(0.0), 0.000000);
+  test.inDelta(ease(0.1), 0.003162);
+  test.inDelta(ease(0.2), 0.017889);
+  test.inDelta(ease(0.3), 0.049295);
+  test.inDelta(ease(0.4), 0.101193);
+  test.inDelta(ease(0.5), 0.176777);
+  test.inDelta(ease(0.6), 0.278855);
+  test.inDelta(ease(0.7), 0.409963);
+  test.inDelta(ease(0.8), 0.572433);
+  test.inDelta(ease(0.9), 0.768433);
+  test.inDelta(ease(1.0), 1.000000);
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.end();
+});
 
-// tape('d3.ease("poly-in", 2.5) returns the expected results', function(test) {
-//   var ease = d3.ease("poly-in", 2.5);
-//   test.inDelta(ease(0.0), 0.000000);
-//   test.inDelta(ease(0.1), 0.003162);
-//   test.inDelta(ease(0.2), 0.017889);
-//   test.inDelta(ease(0.3), 0.049295);
-//   test.inDelta(ease(0.4), 0.101193);
-//   test.inDelta(ease(0.5), 0.176777);
-//   test.inDelta(ease(0.6), 0.278855);
-//   test.inDelta(ease(0.7), 0.409963);
-//   test.inDelta(ease(0.8), 0.572433);
-//   test.inDelta(ease(0.9), 0.768433);
-//   test.inDelta(ease(1.0), 1.000000);
-//   test.equal(ease(".9"), ease(0.9), "numeric coercion");
-//   test.end();
-// });
+tape('d3.ease("poly-in", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly-in", 2.5);
+  test.inDelta(ease(0.0), 0.000000);
+  test.inDelta(ease(0.1), 0.003162);
+  test.inDelta(ease(0.2), 0.017889);
+  test.inDelta(ease(0.3), 0.049295);
+  test.inDelta(ease(0.4), 0.101193);
+  test.inDelta(ease(0.5), 0.176777);
+  test.inDelta(ease(0.6), 0.278855);
+  test.inDelta(ease(0.7), 0.409963);
+  test.inDelta(ease(0.8), 0.572433);
+  test.inDelta(ease(0.9), 0.768433);
+  test.inDelta(ease(1.0), 1.000000);
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.end();
+});
 
-// tape('d3.ease("poly-out", 2.5) returns the expected results', function(test) {
-//   var ease = d3.ease("poly-out", 2.5);
-//   test.inDelta(ease(0.0), 0.000000);
-//   test.inDelta(ease(0.1), 0.231567);
-//   test.inDelta(ease(0.2), 0.427567);
-//   test.inDelta(ease(0.3), 0.590037);
-//   test.inDelta(ease(0.4), 0.721145);
-//   test.inDelta(ease(0.5), 0.823223);
-//   test.inDelta(ease(0.6), 0.898807);
-//   test.inDelta(ease(0.7), 0.950705);
-//   test.inDelta(ease(0.8), 0.982111);
-//   test.inDelta(ease(0.9), 0.996838);
-//   test.inDelta(ease(1.0), 1.000000);
-//   test.equal(ease(".9"), ease(0.9), "numeric coercion");
-//   test.end();
-// });
+tape('d3.ease("poly-out", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly-out", 2.5);
+  test.inDelta(ease(0.0), 0.000000);
+  test.inDelta(ease(0.1), 0.231567);
+  test.inDelta(ease(0.2), 0.427567);
+  test.inDelta(ease(0.3), 0.590037);
+  test.inDelta(ease(0.4), 0.721145);
+  test.inDelta(ease(0.5), 0.823223);
+  test.inDelta(ease(0.6), 0.898807);
+  test.inDelta(ease(0.7), 0.950705);
+  test.inDelta(ease(0.8), 0.982111);
+  test.inDelta(ease(0.9), 0.996838);
+  test.inDelta(ease(1.0), 1.000000);
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.end();
+});
 
-// tape('d3.ease("poly-in-out", 2.5) returns the expected results', function(test) {
-//   var ease = d3.ease("poly-in-out", 2.5);
-//   test.inDelta(ease(0.0), 0.000000);
-//   test.inDelta(ease(0.1), 0.008944);
-//   test.inDelta(ease(0.2), 0.050596);
-//   test.inDelta(ease(0.3), 0.139427);
-//   test.inDelta(ease(0.4), 0.286217);
-//   test.inDelta(ease(0.5), 0.500000);
-//   test.inDelta(ease(0.6), 0.713783);
-//   test.inDelta(ease(0.7), 0.860573);
-//   test.inDelta(ease(0.8), 0.949404);
-//   test.inDelta(ease(0.9), 0.991056);
-//   test.inDelta(ease(1.0), 1.000000);
-//   test.equal(ease(".9"), ease(0.9), "numeric coercion");
-//   test.end();
-// });
+tape('d3.ease("poly-in-out", 2.5) returns the expected results', function(test) {
+  var ease = d3.ease("poly-in-out", 2.5);
+  test.inDelta(ease(0.0), 0.000000);
+  test.inDelta(ease(0.1), 0.008944);
+  test.inDelta(ease(0.2), 0.050596);
+  test.inDelta(ease(0.3), 0.139427);
+  test.inDelta(ease(0.4), 0.286217);
+  test.inDelta(ease(0.5), 0.500000);
+  test.inDelta(ease(0.6), 0.713783);
+  test.inDelta(ease(0.7), 0.860573);
+  test.inDelta(ease(0.8), 0.949404);
+  test.inDelta(ease(0.9), 0.991056);
+  test.inDelta(ease(1.0), 1.000000);
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.end();
+});
 
 tape('d3.ease("sin") returns the expected results', function(test) {
   var ease = d3.ease("sin");
