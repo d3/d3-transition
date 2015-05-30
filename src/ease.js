@@ -187,7 +187,7 @@ function elasticIn(a, p) {
   if (a == null || a <= 1) a = 1, s = p / 4;
   else a = +a, s = p / tau * Math.asin(1 / a);
   return function(t) {
-    return -a * Math.pow(2, 10 * --t) * Math.sin((t - s) * tau / p);
+    return a * Math.pow(2, 10 * --t) * Math.sin((s - t) * tau / p);
   };
 }
 
