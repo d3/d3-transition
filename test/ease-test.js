@@ -11,6 +11,11 @@ tape.Test.prototype.inDelta = function(actual, expected) {
   });
 };
 
+tape("d3.ease(type) coerces type to a string", function(test) {
+  test.equal(d3.ease({toString: function() { return "cubic-in-out"; }}), d3.ease("cubic-in-out"));
+  test.end();
+});
+
 tape('d3.ease("linear") returns the expected results', function(test) {
   var ease = d3.ease("linear");
   test.inDelta(ease(0.0), 0.0);
