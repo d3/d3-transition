@@ -7,3 +7,5 @@ Animated transitions for [D3 selections](https://github.com/d3/d3-selection). Th
 * The interpretation of optional parameters to the “elastic-in”, “elastic-out”, “elastic-in-out” and “back-in-out” easing functions has been fixed.
 
 * The “out-in” easing functions have been removed. Out-in easing didn’t make sense (except previously in the case of *elastic* and *bounce*, which was a bug).
+
+* All easing functions have been optimized. As part of this change, easing functions no longer clamp the output to 0 and 1 when *t* is less than or equal to 0 or greater than or equal to 1, respectively. The behavior of easing functions when *t* is not in [0,1] depends on the function. (Note: transitions are still guaranteed to end at *t* = 1 if not interrupted, regardless of easing.)
