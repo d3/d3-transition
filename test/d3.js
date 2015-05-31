@@ -13,6 +13,8 @@ import {
 
 import {
   ease,
+  timer,
+  timerFlush,
   transition
 } from "../index";
 
@@ -30,5 +32,7 @@ export default {
   touch: touch,
   touches: touches,
   ease: ease,
+  timer: timer,
+  timerFlush: timerFlush,
   transition: transition
 };
