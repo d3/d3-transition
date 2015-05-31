@@ -8,11 +8,11 @@
     "url": "https://github.com/d3/d3-transition.git"
   },
   "scripts": {
-    "pretest": "mkdir -p build && d3-bundler -- test/d3.js > build/d3.js",
+    "pretest": "mkdir -p build && d3-bundler --polyfill-raf -- test/d3.js > build/d3.js",
     "test": "faucet `find test -name '*-test.js'`"
   },
   "devDependencies": {
-    "d3-bundler": "~0.2.2",
+    "d3-bundler": "~0.2.4",
     "d3-selection": "~0.4.5",
     "faucet": "0.0",
     "jsdom": "3",

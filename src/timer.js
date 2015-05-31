@@ -1,14 +1,7 @@
 var queueHead,
     queueTail,
     interval, // is an interval (or frame) active?
-    timeout, // is a timeout active?
-    context = typeof window === "undefined" ? global : window,
-    requestFrame = context.requestAnimationFrame
-        || context.msRequestAnimationFrame
-        || context.mozRequestAnimationFrame
-        || context.webkitRequestAnimationFrame
-        || context.oRequestAnimationFrame
-        || function(callback) { setTimeout(callback, 17); };
+    timeout; // is a timeout active?
 
 // The active timer is exposed so that the callback and time can be modified
 // by transitions, but this isn’t intended to be public.
@@ -57,7 +50,7 @@ export default function(callback, delay, then) {
   if (!interval) {
     timeout = clearTimeout(timeout);
     interval = 1;
-    requestFrame(step);
+    requestAnimationFrame(step);
   }
 };
 
@@ -78,6 +71,6 @@ function step() {
     interval = 0;
   } else {
     interval = 1;
-    requestFrame(step);
+    requestAnimationFrame(step);
   }
 }
