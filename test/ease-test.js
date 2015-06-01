@@ -607,3 +607,20 @@ tape('d3.ease("elastic", 1.3) returns the expected results', function(test) {
   test.equal(ease(".9"), ease(0.9), "numeric coercion");
   test.end();
 });
+
+tape('d3.ease("elastic", 1.5, 1) returns the expected results', function(test) {
+  var ease = d3.ease("elastic", 1.5, 1);
+  test.inDelta(ease(0.0),  0.000977); // Note: not exactly zero.
+  test.inDelta(ease(0.1),  0.000297);
+  test.inDelta(ease(0.2), -0.002946);
+  test.inDelta(ease(0.3), -0.010721);
+  test.inDelta(ease(0.4), -0.022909);
+  test.inDelta(ease(0.5), -0.031250);
+  test.inDelta(ease(0.6), -0.009491);
+  test.inDelta(ease(0.7),  0.094287);
+  test.inDelta(ease(0.8),  0.343083);
+  test.inDelta(ease(0.9),  0.733090);
+  test.inDelta(ease(1.0),  1.000000);
+  test.equal(ease(".9"), ease(0.9), "numeric coercion");
+  test.end();
+});
