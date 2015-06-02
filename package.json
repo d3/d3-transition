@@ -1,22 +1,24 @@
 {
   "name": "d3-transition",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Animated transitions for D3 selections.",
+  "main": "build/d3",
   "jsnext:main": "index",
   "repository": {
     "type": "git",
     "url": "https://github.com/d3/d3-transition.git"
   },
   "scripts": {
-    "pretest": "mkdir -p build && d3-bundler --polyfill-raf -- test/d3.js > build/d3.js",
-    "test": "faucet `find test -name '*-test.js'`"
+    "pretest": "mkdir -p build && d3-bundler --polyfill-raf --format=cjs -- d3.js > build/d3.js",
+    "test": "faucet `find test -name '*-test.js'`",
+    "prepublish": "npm run test"
   },
   "devDependencies": {
-    "d3-bundler": "~0.2.4",
+    "d3-bundler": "~0.2.5",
+    "d3-ease": "~0.0.1",
     "d3-selection": "~0.4.5",
     "faucet": "0.0",
     "jsdom": "3",
-    "requirejs": "2",
     "tape": "4"
   }
 }

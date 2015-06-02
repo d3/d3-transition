@@ -12,13 +12,12 @@ import {
 } from "d3-selection";
 
 import {
-  ease,
   timer,
   timerFlush,
   transition
-} from "../index";
+} from "./index";
 
-import "../index";
+import "./index";
 
 export default {
   get event() { return event; },
@@ -31,7 +30,6 @@ export default {
   selection: selection,
   touch: touch,
   touches: touches,
-  ease: ease,
   timer: timer,
   timerFlush: timerFlush,
   transition: transition

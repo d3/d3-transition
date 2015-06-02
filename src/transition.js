@@ -1,3 +1,5 @@
+import transition_ease from "./transition_ease";
+
 export function Transition(root, depth) {
   this._root = root;
   this._depth = depth;
@@ -10,7 +12,7 @@ function transition() {
 }
 
 Transition.prototype = transition.prototype = {
-  // TODO
+  ease: transition_ease
 };
 
 export default transition;
