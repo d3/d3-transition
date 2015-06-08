@@ -1,5 +1,5 @@
 import {selection} from "d3-selection";
-import timer from "./timer";
+import {timer} from "d3-timer";
 import transition_ease from "./transition_ease";
 
 var maxId = 0;

@@ -27,8 +27,9 @@
   },
   "devDependencies": {
     "d3-bundler": "~0.2.5",
-    "d3-ease": "~0.0.1",
+    "d3-ease": "~0.1.1",
     "d3-selection": "~0.4.5",
+    "d3-timer": "~0.0.1",
     "faucet": "0.0",
     "jsdom": "3",
     "tape": "4",

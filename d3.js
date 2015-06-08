@@ -13,7 +13,11 @@ import {
 
 import {
   timer,
-  timerFlush,
+  timerReplace,
+  timerFlush
+} from "d3-timer"
+
+import {
   transition
 } from "./index";
 
@@ -31,6 +35,7 @@ export default {
   touch: touch,
   touches: touches,
   timer: timer,
+  timerReplace: timerReplace,
   timerFlush: timerFlush,
   transition: transition
 };
