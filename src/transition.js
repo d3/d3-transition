@@ -1,8 +1,11 @@
 import {selection} from "d3-selection";
 import {timer} from "d3-timer";
-import transition_ease from "./transition_ease";
+import selection_interrupt from "./selection-interrupt";
+import selection_transition from "./selection-transition";
+import transition_ease from "./transition-ease";
 
-var maxId = 0;
+var maxId = 0,
+    proto = selection.prototype;
 
 export function Transition(root, depth, key, id) {
   this._root = root;
@@ -16,8 +19,11 @@ function transition() {
   return new Transition([document.documentElement], 1);
 }
 
+proto.interrupt = selection_interrupt;
+proto.transition = selection_transition;
+
 Transition.prototype = transition.prototype = {
-  each: selection.prototype.each,
+  each: proto.each,
   ease: transition_ease
 };
 
