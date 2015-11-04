@@ -1,6 +1,6 @@
 {
   "name": "d3-transition",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Animated transitions for D3 selections.",
   "keywords": [
     "d3",
@@ -14,24 +14,26 @@
     "name": "Mike Bostock",
     "url": "http://bost.ocks.org/mike"
   },
-  "main": "build/d3",
+  "main": "build/transition.cjs",
   "jsnext:main": "index",
   "repository": {
     "type": "git",
     "url": "https://github.com/d3/d3-transition.git"
   },
   "scripts": {
-    "pretest": "mkdir -p build && d3-bundler --polyfill-map --polyfill-raf --format=umd --name=d3 -- d3.js > build/d3.js",
+    "pretest": "mkdir -p build && d3-bundler -x -f cjs -o build/transition.cjs.js",
     "test": "faucet `find test -name '*-test.js'`",
-    "prepublish": "npm run test && uglifyjs build/d3.js -c -m -o build/d3.min.js && rm -f build/d3.zip && zip -j build/d3.zip -- LICENSE README.md build/d3.js build/d3.min.js"
+    "prepublish": "npm run test && d3-bundler -n transition -o build/transition.js && uglifyjs build/transition.js -c -m -o build/transition.min.js && rm -f build/transition.zip && zip -j build/transition.zip -- LICENSE README.md build/transition.js build/transition.min.js"
+  },
+  "dependencies": {
+    "d3-ease": "~0.1.4",
+    "d3-selection": "~0.4.10",
+    "d3-timer": "~0.0.5"
   },
   "devDependencies": {
-    "d3-bundler": "~0.2.5",
-    "d3-ease": "~0.1.1",
-    "d3-selection": "~0.4.5",
-    "d3-timer": "~0.0.1",
+    "d3-bundler": "~0.4.0",
     "faucet": "0.0",
-    "jsdom": "3",
+    "jsdom": "7",
     "tape": "4",
     "uglify-js": "2"
   }

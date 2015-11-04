@@ -1,11 +1,11 @@
 var tape = require("tape"),
     jsdom = require("jsdom"),
-    d3 = require("../");
+    transition = require("../");
 
-tape("d3.transition returns a transition on the document element", function(test) {
+tape("transition() returns a transition on the document element", function(test) {
   var document = global.document = jsdom.jsdom(),
-      t = d3.transition();
-  test.ok(t instanceof d3.transition);
+      t = transition.transition();
+  test.ok(t instanceof transition.transition);
   test.equal(t._depth, 1);
   test.ok(Array.isArray(t._root));
   test.equal(t._root.length, 1);
