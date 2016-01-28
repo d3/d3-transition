@@ -29,18 +29,18 @@ function subtransition(method) {
   };
 }
 
-export var _selection = selection.prototype;
+var selection_prototype = selection.prototype;
 
 Transition.prototype = transition.prototype = {
-  select: subtransition(_selection.select),
-  selectAll: subtransition(_selection.selectAll),
-  filter: subtransition(_selection.filter),
-  call: _selection.call,
-  nodes: _selection.nodes,
-  node: _selection.node,
-  size: _selection.size,
-  empty: _selection.empty,
-  each: _selection.each,
+  select: subtransition(selection_prototype.select),
+  selectAll: subtransition(selection_prototype.selectAll),
+  filter: subtransition(selection_prototype.filter),
+  call: selection_prototype.call,
+  nodes: selection_prototype.nodes,
+  node: selection_prototype.node,
+  size: selection_prototype.size,
+  empty: selection_prototype.empty,
+  each: selection_prototype.each,
   // TODO each("event"), or on("event")?
   // TODO attr
   // TODO attrTween
