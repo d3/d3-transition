@@ -14,6 +14,7 @@ export function Transition(nodes, parents, name, id) {
   this.each(function() {
     var lock = this[key] || (this[key] = new Lock);
     if (lock.scheduled(id)) return;
+    // TODO start a timer
   });
 }
 
@@ -21,15 +22,35 @@ function transition() {
   return new Transition([[document.documentElement]], root);
 }
 
-var selectionPrototype = selection.prototype;
+function subtransition(method) {
+  return function() {
+    var selection = method.apply(this, arguments);
+    return new Transition(selection._nodes, selection._parents, this._name, this._id);
+  };
+}
+
+export var _selection = selection.prototype;
 
 Transition.prototype = transition.prototype = {
-  call: selectionPrototype.call,
-  nodes: selectionPrototype.nodes,
-  node: selectionPrototype.node,
-  size: selectionPrototype.size,
-  empty: selectionPrototype.empty,
-  each: selectionPrototype.each,
+  select: subtransition(_selection.select),
+  selectAll: subtransition(_selection.selectAll),
+  filter: subtransition(_selection.filter),
+  call: _selection.call,
+  nodes: _selection.nodes,
+  node: _selection.node,
+  size: _selection.size,
+  empty: _selection.empty,
+  each: _selection.each,
+  // TODO each("event"), or on("event")?
+  // TODO attr
+  // TODO attrTween
+  // TODO style
+  // TODO styleTween
+  // TODO text
+  // TODO tween
+  // TODO remove
+  // TODO delay
+  // TODO duration
   ease: transition_ease
 };
 
