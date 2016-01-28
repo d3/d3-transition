@@ -1,5 +1,5 @@
 import {selection} from "d3-selection";
-import {timer} from "d3-timer";
+// TODO import {timer} from "d3-timer";
 import transition_ease from "./transition-ease";
 
 var maxId = 0;
@@ -10,7 +10,7 @@ export function Transition(root, depth, key, id) {
   this._key = key || "__transition__";
   this._id = id || ++maxId;
   this.each(initialize(this._key, this._id));
-};
+}
 
 function transition() {
   return new Transition([document.documentElement], 1);
