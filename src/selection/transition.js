@@ -1,5 +1,5 @@
-import {Transition} from "../transition/index";
-import {initialize, namekey} from "../transition/lock";
+import {Transition, namekey} from "../transition/index";
+import {initialize} from "../transition/schedule";
 import {easeCubicInOut} from "d3-ease";
 
 export default function(name) {

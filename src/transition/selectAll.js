@@ -1,5 +1,5 @@
 import {Transition, selection_prototype} from "./index";
-import {initialize, find} from "./lock";
+import {initialize, find} from "./schedule";
 
 export default function() {
   var id = this._id,
