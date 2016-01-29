@@ -1,5 +1,5 @@
 import {selection} from "d3-selection";
-// TODO import {timer} from "d3-timer";
+import {timer} from "d3-timer";
 import transition_ease from "./ease";
 
 var root = [null],
@@ -11,10 +11,20 @@ export function Transition(nodes, parents, name, id) {
   this._parents = parents;
   this._name = name;
   this._id = id || (id = ++maxId);
-  this.each(function() {
+  this.each(function(d, i) {
     var lock = this[key] || (this[key] = new Lock);
     if (lock.scheduled(id)) return;
-    // TODO start a timer
+
+    lock.pending.push({
+      id: id,
+      index: i,
+      // TODO tween
+      // TODO time, inherited
+      // TODO delay, inherited
+      // TODO duration, inherited
+      // TODO ease, inherited
+      timer: timer(…)
+    });
   });
 }
 
@@ -22,6 +32,7 @@ function transition() {
   return new Transition([[document.documentElement]], root);
 }
 
+// TODO propagate time, delay, duration and easing to subtransition
 function subtransition(method) {
   return function() {
     var selection = method.apply(this, arguments);
