@@ -1,4 +1,5 @@
 import {selection} from "d3-selection";
+import {namekey} from "./lock";
 import transition_ease from "./ease";
 import transition_filter from "./filter";
 import transition_select from "./select";
@@ -12,10 +13,6 @@ export function Transition(nodes, parents, key, id) {
   this._parents = parents;
   this._key = key;
   this._id = id || (id = ++maxId);
-}
-
-export function namekey(name) {
-  return name ? "__transition_" + name + "__" : "__transition__";
 }
 
 function transition(name) {

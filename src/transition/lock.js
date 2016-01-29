@@ -23,6 +23,10 @@ export function find(lock, id) {
   while (--i >= 0) if ((node = pending[i]).id === id) return node;
 }
 
+export function namekey(name) {
+  return name ? "__transition_" + name + "__" : "__transition__";
+}
+
 function Lock() {
   this.active = null;
   this.pending = [];
