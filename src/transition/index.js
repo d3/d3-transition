@@ -1,4 +1,6 @@
 import {selection} from "d3-selection";
+import transition_delay from "./delay";
+import transition_duration from "./duration";
 import transition_ease from "./ease";
 import transition_filter from "./filter";
 import transition_select from "./select";
@@ -11,7 +13,7 @@ export function Transition(nodes, parents, key, id) {
   this._nodes = nodes;
   this._parents = parents;
   this._key = key;
-  this._id = id || (id = ++maxId);
+  this._id = id || ++maxId;
 }
 
 function transition(name) {
@@ -43,8 +45,8 @@ Transition.prototype = transition.prototype = {
   // TODO text
   // TODO tween
   // TODO remove
-  // TODO delay
-  // TODO duration
+  delay: transition_delay,
+  duration: transition_duration,
   ease: transition_ease
 };
 
