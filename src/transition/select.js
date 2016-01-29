@@ -1,5 +1,5 @@
 import {Transition, selection_prototype} from "./index";
-import {initialize, find} from "./schedule";
+import {initializeScheduleEntry, getScheduleEntry} from "./schedule";
 
 export default function() {
   var id = this._id,
@@ -9,7 +9,7 @@ export default function() {
   for (var groups = this._nodes, subgroups = selection._nodes, m = groups.length, j = 0; j < m; ++j) {
     for (var group = groups[j], subgroup = subgroups[j], n = group.length, node, i = 0; i < n; ++i) {
       if (node = group[i]) {
-        initialize(subgroup[i], i, key, id, find(node[key], id));
+        initializeScheduleEntry(subgroup[i], i, key, id, getScheduleEntry(node[key], id));
       }
     }
   }

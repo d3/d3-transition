@@ -1,5 +1,5 @@
 import {Transition, selection_prototype} from "./index";
-import {initialize, find} from "./schedule";
+import {initializeScheduleEntry, getScheduleEntry} from "./schedule";
 
 export default function() {
   var id = this._id,
@@ -7,9 +7,9 @@ export default function() {
       selection = selection_prototype.selectAll.apply(this, arguments);
 
   for (var parents = selection._parents, groups = selection._nodes, m = groups.length, j = 0; j < m; ++j) {
-    for (var inherit = find(parents[j][key], id), group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+    for (var timing = getScheduleEntry(parents[j][key], id), group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
       if (node = group[i]) {
-        initialize(node, i, key, id, inherit);
+        initializeScheduleEntry(node, i, key, id, timing);
       }
     }
   }
