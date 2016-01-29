@@ -1,51 +1,33 @@
 import {selection} from "d3-selection";
-import {timer} from "d3-timer";
 import transition_ease from "./ease";
+import transition_filter from "./filter";
+import transition_select from "./select";
+import transition_selectAll from "./selectAll";
 
 var root = [null],
     maxId = 0;
 
-export function Transition(nodes, parents, name, id) {
-  var key = name ? "__transition_" + name + "__" : "__transition__";
+export function Transition(nodes, parents, key, id) {
   this._nodes = nodes;
   this._parents = parents;
-  this._name = name;
+  this._key = key;
   this._id = id || (id = ++maxId);
-  this.each(function(d, i) {
-    var lock = this[key] || (this[key] = new Lock);
-    if (lock.scheduled(id)) return;
-
-    lock.pending.push({
-      id: id,
-      index: i,
-      // TODO tween
-      // TODO time, inherited
-      // TODO delay, inherited
-      // TODO duration, inherited
-      // TODO ease, inherited
-      timer: timer(…)
-    });
-  });
 }
 
-function transition() {
-  return new Transition([[document.documentElement]], root);
+export function namekey(name) {
+  return name ? "__transition_" + name + "__" : "__transition__";
 }
 
-// TODO propagate time, delay, duration and easing to subtransition
-function subtransition(method) {
-  return function() {
-    var selection = method.apply(this, arguments);
-    return new Transition(selection._nodes, selection._parents, this._name, this._id);
-  };
+function transition(name) {
+  return new Transition([[document.documentElement]], root, namekey(name));
 }
 
-var selection_prototype = selection.prototype;
+export var selection_prototype = selection.prototype;
 
 Transition.prototype = transition.prototype = {
-  select: subtransition(selection_prototype.select),
-  selectAll: subtransition(selection_prototype.selectAll),
-  filter: subtransition(selection_prototype.filter),
+  select: transition_select,
+  selectAll: transition_selectAll,
+  filter: transition_filter,
   call: selection_prototype.call,
   nodes: selection_prototype.nodes,
   node: selection_prototype.node,
@@ -63,20 +45,6 @@ Transition.prototype = transition.prototype = {
   // TODO delay
   // TODO duration
   ease: transition_ease
-};
-
-function Lock() {
-  this.active = null;
-  this.pending = [];
-}
-
-Lock.prototype = {
-  scheduled: function(id) {
-    if (this.active && this.active.id === id) return true;
-    var pending = this.pending, i = pending.length;
-    while (--i >= 0) if (pending[i].id === id) return true;
-    return false;
-  }
 };
 
 export default transition;

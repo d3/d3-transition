@@ -7,3 +7,6 @@ env:
 
 extends:
     "eslint:recommended"
+
+rules:
+    no-cond-assign: 0
