@@ -1,15 +1,23 @@
-import {Transition, selection_prototype} from "./index";
+import {selectorAll} from "d3-selection";
+import {Transition} from "./index";
 import {initializeScheduleEntry, getScheduleEntry} from "./schedule";
 
-export default function() {
+export default function(select) {
   var id = this._id,
-      key = this._key,
-      selection = selection_prototype.selectAll.apply(this, arguments); // TODO wastes a Selection object
+      key = this._key;
 
-  for (var parents = selection._parents, groups = selection._groups, m = groups.length, j = 0; j < m; ++j) {
-    for (var timing = getScheduleEntry(parents[j], key, id), group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
+  if (typeof select !== "function") select = selectorAll(select);
+
+  for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
+    for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
       if (node = group[i]) {
-        initializeScheduleEntry(node, key, id, i, group, timing);
+        for (var children = select.call(node, node.__data__, i, group), child, timing = getScheduleEntry(node, key, id), k = 0, l = children.length; k < l; ++k) {
+          if (child = children[k]) {
+            initializeScheduleEntry(child, key, id, k, children, timing);
+          }
+        }
+        subgroups.push(children);
+        parents.push(node);
       }
     }
   }
