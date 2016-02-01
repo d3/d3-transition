@@ -9,8 +9,8 @@ import transition_selectAll from "./selectAll";
 var root = [null],
     maxId = 0;
 
-export function Transition(nodes, parents, key, id) {
-  this._nodes = nodes;
+export function Transition(groups, parents, key, id) {
+  this._groups = groups;
   this._parents = parents;
   this._key = key;
   this._id = id || ++maxId;
