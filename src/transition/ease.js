@@ -1,8 +1,24 @@
-// TODO import {ease} from "d3-ease";
+import {getScheduleEntry} from "./schedule";
 
-export default function(/* TODO type, a, b */) {
-  // TODO var e = typeof type === "function" ? type : ease(type, a, b);
-  return this.each(function() {
-    // TODO
-  });
+function easeFunction(key, id, value) {
+  return function() {
+    getScheduleEntry(this, key, id).ease = value.apply(this, arguments);
+  };
+}
+
+function easeConstant(key, id, value) {
+  return function() {
+    getScheduleEntry(this, key, id).ease = value;
+  };
+}
+
+export default function(value) {
+  var id = this._id,
+      key = this._key;
+
+  return arguments.length
+      ? this.each((typeof value === "function"
+          ? easeFunction
+          : easeConstant)(key, id, value))
+      : getScheduleEntry(this.node(), key, id).ease;
 }

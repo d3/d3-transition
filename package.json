@@ -26,7 +26,7 @@
     "prepublish": "npm run test && uglifyjs build/d3-transition.js -c -m -o build/d3-transition.min.js && rm -f build/d3-transition.zip && zip -j build/d3-transition.zip -- LICENSE README.md build/d3-transition.js build/d3-transition.min.js"
   },
   "dependencies": {
-    "d3-ease": "~0.5.1",
+    "d3-ease": "~0.6.0",
     "d3-selection": "~0.6.3",
     "d3-timer": "~0.1.0"
   },

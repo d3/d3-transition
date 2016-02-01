@@ -60,7 +60,10 @@ function addScheduleEntry(node, key, entry) {
   }
 
   function tick(elapsed) {
-    console.log("tick@" + entry.id, elapsed);
+    // TODO This could throw an error; make sure the timer is still stopped?
+    var t = entry.ease.ease(elapsed / entry.duration);
+    console.log("tick@" + entry.id, elapsed, t);
+
     if (elapsed >= entry.duration) { // TODO capture duration to ensure immutability?
       console.log("stop@" + entry.id, elapsed);
       schedule.active = null;
