@@ -5,6 +5,7 @@ import transition_ease from "./ease";
 import transition_filter from "./filter";
 import transition_select from "./select";
 import transition_selectAll from "./selectAll";
+import transition_tween from "./tween";
 
 var root = [null];
 
@@ -42,8 +43,8 @@ Transition.prototype = transition.prototype = {
   // TODO style
   // TODO styleTween
   // TODO text
-  // TODO tween
   // TODO remove
+  tween: transition_tween,
   delay: transition_delay,
   duration: transition_duration,
   ease: transition_ease
