@@ -1,4 +1,4 @@
-import {timer} from "d3-timer";
+import {timer, timerOnce} from "d3-timer";
 
 export function initializeScheduleEntry(node, key, id, index, group, timing) {
   var schedule = node[key];
@@ -6,8 +6,8 @@ export function initializeScheduleEntry(node, key, id, index, group, timing) {
   else if (getScheduleEntry(node, key, id)) return;
   addScheduleEntry(node, key, {
     id: id,
-    index: index,
-    group: group,
+    index: index, // For restoring context during callbacks.
+    group: group, // For restoring context during callbacks.
     tweens: [],
     time: timing.time,
     delay: timing.delay,
@@ -27,14 +27,20 @@ export function getScheduleEntry(node, key, id) {
 function addScheduleEntry(node, key, entry) {
   var schedule = node[key];
 
-  function reschedule(elapsed) {
-    console.log("reschedule@" + entry.id, elapsed);
-    if (entry.delay <= elapsed) start(elapsed - entry.delay);
+  // Initialize the entry timer when the transition is created. The delay is not
+  // known until the first callback! If the delay is greater than this first
+  // sleep, sleep again; otherwise, start immediately.
+  schedule.pending.push(entry);
+  entry.timer = timer(function(elapsed, now) {
+    if (entry.delay <= elapsed) start(elapsed - entry.delay, now);
     else entry.timer.restart(start, entry.delay, entry.time);
-  }
+  }, 0, entry.time);
 
-  function start(elapsed) {
+  function start(elapsed, now) {
     console.log("start@" + entry.id, elapsed);
+    var pending = schedule.pending,
+        tweens = entry.tweens,
+        i, j, n, o;
 
     // Interrupt the active transition, if any.
     // TODO Dispatch the interrupt event (within try-catch).
@@ -46,44 +52,44 @@ function addScheduleEntry(node, key, entry) {
     // Cancel any pre-empted transitions. No interrupt event is dispatched
     // because the cancelled transitions never started. Note that this also
     // removes this transition from the pending list!
-    schedule.pending = schedule.pending.filter(function(pending) {
-      if (pending.id < entry.id) console.log("cancel@" + entry.id, "@" + pending.id), pending.timer.stop();
-      else return pending.id > entry.id;
-    });
+    // TODO Would a map or linked list be more efficient here?
+    for (i = 0, j = -1, n = pending.length; i < n; ++i) {
+      o = pending[i];
+      if (o.id < entry.id) console.log("cancel@" + entry.id, "@" + o.id), o.timer.stop();
+      else if (o.id > entry.id) pending[++j] = o;
+    }
+    pending.length = j + 1;
 
     // Mark this transition as active.
     schedule.active = entry;
 
-    // Defer first tick to end of current frame; see mbostock/d3#1576.
-    // Note: the transition may be canceled after start and before the first tick!
-    // Note: this must be scheduled before the start event; see d3/d3-transition#16!
+    // Defer the first tick to end of the current frame; see mbostock/d3#1576.
+    // Note the transition may be canceled after start and before the first tick!
+    // Note this must be scheduled before the start event; see d3/d3-transition#16!
     // Assuming this is successful, subsequent callbacks go straight to tick.
-    // TODO Should ALL ticks use this new timer, not just the first?
-    entry.timer.stop();
-    entry.timer.restart(tick, entry.delay, entry.time);
-
-    // var startTimer = timer(function() {
-    //   startTimer.stop();
-    //   if (schedule.active === entry) {
-    //     entry.timer.restart(tick, entry.delay, entry.time);
-    //     tick(elapsed);
-    //   }
-    // });
+    timerOnce(function() {
+      if (schedule.active === entry) {
+        entry.timer.restart(tick, entry.delay, entry.time);
+        tick(elapsed);
+      }
+    }, 0, now);
 
     // TODO Dispatch the start event (within try-catch).
-    // Note: this must be done before the tweens are initialized.
+    // Note this must be done before the tweens are initialized.
 
     // Initialize the tweens, deleting null tweens.
-    for (var tweens = entry.tweens, i = 0, j = -1, n = tweens.length; i < n; ++i) {
-      tweens[++j] = tweens[i].value.call(node, node.__data__, entry.index, entry.group);
+    for (i = 0, j = -1, n = tweens.length; i < n; ++i) {
+      if (o = tweens[i].value.call(node, node.__data__, entry.index, entry.group)) {
+        tweens[++j] = o;
+      }
     }
     tweens.length = j + 1;
   }
 
   function tween(t) {
     console.log("tick@" + entry.id, t);
-    for (var i = 0, n = entry.tweens.length; i < n; ++i) {
-      entry.tweens[i].call(node, t);
+    for (var tweens = entry.tweens, i = 0, n = tweens.length; i < n; ++i) {
+      tweens[i].call(node, t); // TODO tween could throw
     }
   }
 
@@ -96,12 +102,7 @@ function addScheduleEntry(node, key, entry) {
       if (!schedule.pending.length) delete node[key];
       entry.timer.stop();
     } else {
-      // TODO Ease could throw an error; make sure the timer is still stopped?
-      tween(entry.ease.ease(elapsed / entry.duration));
+      tween(entry.ease.ease(elapsed / entry.duration)); // TODO ease could throw
     }
   }
-
-  console.log("schedule@" + entry.id);
-  schedule.pending.push(entry);
-  entry.timer = timer(reschedule, 0, entry.time);
 }

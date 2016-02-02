@@ -1,4 +1,5 @@
 import {selection} from "d3-selection";
+import transition_attr from "./attr";
 import transition_delay from "./delay";
 import transition_duration from "./duration";
 import transition_ease from "./ease";
@@ -38,7 +39,7 @@ Transition.prototype = transition.prototype = {
   empty: selection_prototype.empty,
   each: selection_prototype.each,
   // TODO each("event"), or on("event")?
-  // TODO attr
+  attr: transition_attr,
   // TODO attrTween
   // TODO style
   // TODO styleTween
