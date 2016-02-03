@@ -18,8 +18,8 @@ export default function(name, value) {
   var sname = name + "";
 
   if (arguments.length < 2) {
-    var tweens = getScheduleEntry(this.node(), this._key, this._id).tweens;
-    for (var i = 0, n = tweens.length, t; i < n; ++i) {
+    var entry = getScheduleEntry(this.node(), this._key, this._id);
+    if (entry) for (var tweens = entry.tweens, i = 0, n = tweens.length, t; i < n; ++i) {
       if ((t = tweens[i]).name === sname) {
         return t.value;
       }

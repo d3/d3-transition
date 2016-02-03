@@ -17,9 +17,10 @@ export function initializeScheduleEntry(node, key, id, index, group, timing) {
   });
 }
 
-// TODO Return null if the schedule is undefined (i.e., no transitions)?
 export function getScheduleEntry(node, key, id) {
-  var schedule = node[key], entry = schedule.active;
+  var schedule = node[key];
+  if (!schedule) return;
+  var entry = schedule.active;
   if (entry && entry.id === id) return entry;
   var pending = schedule.pending, i = pending.length;
   while (--i >= 0) if ((entry = pending[i]).id === id) return entry;
