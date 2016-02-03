@@ -76,6 +76,7 @@ function addScheduleEntry(node, key, entry) {
     // Note this must be done before the tweens are initialized.
 
     // Initialize the tweens, deleting null tweens.
+    // TODO Would a map or linked list be more efficient here?
     for (i = 0, j = -1, n = tweens.length; i < n; ++i) {
       if (o = tweens[i].value.call(node, node.__data__, entry.index, entry.group)) {
         tweens[++j] = o;
@@ -84,21 +85,21 @@ function addScheduleEntry(node, key, entry) {
     tweens.length = j + 1;
   }
 
-  function tween(t) {
-    for (var tweens = entry.tweens, i = 0, n = tweens.length; i < n; ++i) {
-      tweens[i].call(node, t); // TODO tween could throw
-    }
-  }
-
   // TODO Dispatch the end event (within try-catch).
   function tick(elapsed) {
-    if (elapsed >= entry.duration) { // TODO capture duration to ensure immutability?
-      tween(1);
+    var tweens = entry.tweens,
+        t = elapsed / entry.duration, // TODO capture duration to ensure immutability?
+        e = t >= 1 ? 1 : entry.ease.ease(t), // TODO ease could throw
+        i, n;
+
+    for (i = 0, n = tweens.length; i < n; ++i) {
+      tweens[i].call(null, e); // TODO tween could throw
+    }
+
+    if (t >= 1) {
       schedule.active = null;
       if (!schedule.pending.length) delete node[key];
       entry.timer.stop();
-    } else {
-      tween(entry.ease.ease(elapsed / entry.duration)); // TODO ease could throw
     }
   }
 }
