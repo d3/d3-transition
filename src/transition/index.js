@@ -9,6 +9,7 @@ import transition_select from "./select";
 import transition_selectAll from "./selectAll";
 import transition_style from "./style";
 import transition_styleTween from "./styleTween";
+import transition_text from "./text";
 import transition_tween from "./tween";
 
 export function Transition(groups, parents, key, id) {
@@ -44,7 +45,7 @@ Transition.prototype = transition.prototype = {
   attrTween: transition_attrTween,
   style: transition_style,
   styleTween: transition_styleTween,
-  // TODO text
+  text: transition_text,
   // TODO remove
   tween: transition_tween,
   delay: transition_delay,
