@@ -1,12 +1,5 @@
 import {interpolate} from "d3-interpolate";
-
-// TODO export from d3-selection
-function defaultView(node) {
-  return node
-      && ((node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
-          || (node.document && node) // node is a Window
-          || node.defaultView); // node is a Document
-}
+import defaultView from "../defaultView";
 
 function styleRemove(name, value, priority) {
   return function() {

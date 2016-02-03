@@ -1,0 +1,7 @@
+// TODO export from d3-selection
+export default function(node) {
+  return node
+      && ((node.ownerDocument && node.ownerDocument.defaultView) // node is a Node
+          || (node.document && node) // node is a Window
+          || node.defaultView); // node is a Document
+}
