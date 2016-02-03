@@ -1,7 +1,6 @@
 var tape = require("tape"),
     jsdom = require("jsdom"),
-    d3_selection = require("d3-selection"),
-    d3_transition = require("../../");
+    d3_selection = require("d3-selection");
 
 tape("selection.interrupt() returns the selection", function(test) {
   var document = jsdom.jsdom(),

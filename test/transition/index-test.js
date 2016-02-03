@@ -13,7 +13,7 @@ tape("d3.transition() returns a transition on the document element", function(te
 });
 
 tape("d3.transition.prototype can be extended", function(test) {
-  var document = global.document = jsdom.jsdom();
+  global.document = jsdom.jsdom();
   try {
     var pass = 0;
     d3.transition.prototype.test = function() { return ++pass; };
@@ -27,7 +27,7 @@ tape("d3.transition.prototype can be extended", function(test) {
 });
 
 tape("transitions are instanceof d3.transition", function(test) {
-  var document = global.document = jsdom.jsdom();
+  global.document = jsdom.jsdom();
   try {
     test.equal(d3.transition() instanceof d3.transition, true);
     test.end();
