@@ -21,7 +21,7 @@ export default function(name, value) {
     var tweens = getScheduleEntry(this.node(), this._key, this._id).tweens;
     for (var i = 0, n = tweens.length, t; i < n; ++i) {
       if ((t = tweens[i]).name === sname) {
-        return t;
+        return t.value;
       }
     }
     return null;
