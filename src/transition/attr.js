@@ -56,7 +56,6 @@ function attrFunctionNS(fullname, value) {
 }
 
 export default function(name, value) {
-  if (arguments.length < 2) return this.tween("attr." + name);
   var fullname = namespace(name);
   return this.tween("attr." + name, (value == null
       ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"

@@ -10,7 +10,8 @@ function styleTween(name, value, priority) {
 }
 
 export default function(name, value, priority) {
+  var key = "style." + name;
   return arguments.length < 2
-      ? this.tween("style." + name)._value
-      : this.tween("style." + name, styleTween(name, value, priority == null ? "" : priority));
+      ? this.tween(key)._value // TODO handle null tween
+      : this.tween(key, styleTween(name, value, priority == null ? "" : priority));
 }

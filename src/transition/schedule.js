@@ -17,6 +17,7 @@ export function initializeScheduleEntry(node, key, id, index, group, timing) {
   });
 }
 
+// TODO Return null if the schedule is undefined (i.e., no transitions)?
 export function getScheduleEntry(node, key, id) {
   var schedule = node[key], entry = schedule.active;
   if (entry && entry.id === id) return entry;
@@ -77,6 +78,7 @@ function addScheduleEntry(node, key, entry) {
 
     // Initialize the tweens, deleting null tweens.
     // TODO Would a map or linked list be more efficient here?
+    // TODO Overwriting the tweens array could be exposed through getScheduleEntry?
     for (i = 0, j = -1, n = tweens.length; i < n; ++i) {
       if (o = tweens[i].value.call(node, node.__data__, entry.index, entry.group)) {
         tweens[++j] = o;

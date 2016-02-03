@@ -23,9 +23,10 @@ function attrTween(name, value) {
 }
 
 export default function(name, value) {
-  if (arguments.length < 2) return this.tween("attr." + name)._value;
+  var key = "attr." + name;
+  if (arguments.length < 2) return this.tween(key)._value; // TODO handle null tween
   var fullname = namespace(name);
-  return this.tween("attr." + name, (fullname.local
+  return this.tween(key, (fullname.local
       ? attrTweenNS
       : attrTween)(fullname, value));
 }

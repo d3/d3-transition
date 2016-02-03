@@ -32,10 +32,8 @@ function styleFunction(name, value, priority) {
 }
 
 export default function(name, value, priority) {
-  return arguments.length < 2
-      ? this.tween("style." + name)
-      : this.tween("style." + name, (value == null
-          ? styleRemove : (typeof value === "function"
-          ? styleFunction
-          : styleConstant))(name, value, priority == null ? "" : priority));
+  return this.tween("style." + name, (value == null
+      ? styleRemove : (typeof value === "function"
+      ? styleFunction
+      : styleConstant))(name, value, priority == null ? "" : priority));
 }
