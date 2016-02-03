@@ -37,7 +37,6 @@ function addScheduleEntry(node, key, entry) {
   }, 0, entry.time);
 
   function start(elapsed, now) {
-    console.log("start@" + entry.id, elapsed);
     var pending = schedule.pending,
         tweens = entry.tweens,
         i, j, n, o;
@@ -45,7 +44,6 @@ function addScheduleEntry(node, key, entry) {
     // Interrupt the active transition, if any.
     // TODO Dispatch the interrupt event (within try-catch).
     if (schedule.active) {
-      console.log("interrupt@" + entry.id, "@" + schedule.active.id);
       schedule.active.timer.stop();
     }
 
@@ -55,7 +53,7 @@ function addScheduleEntry(node, key, entry) {
     // TODO Would a map or linked list be more efficient here?
     for (i = 0, j = -1, n = pending.length; i < n; ++i) {
       o = pending[i];
-      if (o.id < entry.id) console.log("cancel@" + entry.id, "@" + o.id), o.timer.stop();
+      if (o.id < entry.id) o.timer.stop();
       else if (o.id > entry.id) pending[++j] = o;
     }
     pending.length = j + 1;
@@ -87,7 +85,6 @@ function addScheduleEntry(node, key, entry) {
   }
 
   function tween(t) {
-    console.log("tick@" + entry.id, t);
     for (var tweens = entry.tweens, i = 0, n = tweens.length; i < n; ++i) {
       tweens[i].call(node, t); // TODO tween could throw
     }
@@ -97,7 +94,6 @@ function addScheduleEntry(node, key, entry) {
   function tick(elapsed) {
     if (elapsed >= entry.duration) { // TODO capture duration to ensure immutability?
       tween(1);
-      console.log("stop@" + entry.id, elapsed);
       schedule.active = null;
       if (!schedule.pending.length) delete node[key];
       entry.timer.stop();
