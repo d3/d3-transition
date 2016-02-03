@@ -11,8 +11,6 @@ import transition_style from "./style";
 import transition_styleTween from "./styleTween";
 import transition_tween from "./tween";
 
-var root = [null];
-
 export function Transition(groups, parents, key, id) {
   this._groups = groups;
   this._parents = parents;
@@ -21,7 +19,7 @@ export function Transition(groups, parents, key, id) {
 }
 
 function transition(name) {
-  return new Transition([[document.documentElement]], root, namekey(name));
+  return selection().transition(name);
 }
 
 export function namekey(name) {
