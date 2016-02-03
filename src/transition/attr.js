@@ -16,48 +16,40 @@ function attrRemoveNS(fullname) {
 }
 
 function attrConstant(name, value1) {
-  return value1 += "", function() {
-    var node = this, value0 = node.getAttribute(name), i;
-    return value0 !== value1 && (i = interpolate(value0, value1), function(t) {
-      node.setAttribute(name, i(t));
-    });
+  return function() {
+    var value0 = this.getAttribute(name);
+    if (value0 !== value1) return interpolate(value0, value1);
   };
 }
 
 function attrConstantNS(fullname, value1) {
-  return value1 += "", function() {
-    var node = this, value0 = node.getAttributeNS(fullname.space, fullname.local), i;
-    return value0 !== value1 && (i = interpolate(value0, value1), function(t) {
-      node.setAttributeNS(fullname.space, fullname.local, i(t));
-    });
+  return function() {
+    var value0 = this.getAttributeNS(fullname.space, fullname.local);
+    if (value0 !== value1) return interpolate(value0, value1);
   };
 }
 
 function attrFunction(name, value) {
   return function() {
-    var node = this, value0, value1 = value.apply(node, arguments), i;
-    if (value1 == null) return node.removeAttribute(name);
-    value0 = node.getAttribute(name), value1 += "";
-    return value0 !== value1 && (i = interpolate(value0, value1), function(t) {
-      node.setAttribute(name, i(t));
-    });
+    var value0, value1 = value.apply(this, arguments);
+    if (value1 == null) return void this.removeAttribute(name);
+    value0 = this.getAttribute(name), value1 += "";
+    if (value0 !== value1) return interpolate(value0, value1);
   };
 }
 
 function attrFunctionNS(fullname, value) {
   return function() {
-    var node = this, value0, value1 = value.apply(node, arguments), i;
-    if (value1 == null) return node.removeAttributeNS(fullname.space, fullname.local);
-    value0 = node.getAttributeNS(fullname.space, fullname.local), value1 += "";
-    return value0 !== value1 && (i = interpolate(value0, value1), function(t) {
-      node.setAttributeNS(fullname.space, fullname.local, i(t));
-    });
+    var value0, value1 = value.apply(this, arguments);
+    if (value1 == null) return void this.removeAttributeNS(fullname.space, fullname.local);
+    value0 = this.getAttributeNS(fullname.space, fullname.local), value1 += "";
+    if (value0 !== value1) return interpolate(value0, value1);
   };
 }
 
 export default function(name, value) {
   var fullname = namespace(name);
-  return this.tween("attr." + name, (value == null
+  return this.attrTween(name, (value == null
       ? (fullname.local ? attrRemoveNS : attrRemove) : (typeof value === "function"
       ? (fullname.local ? attrFunctionNS : attrFunction)
       : (fullname.local ? attrConstantNS : attrConstant)))(fullname, value));
