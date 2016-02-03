@@ -6,6 +6,7 @@ import transition_ease from "./ease";
 import transition_filter from "./filter";
 import transition_select from "./select";
 import transition_selectAll from "./selectAll";
+import transition_style from "./style";
 import transition_tween from "./tween";
 
 var root = [null];
@@ -41,7 +42,7 @@ Transition.prototype = transition.prototype = {
   // TODO each("event"), or on("event")?
   attr: transition_attr,
   // TODO attrTween
-  // TODO style
+  style: transition_style,
   // TODO styleTween
   // TODO text
   // TODO remove
