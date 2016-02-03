@@ -1,7 +1,11 @@
-import {interpolate} from "d3-interpolate";
-import {namespace} from "d3-selection";
+import {interpolate, interpolateTransform} from "d3-interpolate";
+import {namespace, namespaces} from "d3-selection";
 
-// TODO transform interpolation
+function attrInterpolate(node, name) {
+  return name === "transform" && node.namespaceURI === namespaces.svg
+      ? interpolateTransform
+      : interpolate;
+}
 
 function attrRemove(name) {
   return function() {
@@ -18,7 +22,7 @@ function attrRemoveNS(fullname) {
 function attrConstant(name, value1) {
   return function() {
     var value0 = this.getAttribute(name);
-    if (value0 !== value1) return interpolate(value0, value1);
+    if (value0 !== value1) return attrInterpolate(this, name)(value0, value1);
   };
 }
 
@@ -34,7 +38,7 @@ function attrFunction(name, value) {
     var value0, value1 = value.apply(this, arguments);
     if (value1 == null) return void this.removeAttribute(name);
     value0 = this.getAttribute(name), value1 += "";
-    if (value0 !== value1) return interpolate(value0, value1);
+    if (value0 !== value1) return attrInterpolate(this, name)(value0, value1);
   };
 }
 
