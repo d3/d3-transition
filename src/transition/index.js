@@ -10,7 +10,10 @@ import transition_selectAll from "./selectAll";
 import transition_style from "./style";
 import transition_styleTween from "./styleTween";
 import transition_text from "./text";
+import transition_transition from "./transition";
 import transition_tween from "./tween";
+
+var id = 0;
 
 export function Transition(groups, parents, key, id) {
   this._groups = groups;
@@ -23,6 +26,10 @@ function transition(name) {
   return selection().transition(name);
 }
 
+export function newId() {
+  return ++id;
+}
+
 export function namekey(name) {
   return name ? "__transition_" + name + "__" : "__transition__";
 }
@@ -33,14 +40,14 @@ Transition.prototype = transition.prototype = {
   select: transition_select,
   selectAll: transition_selectAll,
   filter: transition_filter,
-  // TODO transition
+  transition: transition_transition,
   call: selection_prototype.call,
   nodes: selection_prototype.nodes,
   node: selection_prototype.node,
   size: selection_prototype.size,
   empty: selection_prototype.empty,
   each: selection_prototype.each,
-  // TODO each("event"), or on("event")?
+  // TODO on
   attr: transition_attr,
   attrTween: transition_attrTween,
   style: transition_style,

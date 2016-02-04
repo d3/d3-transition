@@ -1,11 +1,9 @@
-import {Transition, namekey} from "../transition/index";
+import {Transition, newId, namekey} from "../transition/index";
 import {initializeScheduleEntry} from "../transition/schedule";
 import {easeCubicInOut} from "d3-ease";
 
-var nextId = 0;
-
 export default function(name) {
-  var id = ++nextId,
+  var id = newId(),
       key = namekey(name),
       timing = {time: Date.now(), delay: 0, duration: 250, ease: easeCubicInOut};
 

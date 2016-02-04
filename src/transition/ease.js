@@ -6,6 +6,7 @@ function easeConstant(key, id, value) {
   };
 }
 
+// TODO immediately verify that value is a function
 export default function(value) {
   var key = this._key,
       id = this._id;
