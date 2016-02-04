@@ -13,8 +13,8 @@ function durationConstant(key, id, value) {
 }
 
 export default function(value) {
-  var id = this._id,
-      key = this._key;
+  var key = this._key,
+      id = this._id;
 
   return arguments.length
       ? this.each((typeof value === "function"

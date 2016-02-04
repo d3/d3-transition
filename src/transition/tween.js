@@ -15,10 +15,12 @@ function tweenFunction(key, id, name, value) {
 }
 
 export default function(name, value) {
-  var sname = name + "";
+  var key = this._key,
+      id = this._id,
+      sname = name + "";
 
   if (arguments.length < 2) {
-    var entry = getScheduleEntry(this.node(), this._key, this._id);
+    var entry = getScheduleEntry(this.node(), key, id);
     if (entry) for (var tweens = entry.tweens, i = 0, n = tweens.length, t; i < n; ++i) {
       if ((t = tweens[i]).name === sname) {
         return t.value;
@@ -27,5 +29,5 @@ export default function(name, value) {
     return null;
   }
 
-  return this.each(tweenFunction(this._key, this._id, sname, value));
+  return this.each(tweenFunction(key, id, sname, value));
 }

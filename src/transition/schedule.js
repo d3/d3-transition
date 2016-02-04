@@ -92,7 +92,7 @@ function addScheduleEntry(node, key, entry) {
   function tick(elapsed) {
     var tweens = entry.tweens,
         t = elapsed / entry.duration, // TODO capture duration to ensure immutability?
-        e = t >= 1 ? 1 : entry.ease.ease(t), // TODO ease could throw
+        e = t >= 1 ? 1 : entry.ease.call(null, t), // TODO ease could throw
         i, n;
 
     for (i = 0, n = tweens.length; i < n; ++i) {

@@ -1,11 +1,5 @@
 import {getScheduleEntry} from "./schedule";
 
-function easeFunction(key, id, value) {
-  return function() {
-    getScheduleEntry(this, key, id).ease = value.apply(this, arguments);
-  };
-}
-
 function easeConstant(key, id, value) {
   return function() {
     getScheduleEntry(this, key, id).ease = value;
@@ -13,12 +7,10 @@ function easeConstant(key, id, value) {
 }
 
 export default function(value) {
-  var id = this._id,
-      key = this._key;
+  var key = this._key,
+      id = this._id;
 
   return arguments.length
-      ? this.each((typeof value === "function"
-          ? easeFunction
-          : easeConstant)(key, id, value))
+      ? this.each(easeConstant(key, id, value))
       : getScheduleEntry(this.node(), key, id).ease;
 }

@@ -3,8 +3,8 @@ import {Transition} from "./index";
 import {initializeScheduleEntry, getScheduleEntry} from "./schedule";
 
 export default function(select) {
-  var id = this._id,
-      key = this._key;
+  var key = this._key,
+      id = this._id;
 
   if (typeof select !== "function") select = selectorAll(select);
 
