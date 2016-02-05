@@ -1,6 +1,14 @@
 # d3-transition
 
-A transition is a [selection](https://github.com/d3/d3-selection)-like interface to manipulate DOM elements smoothly over time, rather than instantaneously. To create a transition, first select some elements, and then call [*selection*.transition](#selection_transition). Then apply transition methods, such as [*transition*.attr](#transition_attr). (While transitions and selections share many similar methods, they operate somewhat differently; see below for details.)
+A transition is a [selection](https://github.com/d3/d3-selection)-like interface to manipulate DOM elements smoothly over time, rather than instantaneously. To create a transition, first select some elements, and then call [*selection*.transition](#selection_transition). Then apply transition methods, such as [*transition*.attr](#transition_attr). For example:
+
+```js
+d3.select("body")
+  .transition()
+    .style("background-color", "red");
+```
+
+While transitions and selections share many similar methods, they operate somewhat differently; see below for details.
 
 D3 has many [built-in interpolators](https://github.com/d3/d3-interpolate) to tween arbitrary values. For example, you can transition from the font `500 12px sans-serif` to `300 42px sans-serif`, and D3 will find the numbers embedded within the string, interpolating both font size and weight automatically. To specify a custom interpolator, use [*transition*.attrTween](#transition_attrTween), [*transition*.styleTween](#transition_styleTween) or [*transition*.tween](#transition_tween).
 
