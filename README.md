@@ -1,6 +1,6 @@
 # d3-transition
 
-A transition is a [selection](https://github.com/d3/d3-selection)-like interface to manipulate DOM elements smoothly over time, rather than instantaneously. To create a transition, first select some elements, and then call [*selection*.transition](#selection_transition). Then apply transition methods, such as [*transition*.attr](#transition_attr). For example:
+A transition is a [selection](https://github.com/d3/d3-selection)-like interface to manipulate DOM elements smoothly over time, rather than instantaneously. To start a transition, select some elements, call [*selection*.transition](#selection_transition), and then apply the desired transition methods. For example:
 
 ```js
 d3.select("body")
