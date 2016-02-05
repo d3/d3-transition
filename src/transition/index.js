@@ -6,6 +6,7 @@ import transition_duration from "./duration";
 import transition_ease from "./ease";
 import transition_filter from "./filter";
 import transition_on from "./on";
+import transition_remove from "./remove";
 import transition_select from "./select";
 import transition_selectAll from "./selectAll";
 import transition_style from "./style";
@@ -54,7 +55,7 @@ Transition.prototype = transition.prototype = {
   style: transition_style,
   styleTween: transition_styleTween,
   text: transition_text,
-  // TODO remove
+  remove: transition_remove,
   tween: transition_tween,
   delay: transition_delay,
   duration: transition_duration,
