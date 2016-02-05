@@ -14,7 +14,7 @@ D3 has many [built-in interpolators](https://github.com/d3/d3-interpolate) to tw
 
 Only one transition of a given name may be *active* on a given element at a given time. However, multiple transitions with different names may be simultaneously active on the element, and multiple transitions with the same name may be *scheduled* on the element, provided they do not overlap in time. See [*transition*.transition](#transition_transition), for example.
 
-If a newer transition starts on a given element, it automatically interrupts any active transition and cancels any pending transitions. This allows new transitions to supersede old transitions, such as in response to a user event, even if the old transitions were delayed. To manually interrupt an active transition and cancel any pending transitions, use [*selection*.interrupt](#selection_interrupt). To run multiple transitions simultaneously on a given element or elements, give each transition a [unique name](#selection_transition).
+If a newer transition starts on a given element, it automatically interrupts any active transition and cancels any pending transitions. This allows new transitions to supersede old transitions, such as in response to a user event, even if the old transitions were delayed. To manually interrupt transitions, use [*selection*.interrupt](#selection_interrupt). To run multiple transitions simultaneously on a given element or elements, give each transition a [unique name](#selection_transition).
 
 For more on transitions, see [Working with Transitions](http://bost.ocks.org/mike/transition/).
 
