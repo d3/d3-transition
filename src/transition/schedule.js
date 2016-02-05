@@ -48,6 +48,13 @@ function startSchedule(node, key, self) {
         tweens = self.tweens,
         i, j, n, o;
 
+    // Interrupt the active transition, if any.
+    // Dispatch the interrupt event.
+    if (interrupted) {
+      interrupted.timer.stop();
+      interrupted.dispatch.interrupt.call(node, node.__data__, interrupted.index, interrupted.group); // TODO try-catch?
+    }
+
     // Cancel any pre-empted transitions. No interrupt event is dispatched
     // because the cancelled transitions never started. Note that this also
     // removes this transition from the pending list!
@@ -72,14 +79,6 @@ function startSchedule(node, key, self) {
         tick(elapsed);
       }
     }, 0, now);
-
-    // Interrupt the active transition, if any.
-    // Dispatch the interrupt event.
-    // TODO Dispatch the interrupt event before updating the active transition?
-    if (interrupted) {
-      interrupted.timer.stop();
-      interrupted.dispatch.interrupt.call(node, node.__data__, interrupted.index, interrupted.group); // TODO try-catch?
-    }
 
     // Dispatch the start event.
     // Note this must be done before the tweens are initialized.
@@ -107,12 +106,11 @@ function startSchedule(node, key, self) {
     }
 
     // Dispatch the end event.
-    // TODO Dispatch the end event before clearing the active transition?
     if (t >= 1) {
+      self.dispatch.end.call(node, node.__data__, self.index, self.group); // TODO try-catch
       schedules.active = null;
       if (!schedules.pending.length) delete node[key];
       self.timer.stop();
-      self.dispatch.end.call(node, node.__data__, self.index, self.group); // TODO try-catch
     }
   }
 }
