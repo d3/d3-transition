@@ -17,7 +17,7 @@ function styleRemoveEnd(name) {
 }
 
 function styleConstant(name, value1) {
-  return function() {
+  return value1 += "", function() {
     var value0 = defaultView(this).getComputedStyle(this, null).getPropertyValue(name);
     if (value0 !== value1) return interpolate(value0, value1);
   };

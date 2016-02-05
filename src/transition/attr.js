@@ -20,14 +20,14 @@ function attrRemoveNS(fullname) {
 }
 
 function attrConstant(name, value1) {
-  return function() {
+  return value1 += "", function() {
     var value0 = this.getAttribute(name);
     if (value0 !== value1) return attrInterpolate(this, name)(value0, value1);
   };
 }
 
 function attrConstantNS(fullname, value1) {
-  return function() {
+  return value1 += "", function() {
     var value0 = this.getAttributeNS(fullname.space, fullname.local);
     if (value0 !== value1) return interpolate(value0, value1);
   };
