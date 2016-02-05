@@ -1,4 +1,7 @@
+import {dispatch} from "d3-dispatch";
 import {timer, timerOnce} from "d3-timer";
+
+export var emptyDispatch = dispatch("start", "end", "interrupt");
 
 export function initializeScheduleEntry(node, key, id, index, group, timing) {
   var schedule = node[key];
@@ -8,6 +11,7 @@ export function initializeScheduleEntry(node, key, id, index, group, timing) {
     id: id,
     index: index, // For restoring context during callbacks.
     group: group, // For restoring context during callbacks.
+    dispatch: emptyDispatch,
     tweens: [],
     time: timing.time,
     delay: timing.delay,
@@ -39,15 +43,10 @@ function addScheduleEntry(node, key, entry) {
   }, 0, entry.time);
 
   function start(elapsed, now) {
-    var pending = schedule.pending,
+    var interrupted = schedule.active,
+        pending = schedule.pending,
         tweens = entry.tweens,
         i, j, n, o;
-
-    // Interrupt the active transition, if any.
-    // TODO Dispatch the interrupt event (within try-catch).
-    if (schedule.active) {
-      schedule.active.timer.stop();
-    }
 
     // Cancel any pre-empted transitions. No interrupt event is dispatched
     // because the cancelled transitions never started. Note that this also
@@ -74,35 +73,46 @@ function addScheduleEntry(node, key, entry) {
       }
     }, 0, now);
 
-    // TODO Dispatch the start event (within try-catch).
+    // Interrupt the active transition, if any.
+    // Dispatch the interrupt event.
+    // TODO Dispatch the interrupt event before updating the active transition?
+    if (interrupted) {
+      interrupted.timer.stop();
+      interrupted.dispatch.interrupt.call(node, node.__data__, interrupted.index, interrupted.group); // TODO try-catch?
+    }
+
+    // Dispatch the start event.
     // Note this must be done before the tweens are initialized.
+    entry.dispatch.start.call(node, node.__data__, entry.index, entry.group); // TODO try-catch?
 
     // Initialize the tweens, deleting null tweens.
     // TODO Would a map or linked list be more efficient here?
     // TODO Overwriting the tweens array could be exposed through getScheduleEntry?
     for (i = 0, j = -1, n = tweens.length; i < n; ++i) {
-      if (o = tweens[i].value.call(node, node.__data__, entry.index, entry.group)) {
+      if (o = tweens[i].value.call(node, node.__data__, entry.index, entry.group)) { // TODO try-catch?
         tweens[++j] = o;
       }
     }
     tweens.length = j + 1;
   }
 
-  // TODO Dispatch the end event (within try-catch).
   function tick(elapsed) {
     var tweens = entry.tweens,
         t = elapsed / entry.duration, // TODO capture duration to ensure immutability?
-        e = t >= 1 ? 1 : entry.ease.call(null, t), // TODO ease could throw
+        e = t >= 1 ? 1 : entry.ease.call(null, t), // TODO try-catch?
         i, n;
 
     for (i = 0, n = tweens.length; i < n; ++i) {
-      tweens[i].call(null, e); // TODO tween could throw
+      tweens[i].call(null, e); // TODO try-catch?
     }
 
+    // Dispatch the end event.
+    // TODO Dispatch the end event before clearing the active transition?
     if (t >= 1) {
       schedule.active = null;
       if (!schedule.pending.length) delete node[key];
       entry.timer.stop();
+      entry.dispatch.end.call(node, node.__data__, entry.index, entry.group); // TODO try-catch
     }
   }
 }

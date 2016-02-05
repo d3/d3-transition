@@ -5,6 +5,7 @@ import transition_delay from "./delay";
 import transition_duration from "./duration";
 import transition_ease from "./ease";
 import transition_filter from "./filter";
+import transition_on from "./on";
 import transition_select from "./select";
 import transition_selectAll from "./selectAll";
 import transition_style from "./style";
@@ -47,7 +48,7 @@ Transition.prototype = transition.prototype = {
   size: selection_prototype.size,
   empty: selection_prototype.empty,
   each: selection_prototype.each,
-  // TODO on
+  on: transition_on,
   attr: transition_attr,
   attrTween: transition_attrTween,
   style: transition_style,
