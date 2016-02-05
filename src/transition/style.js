@@ -6,7 +6,13 @@ function styleRemove(name) {
     var style = defaultView(this).getComputedStyle(this, null),
         value0 = style.getPropertyValue(name),
         value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
-    if (value0 !== value1) return interpolate(value0, value1); // TODO delete property at end
+    if (value0 !== value1) return interpolate(value0, value1);
+  };
+}
+
+function styleRemoveEnd(name) {
+  return function() {
+    this.style.removeProperty(name);
   };
 }
 
@@ -27,8 +33,10 @@ function styleFunction(name, value) {
 }
 
 export default function(name, value, priority) {
-  return this.styleTween(name, (value == null
-      ? styleRemove : (typeof value === "function"
-      ? styleFunction
-      : styleConstant))(name, value), priority);
+  return value == null ? this
+          .styleTween(name, styleRemove(name))
+          .on("end.style." + name, styleRemoveEnd(name))
+      : this.styleTween(name, (typeof value === "function"
+          ? styleFunction
+          : styleConstant)(name, value), priority);
 }
