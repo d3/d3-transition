@@ -1,8 +1,8 @@
-import {getScheduleEntry} from "./schedule";
+import {getSchedule} from "./schedule";
 
 function tweenFunction(key, id, name, value) {
   return function() {
-    var tweens = getScheduleEntry(this, key, id).tweens;
+    var tweens = getSchedule(this, key, id).tweens;
 
     for (var i = 0, n = tweens.length, t; i < n; ++i) {
       if ((t = tweens[i]).name === name) {
@@ -20,8 +20,8 @@ export default function(name, value) {
       sname = name + "";
 
   if (arguments.length < 2) {
-    var entry = getScheduleEntry(this.node(), key, id);
-    if (entry) for (var tweens = entry.tweens, i = 0, n = tweens.length, t; i < n; ++i) {
+    var schedule = getSchedule(this.node(), key, id);
+    if (schedule) for (var tweens = schedule.tweens, i = 0, n = tweens.length, t; i < n; ++i) {
       if ((t = tweens[i]).name === sname) {
         return t.value;
       }

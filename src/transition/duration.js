@@ -1,14 +1,14 @@
-import {getScheduleEntry} from "./schedule";
+import {getSchedule} from "./schedule";
 
 function durationFunction(key, id, value) {
   return function() {
-    getScheduleEntry(this, key, id).duration = +value.apply(this, arguments);
+    getSchedule(this, key, id).duration = +value.apply(this, arguments);
   };
 }
 
 function durationConstant(key, id, value) {
   return value = +value, function() {
-    getScheduleEntry(this, key, id).duration = value;
+    getSchedule(this, key, id).duration = value;
   };
 }
 
@@ -20,5 +20,5 @@ export default function(value) {
       ? this.each((typeof value === "function"
           ? durationFunction
           : durationConstant)(key, id, value))
-      : getScheduleEntry(this.node(), key, id).duration;
+      : getSchedule(this.node(), key, id).duration;
 }

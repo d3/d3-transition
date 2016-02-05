@@ -1,8 +1,8 @@
-import {getScheduleEntry} from "./schedule";
+import {getSchedule} from "./schedule";
 
 function easeConstant(key, id, value) {
   return function() {
-    getScheduleEntry(this, key, id).ease = value;
+    getSchedule(this, key, id).ease = value;
   };
 }
 
@@ -13,5 +13,5 @@ export default function(value) {
 
   return arguments.length
       ? this.each(easeConstant(key, id, value))
-      : getScheduleEntry(this.node(), key, id).ease;
+      : getSchedule(this.node(), key, id).ease;
 }

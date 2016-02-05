@@ -1,14 +1,14 @@
-import {getScheduleEntry} from "./schedule";
+import {getSchedule} from "./schedule";
 
 function delayFunction(key, id, value) {
   return function() {
-    getScheduleEntry(this, key, id).delay = +value.apply(this, arguments);
+    getSchedule(this, key, id).delay = +value.apply(this, arguments);
   };
 }
 
 function delayConstant(key, id, value) {
   return value = +value, function() {
-    getScheduleEntry(this, key, id).delay = value;
+    getSchedule(this, key, id).delay = value;
   };
 }
 
@@ -20,5 +20,5 @@ export default function(value) {
       ? this.each((typeof value === "function"
           ? delayFunction
           : delayConstant)(key, id, value))
-      : getScheduleEntry(this.node(), key, id).delay;
+      : getSchedule(this.node(), key, id).delay;
 }
