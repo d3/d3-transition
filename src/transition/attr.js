@@ -67,7 +67,7 @@ function attrFunctionNS(fullname, value) {
     value0 = this.getAttributeNS(fullname.space, fullname.local), value1 += "";
     return value0 === value1 ? null
         : value0 === value00 ? interpolate0
-        : interpolate0 = interpolate(value00 = value0, value1);
+        : interpolate0 = interpolate(value00 = value0, value10 = value1);
   };
 }
 
