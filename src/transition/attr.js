@@ -1,6 +1,7 @@
 import {interpolate, interpolateTransform} from "d3-interpolate";
 import {namespace, namespaces} from "d3-selection";
 
+// TODO Assumes either ALL selected nodes are SVG, or none are.
 function attrInterpolate(node, name) {
   return name === "transform" && node.namespaceURI === namespaces.svg
       ? interpolateTransform
@@ -20,34 +21,53 @@ function attrRemoveNS(fullname) {
 }
 
 function attrConstant(name, value1) {
+  var value00,
+      interpolate0;
   return value1 += "", function() {
     var value0 = this.getAttribute(name);
-    if (value0 !== value1) return attrInterpolate(this, name)(value0, value1);
+    return value0 === value1 ? null
+        : value0 === value00 ? interpolate0
+        : interpolate0 = attrInterpolate(this, name)(value00 = value0, value1);
   };
 }
 
 function attrConstantNS(fullname, value1) {
+  var value00,
+      interpolate0;
   return value1 += "", function() {
     var value0 = this.getAttributeNS(fullname.space, fullname.local);
-    if (value0 !== value1) return interpolate(value0, value1);
+    return value0 === value1 ? null
+        : value0 === value00 ? interpolate0
+        : interpolate0 = interpolate(value00 = value0, value1);
   };
 }
 
 function attrFunction(name, value) {
+  var value00,
+      value10,
+      interpolate0;
   return function() {
-    var value0, value1 = value.apply(this, arguments);
+    var value0,
+        value1 = value.apply(this, arguments);
     if (value1 == null) return void this.removeAttribute(name);
     value0 = this.getAttribute(name), value1 += "";
-    if (value0 !== value1) return attrInterpolate(this, name)(value0, value1);
+    return value0 === value1 ? null
+        : value0 === value00 && value1 === value10 ? interpolate0
+        : interpolate0 = attrInterpolate(this, name)(value00 = value0, value10 = value1);
   };
 }
 
 function attrFunctionNS(fullname, value) {
+  var value00,
+      value10,
+      interpolate0;
   return function() {
     var value0, value1 = value.apply(this, arguments);
     if (value1 == null) return void this.removeAttributeNS(fullname.space, fullname.local);
     value0 = this.getAttributeNS(fullname.space, fullname.local), value1 += "";
-    if (value0 !== value1) return interpolate(value0, value1);
+    return value0 === value1 ? null
+        : value0 === value00 ? interpolate0
+        : interpolate0 = interpolate(value00 = value0, value1);
   };
 }
 
