@@ -9,7 +9,7 @@ export default function(name) {
           active = schedule.active,
           i, n;
       if (active) {
-        active.dispatch.interrupt.call(this, this.__data__, active.index, active.group); // TODO try-catch?
+        active.on.call("interrupt", this, this.__data__, active.index, active.group); // TODO try-catch?
         schedule.active = null;
         active.timer.stop();
       }

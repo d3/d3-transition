@@ -1,5 +1,5 @@
 import {Transition, newId} from "./index";
-import schedule, {getSchedule} from "./schedule";
+import schedule, {get} from "./schedule";
 
 export default function() {
   var key = this._key,
@@ -9,12 +9,12 @@ export default function() {
   for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
     for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
       if (node = group[i]) {
-        var timing = getSchedule(node, key, id0);
+        var inherit = get(node, key, id0);
         schedule(node, key, id1, i, group, {
-          time: timing.time,
-          delay: timing.delay + timing.duration,
-          duration: timing.duration,
-          ease: timing.ease
+          time: inherit.time,
+          delay: inherit.delay + inherit.duration,
+          duration: inherit.duration,
+          ease: inherit.ease
         });
       }
     }

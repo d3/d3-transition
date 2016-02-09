@@ -1,6 +1,6 @@
 import {selectorAll} from "d3-selection";
 import {Transition} from "./index";
-import schedule, {getSchedule} from "./schedule";
+import schedule, {get} from "./schedule";
 
 export default function(select) {
   var key = this._key,
@@ -11,9 +11,9 @@ export default function(select) {
   for (var groups = this._groups, m = groups.length, subgroups = [], parents = [], j = 0; j < m; ++j) {
     for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
       if (node = group[i]) {
-        for (var children = select.call(node, node.__data__, i, group), child, timing = getSchedule(node, key, id), k = 0, l = children.length; k < l; ++k) {
+        for (var children = select.call(node, node.__data__, i, group), child, inherit = get(node, key, id), k = 0, l = children.length; k < l; ++k) {
           if (child = children[k]) {
-            schedule(child, key, id, k, children, timing);
+            schedule(child, key, id, k, children, inherit);
           }
         }
         subgroups.push(children);

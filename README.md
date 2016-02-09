@@ -24,7 +24,7 @@ If you use NPM, `npm install d3-transition`. Otherwise, download the [latest rel
 
 ```html
 <script src="https://d3js.org/d3-color.v0.4.min.js"></script>
-<script src="https://d3js.org/d3-dispatch.v0.3.min.js"></script>
+<script src="https://d3js.org/d3-dispatch.v0.4.min.js"></script>
 <script src="https://d3js.org/d3-ease.v0.7.min.js"></script>
 <script src="https://d3js.org/d3-interpolate.v0.5.min.js"></script>
 <script src="https://d3js.org/d3-selection.v0.6.min.js"></script>

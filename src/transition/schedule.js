@@ -1,27 +1,33 @@
-import {dispatch as newDispatch} from "d3-dispatch";
+import {dispatch} from "d3-dispatch";
 import {timer, timerOnce} from "d3-timer";
 
-export var emptyDispatch = newDispatch("start", "end", "interrupt");
+var emptyOn = dispatch("start", "end", "interrupt");
+var emptyTweens = [];
+
+var CREATED = 0,
+    SCHEDULED = 1,
+    STARTED = 2;
 
 export default function(node, key, id, index, group, timing) {
   var schedules = node[key];
   if (!schedules) node[key] = schedules = {active: null, pending: []};
-  else if (getSchedule(node, key, id)) return;
-  startSchedule(node, key, {
+  else if (has(node, key, id)) return;
+  start(node, key, {
     id: id,
     index: index, // For restoring context during callbacks.
     group: group, // For restoring context during callbacks.
-    dispatch: emptyDispatch,
-    tweens: [],
+    on: emptyOn,
+    tweens: emptyTweens,
     time: timing.time,
     delay: timing.delay,
     duration: timing.duration,
     ease: timing.ease,
-    timer: null
+    timer: null,
+    state: CREATED
   });
 }
 
-export function getSchedule(node, key, id) {
+function has(node, key, id) {
   var schedules = node[key];
   if (!schedules) return;
   var schedule = schedules.active;
@@ -30,16 +36,37 @@ export function getSchedule(node, key, id) {
   while (--i >= 0) if ((schedule = pending[i]).id === id) return schedule;
 }
 
-function startSchedule(node, key, self) {
-  var schedules = node[key];
+export function init(node, key, id) {
+  var schedule = has(node, key, id);
+  if (!schedule || schedule.state > CREATED) throw new Error("too late");
+  return schedule;
+}
 
-  // Initialize the self timer when the transition is created. The delay is not
-  // known until the first callback! If the delay is greater than this first
-  // sleep, sleep again; otherwise, start immediately.
+export function set(node, key, id) {
+  var schedule = has(node, key, id);
+  if (!schedule || schedule.state > SCHEDULED) throw new Error("too late");
+  return schedule;
+}
+
+export function get(node, key, id) {
+  var schedule = has(node, key, id);
+  if (!schedule) throw new Error("too late");
+  return schedule;
+}
+
+function start(node, key, self) {
+  var schedules = node[key],
+      tweens;
+
+  // Initialize the self timer when the transition is created.
+  // Note the actual delay is not known until the first callback!
   schedules.pending.push(self);
   self.timer = timer(schedule, 0, self.time);
 
+  // If the delay is greater than this first sleep, sleep some more;
+  // otherwise, start immediately.
   function schedule(elapsed, now) {
+    self.state = SCHEDULED;
     if (self.delay <= elapsed) start(elapsed - self.delay, now);
     else self.timer.restart(start, self.delay, self.time);
   }
@@ -47,20 +74,18 @@ function startSchedule(node, key, self) {
   function start(elapsed, now) {
     var interrupted = schedules.active,
         pending = schedules.pending,
-        tweens = self.tweens,
         i, j, n, o;
 
     // Interrupt the active transition, if any.
     // Dispatch the interrupt event.
     if (interrupted) {
       interrupted.timer.stop();
-      interrupted.dispatch.interrupt.call(node, node.__data__, interrupted.index, interrupted.group); // TODO try-catch?
+      interrupted.on.call("interrupt", node, node.__data__, interrupted.index, interrupted.group); // TODO try-catch?
     }
 
     // Cancel any pre-empted transitions. No interrupt event is dispatched
     // because the cancelled transitions never started. Note that this also
     // removes this transition from the pending list!
-    // TODO Would a map or linked list be more efficient here?
     for (i = 0, j = -1, n = pending.length; i < n; ++i) {
       o = pending[i];
       if (o.id < self.id) o.timer.stop();
@@ -84,13 +109,13 @@ function startSchedule(node, key, self) {
 
     // Dispatch the start event.
     // Note this must be done before the tweens are initialized.
-    self.dispatch.start.call(node, node.__data__, self.index, self.group); // TODO try-catch?
+    self.on.call("start", node, node.__data__, self.index, self.group); // TODO try-catch?
+    self.state = STARTED;
 
     // Initialize the tweens, deleting null tweens.
-    // TODO Would a map or linked list be more efficient here?
-    // TODO Overwriting the tweens array could be exposed through getSchedule?
-    for (i = 0, j = -1, n = tweens.length; i < n; ++i) {
-      if (o = tweens[i].value.call(node, node.__data__, self.index, self.group)) { // TODO try-catch?
+    tweens = new Array(n = self.tweens.length);
+    for (i = 0, j = -1; i < n; ++i) {
+      if (o = self.tweens[i].value.call(node, node.__data__, self.index, self.group)) { // TODO try-catch?
         tweens[++j] = o;
       }
     }
@@ -98,8 +123,7 @@ function startSchedule(node, key, self) {
   }
 
   function tick(elapsed) {
-    var tweens = self.tweens,
-        t = elapsed / self.duration, // TODO capture duration to ensure immutability?
+    var t = elapsed / self.duration,
         e = t >= 1 ? 1 : self.ease.call(null, t), // TODO try-catch?
         i, n;
 
@@ -109,7 +133,7 @@ function startSchedule(node, key, self) {
 
     // Dispatch the end event.
     if (t >= 1) {
-      self.dispatch.end.call(node, node.__data__, self.index, self.group); // TODO try-catch
+      self.on.call("end", node, node.__data__, self.index, self.group); // TODO try-catch
       schedules.active = null;
       if (!schedules.pending.length) delete node[key];
       self.timer.stop();

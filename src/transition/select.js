@@ -1,6 +1,6 @@
 import {selector} from "d3-selection";
 import {Transition} from "./index";
-import schedule, {getSchedule} from "./schedule";
+import schedule, {get} from "./schedule";
 
 export default function(select) {
   var key = this._key,
@@ -13,7 +13,7 @@ export default function(select) {
       if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
         if ("__data__" in node) subnode.__data__ = node.__data__;
         subgroup[i] = subnode;
-        schedule(subgroup[i], key, id, i, subgroup, getSchedule(node, key, id));
+        schedule(subgroup[i], key, id, i, subgroup, get(node, key, id));
       }
     }
   }
