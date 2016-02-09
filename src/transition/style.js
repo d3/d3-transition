@@ -2,11 +2,16 @@ import {interpolate} from "d3-interpolate";
 import {window} from "d3-selection";
 
 function styleRemove(name) {
+  var value00,
+      value10,
+      interpolate0;
   return function() {
     var style = window(this).getComputedStyle(this, null),
         value0 = style.getPropertyValue(name),
         value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
-    if (value0 !== value1) return interpolate(value0, value1);
+    return value0 === value1 ? null
+        : value0 === value00 && value1 === value10 ? interpolate0
+        : interpolate0 = interpolate(value00 = value0, value10 = value1);
   };
 }
 
@@ -17,18 +22,29 @@ function styleRemoveEnd(name) {
 }
 
 function styleConstant(name, value1) {
+  var value00,
+      interpolate0;
   return value1 += "", function() {
     var value0 = window(this).getComputedStyle(this, null).getPropertyValue(name);
-    if (value0 !== value1) return interpolate(value0, value1);
+    return value0 === value1 ? null
+        : value0 === value00 ? interpolate0
+        : interpolate0 = interpolate(value00 = value0, value1);
   };
 }
 
 function styleFunction(name, value) {
+  var value00,
+      value10,
+      interpolate0;
   return function() {
-    var value0, value1 = value.apply(this, arguments);
-    if (value1 == null) return void this.style.removeProperty(name);
-    value0 = window(this).getComputedStyle(this, null).getPropertyValue(name), value1 += "";
-    if (value0 !== value1) return interpolate(value0, value1);
+    var style = window(this).getComputedStyle(this, null),
+        value0 = style.getPropertyValue(name),
+        value1 = value.apply(this, arguments);
+    if (value1 == null) value1 = (this.style.removeProperty(name), style.getPropertyValue(name));
+    else value1 += "";
+    return value0 === value1 ? null
+        : value0 === value00 && value1 === value10 ? interpolate0
+        : interpolate0 = interpolate(value00 = value0, value10 = value1);
   };
 }
 
