@@ -37,10 +37,12 @@ function startSchedule(node, key, self) {
   // known until the first callback! If the delay is greater than this first
   // sleep, sleep again; otherwise, start immediately.
   schedules.pending.push(self);
-  self.timer = timer(function(elapsed, now) {
+  self.timer = timer(schedule, 0, self.time);
+
+  function schedule(elapsed, now) {
     if (self.delay <= elapsed) start(elapsed - self.delay, now);
     else self.timer.restart(start, self.delay, self.time);
-  }, 0, self.time);
+  }
 
   function start(elapsed, now) {
     var interrupted = schedules.active,
