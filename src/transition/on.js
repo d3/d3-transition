@@ -20,10 +20,7 @@ export default function(name, listener) {
   var key = this._key,
       id = this._id;
 
-  if (arguments.length < 2) {
-    var schedule = get(this.node(), key, id);
-    return schedule && schedule.on.on(name);
-  }
-
-  return this.each(onFunction(key, id, name, listener));
+  return arguments.length < 2
+      ? get(this.node(), key, id).on.on(name)
+      : this.each(onFunction(key, id, name, listener));
 }
