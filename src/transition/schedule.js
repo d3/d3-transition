@@ -14,8 +14,8 @@ export default function(node, key, id, index, group, timing) {
   else if (has(node, key, id)) return;
   start(node, key, {
     id: id,
-    index: index, // For restoring context during callbacks.
-    group: group, // For restoring context during callbacks.
+    index: index, // For context during callback.
+    group: group, // For context during callback.
     on: emptyOn,
     tweens: emptyTweens,
     time: timing.time,
@@ -65,13 +65,13 @@ function start(node, key, self) {
 
   // If the delay is greater than this first sleep, sleep some more;
   // otherwise, start immediately.
-  function schedule(elapsed, now) {
+  function schedule(elapsed) {
     self.state = SCHEDULED;
-    if (self.delay <= elapsed) start(elapsed - self.delay, now);
+    if (self.delay <= elapsed) start(elapsed - self.delay);
     else self.timer.restart(start, self.delay, self.time);
   }
 
-  function start(elapsed, now) {
+  function start(elapsed) {
     var interrupted = schedules.active,
         pending = schedules.pending,
         i, j, n, o;
@@ -105,7 +105,7 @@ function start(node, key, self) {
         self.timer.restart(tick, self.delay, self.time);
         tick(elapsed);
       }
-    }, 0, now);
+    });
 
     // Dispatch the start event.
     // Note this must be done before the tweens are initialized.
@@ -133,7 +133,7 @@ function start(node, key, self) {
 
     // Dispatch the end event.
     if (t >= 1) {
-      self.on.call("end", node, node.__data__, self.index, self.group); // TODO try-catch
+      self.on.call("end", node, node.__data__, self.index, self.group); // TODO try-catch?
       schedules.active = null;
       if (!schedules.pending.length) delete node[key];
       self.timer.stop();
