@@ -11,8 +11,8 @@ export default function() {
       if (node = group[i]) {
         var inherit = get(node, key, id0);
         schedule(node, key, id1, i, group, {
-          time: inherit.time,
-          delay: inherit.delay + inherit.duration,
+          time: inherit.time + inherit.delay + inherit.duration,
+          delay: 0,
           duration: inherit.duration,
           ease: inherit.ease
         });
