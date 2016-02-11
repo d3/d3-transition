@@ -53,7 +53,13 @@ In a vanilla environment, a `d3_transition` global is exported. [Try d3-transiti
 
 <a name="transition" href="#transition">#</a> d3.<b>transition</b>([<i>name</i>])
 
-…
+Equivalent to:
+
+```js
+d3.selection().transition(name)
+```
+
+Also, d3.transition can be used to check whether something is an `instanceof` a transition, and to extend or modify the transition prototype.
 
 <a name="transition_select" href="#transition_select">#</a> <i>transition</i>.<b>select</b>(<i>selector</i>)
 
@@ -70,6 +76,10 @@ In a vanilla environment, a `d3_transition` global is exported. [Try d3-transiti
 <a name="transition_transition" href="#transition_transition">#</a> <i>transition</i>.<b>transition</b>()
 
 …
+
+<a name="active" href="#active">#</a> d3.<b>active</b>(<i>node</i>[, <i>name</i>])
+
+Returns the active transition on the specified *node* with the specified *name*, if any. If no *name* is specified, the default empty name is used. Returns null if there is no such active transition on the specified node.
 
 ### Modifying Elements
 
