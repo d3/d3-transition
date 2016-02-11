@@ -57,6 +57,7 @@ Equivalent to:
 
 ```js
 d3.selection().transition(name)
+d3.select(document.documentElement).transition(name)
 ```
 
 Also, d3.transition can be used to check whether something is an `instanceof` a transition, and to extend or modify the transition prototype.
@@ -133,7 +134,7 @@ Transitions may have per-element delays and durations, computed using functions 
 
 …
 
-<a name="transition_on" href="#transition_on">#</a> <i>transition</i>.<b>on</b>(<i>type</i>[, <i>listener</i>])
+<a name="transition_on" href="#transition_on">#</a> <i>transition</i>.<b>on</b>(<i>typenames</i>[, <i>listener</i>])
 
 …
 
