@@ -80,7 +80,7 @@ function start(node, key, self) {
     // Dispatch the interrupt event.
     if (interrupted) {
       interrupted.timer.stop();
-      interrupted.on.call("interrupt", node, node.__data__, interrupted.index, interrupted.group); // TODO try-catch?
+      interrupted.on.call("interrupt", node, node.__data__, interrupted.index, interrupted.group);
     }
 
     // Cancel any pre-empted transitions. No interrupt event is dispatched
@@ -109,13 +109,13 @@ function start(node, key, self) {
 
     // Dispatch the start event.
     // Note this must be done before the tweens are initialized.
-    self.on.call("start", node, node.__data__, self.index, self.group); // TODO try-catch?
+    self.on.call("start", node, node.__data__, self.index, self.group);
     self.state = STARTED;
 
     // Initialize the tweens, deleting null tweens.
     tweens = new Array(n = self.tweens.length);
     for (i = 0, j = -1; i < n; ++i) {
-      if (o = self.tweens[i].value.call(node, node.__data__, self.index, self.group)) { // TODO try-catch?
+      if (o = self.tweens[i].value.call(node, node.__data__, self.index, self.group)) {
         tweens[++j] = o;
       }
     }
@@ -124,16 +124,16 @@ function start(node, key, self) {
 
   function tick(elapsed) {
     var t = elapsed / self.duration,
-        e = t >= 1 ? 1 : self.ease.call(null, t), // TODO try-catch?
+        e = t >= 1 ? 1 : self.ease.call(null, t),
         i, n;
 
     for (i = 0, n = tweens.length; i < n; ++i) {
-      tweens[i].call(null, e); // TODO try-catch?
+      tweens[i].call(null, e);
     }
 
     // Dispatch the end event.
     if (t >= 1) {
-      self.on.call("end", node, node.__data__, self.index, self.group); // TODO try-catch?
+      self.on.call("end", node, node.__data__, self.index, self.group);
       schedules.active = null;
       if (!schedules.pending.length) delete node[key];
       self.timer.stop();
