@@ -1,8 +1,7 @@
 import {get, set} from "./schedule";
 
 function tweenFunction(key, id, name, value) {
-  var tweens0,
-      tweens1;
+  var tweens0, tweens1;
   return function() {
     var schedule = set(this, key, id),
         tweens = schedule.tweens;
@@ -41,5 +40,6 @@ export default function(name, value) {
     return null;
   }
 
+  if (typeof value !== "function") throw new Error;
   return this.each(tweenFunction(key, id, name, value));
 }

@@ -1,4 +1,5 @@
 function styleTween(name, value, priority) {
+  if (typeof value !== "function") throw new Error;
   function tween() {
     var node = this, i = value.apply(node, arguments);
     return i && function(t) {

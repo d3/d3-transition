@@ -1,12 +1,12 @@
 import {get, set} from "./schedule";
 
 function easeConstant(key, id, value) {
+  if (typeof value !== "function") throw new Error;
   return function() {
     set(this, key, id).ease = value;
   };
 }
 
-// TODO immediately verify that value is a function
 export default function(value) {
   var key = this._key,
       id = this._id;

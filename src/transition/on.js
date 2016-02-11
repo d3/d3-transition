@@ -1,8 +1,8 @@
 import {get, init} from "./schedule";
 
 function onFunction(key, id, name, listener) {
-  var on0,
-      on1;
+  if (typeof listener !== "function") throw new Error;
+  var on0, on1;
   return function() {
     var schedule = init(this, key, id),
         on = schedule.on;
