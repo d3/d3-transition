@@ -29,7 +29,7 @@ If you use NPM, `npm install d3-transition`. Otherwise, download the [latest rel
 <script src="https://d3js.org/d3-interpolate.v0.5.min.js"></script>
 <script src="https://d3js.org/d3-selection.v0.6.min.js"></script>
 <script src="https://d3js.org/d3-timer.v0.3.min.js"></script>
-<script src="https://d3js.org/d3-transition.v0.0.min.js"></script>
+<script src="https://d3js.org/d3-transition.v0.1.min.js"></script>
 ```
 
 In a vanilla environment, a `d3_transition` global is exported. [Try d3-transition in your browser.](https://tonicdev.com/npm/d3-transition)
