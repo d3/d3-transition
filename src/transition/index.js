@@ -24,7 +24,7 @@ export function Transition(groups, parents, key, id) {
   this._id = id;
 }
 
-function transition(name) {
+export default function transition(name) {
   return selection().transition(name);
 }
 
@@ -33,7 +33,7 @@ export function newId() {
 }
 
 export function namekey(name) {
-  return name ? "__transition_" + name + "__" : "__transition__";
+  return name ? "__transition" + name : "__transition";
 }
 
 var selection_prototype = selection.prototype;
@@ -61,5 +61,3 @@ Transition.prototype = transition.prototype = {
   duration: transition_duration,
   ease: transition_ease
 };
-
-export default transition;
