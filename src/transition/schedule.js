@@ -1,5 +1,5 @@
 import {dispatch} from "d3-dispatch";
-import {timer, timerOnce} from "d3-timer";
+import {timer, timeout} from "d3-timer";
 
 var emptyOn = dispatch("start", "end", "interrupt");
 var emptyTweens = [];
@@ -100,7 +100,7 @@ function start(node, key, self) {
     // Note the transition may be canceled after start and before the first tick!
     // Note this must be scheduled before the start event; see d3/d3-transition#16!
     // Assuming this is successful, subsequent callbacks go straight to tick.
-    timerOnce(function() {
+    timeout(function() {
       if (schedules.active === self) {
         self.timer.restart(tick, self.delay, self.time);
         tick(elapsed);

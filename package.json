@@ -1,6 +1,6 @@
 {
   "name": "d3-transition",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Animated transitions for D3 selections.",
   "keywords": [
     "d3",
@@ -31,7 +31,7 @@
     "d3-ease": "~0.7.0",
     "d3-interpolate": "~0.5.0",
     "d3-selection": "~0.6.10",
-    "d3-timer": "~0.3.0"
+    "d3-timer": "~0.4.0"
   },
   "devDependencies": {
     "faucet": "0.0",
