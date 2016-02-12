@@ -1,7 +1,7 @@
 function removeFunction(key) {
   return function() {
     var parent = this.parentNode;
-    if (parent && !this[key]) parent.removeChild(this);
+    if (parent && !this[key].pending.length) parent.removeChild(this);
   };
 }
 
