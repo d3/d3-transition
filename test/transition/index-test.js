@@ -30,6 +30,7 @@ tape("transitions are instanceof d3.transition", function(test) {
   global.document = jsdom.jsdom();
   try {
     test.equal(d3.transition() instanceof d3.transition, true);
+    test.equal(d3.transition().constructor.name, "Transition");
     test.end();
   } finally {
     delete global.document;

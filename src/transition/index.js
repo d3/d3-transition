@@ -39,6 +39,7 @@ export function namekey(name) {
 var selection_prototype = selection.prototype;
 
 Transition.prototype = transition.prototype = {
+  constructor: Transition,
   select: transition_select,
   selectAll: transition_selectAll,
   filter: transition_filter,
