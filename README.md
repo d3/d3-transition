@@ -77,6 +77,10 @@ Also, d3.transition can be used to check whether something is an `instanceof` a 
 
 …
 
+<a name="transition_selection" href="#transition_selection">#</a> <i>transition</i>.<b>selection</b>()
+
+Returns the [selection](https://github.com/d3/d3-selection#selection) corresponding to this transition.
+
 <a name="active" href="#active">#</a> d3.<b>active</b>(<i>node</i>[, <i>name</i>])
 
 Returns the active transition on the specified *node* with the specified *name*, if any. If no *name* is specified, the default empty name is used. Returns null if there is no such active transition on the specified node.

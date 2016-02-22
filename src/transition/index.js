@@ -9,6 +9,7 @@ import transition_on from "./on";
 import transition_remove from "./remove";
 import transition_select from "./select";
 import transition_selectAll from "./selectAll";
+import transition_selection from "./selection";
 import transition_style from "./style";
 import transition_styleTween from "./styleTween";
 import transition_text from "./text";
@@ -43,6 +44,7 @@ Transition.prototype = transition.prototype = {
   select: transition_select,
   selectAll: transition_selectAll,
   filter: transition_filter,
+  selection: transition_selection,
   transition: transition_transition,
   call: selection_prototype.call,
   nodes: selection_prototype.nodes,
