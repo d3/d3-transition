@@ -73,6 +73,10 @@ Also, d3.transition can be used to check whether something is an `instanceof` a 
 
 …
 
+<a name="transition_merge" href="#transition_merge">#</a> <i>transition</i>.<b>merge</b>(<i>selection</i>)
+
+Returns a new transition merging this transition with the specified *selection* (or *transition*). The returned transition has the same number of groups, the same parents, the same name and the same id as this transition. Any missing (null) elements in this transition are filled with the corresponding element, if present (not null), from the specified *selection*. See [*selection*.merge](https://github.com/d3/d3-selection#selection_merge) for more information.
+
 <a name="transition_transition" href="#transition_transition">#</a> <i>transition</i>.<b>transition</b>()
 
 …
