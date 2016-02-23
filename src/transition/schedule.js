@@ -2,7 +2,7 @@ import {dispatch} from "d3-dispatch";
 import {timer, timeout} from "d3-timer";
 
 var emptyOn = dispatch("start", "end", "interrupt");
-var emptyTweens = [];
+var emptyTween = [];
 
 var CREATED = 0,
     SCHEDULED = 1,
@@ -17,7 +17,7 @@ export default function(node, key, id, index, group, timing) {
     index: index, // For context during callback.
     group: group, // For context during callback.
     on: emptyOn,
-    tweens: emptyTweens,
+    tween: emptyTween,
     time: timing.time,
     delay: timing.delay,
     duration: timing.duration,
@@ -56,7 +56,7 @@ export function get(node, key, id) {
 
 function start(node, key, self) {
   var schedules = node[key],
-      tweens;
+      tween;
 
   // Initialize the self timer when the transition is created.
   // Note the actual delay is not known until the first callback!
@@ -108,18 +108,18 @@ function start(node, key, self) {
     });
 
     // Dispatch the start event.
-    // Note this must be done before the tweens are initialized.
+    // Note this must be done before the tween are initialized.
     self.on.call("start", node, node.__data__, self.index, self.group);
     self.state = STARTED;
 
-    // Initialize the tweens, deleting null tweens.
-    tweens = new Array(n = self.tweens.length);
+    // Initialize the tween, deleting null tween.
+    tween = new Array(n = self.tween.length);
     for (i = 0, j = -1; i < n; ++i) {
-      if (o = self.tweens[i].value.call(node, node.__data__, self.index, self.group)) {
-        tweens[++j] = o;
+      if (o = self.tween[i].value.call(node, node.__data__, self.index, self.group)) {
+        tween[++j] = o;
       }
     }
-    tweens.length = j + 1;
+    tween.length = j + 1;
   }
 
   function tick(elapsed) {
@@ -127,8 +127,8 @@ function start(node, key, self) {
         e = t >= 1 ? 1 : self.ease.call(null, t),
         i, n;
 
-    for (i = 0, n = tweens.length; i < n; ++i) {
-      tweens[i].call(null, e);
+    for (i = 0, n = tween.length; i < n; ++i) {
+      tween[i].call(null, e);
     }
 
     // Dispatch the end event.

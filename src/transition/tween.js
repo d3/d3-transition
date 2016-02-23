@@ -1,26 +1,26 @@
 import {get, set} from "./schedule";
 
 function tweenFunction(key, id, name, value) {
-  var tweens0, tweens1;
+  var tween0, tween1;
   return function() {
     var schedule = set(this, key, id),
-        tweens = schedule.tweens;
+        tween = schedule.tween;
 
-    // If this node shared tweens with the previous node,
-    // just assign the updated shared tweens and we’re done!
+    // If this node shared tween with the previous node,
+    // just assign the updated shared tween and we’re done!
     // Otherwise, copy-on-write.
-    if (tweens !== tweens0) {
-      tweens1 = (tweens0 = tweens).slice();
-      for (var t = {name: name, value: value}, i = 0, n = tweens1.length; i < n; ++i) {
-        if (tweens1[i].name === name) {
-          tweens1[i] = t;
+    if (tween !== tween0) {
+      tween1 = (tween0 = tween).slice();
+      for (var t = {name: name, value: value}, i = 0, n = tween1.length; i < n; ++i) {
+        if (tween1[i].name === name) {
+          tween1[i] = t;
           break;
         }
       }
-      if (i === n) tweens1.push(t);
+      if (i === n) tween1.push(t);
     }
 
-    schedule.tweens = tweens1;
+    schedule.tween = tween1;
   };
 }
 
@@ -31,9 +31,9 @@ export default function(name, value) {
   name += "";
 
   if (arguments.length < 2) {
-    var tweens = get(this.node(), key, id).tweens;
-    for (var i = 0, n = tweens.length, t; i < n; ++i) {
-      if ((t = tweens[i]).name === name) {
+    var tween = get(this.node(), key, id).tween;
+    for (var i = 0, n = tween.length, t; i < n; ++i) {
+      if ((t = tween[i]).name === name) {
         return t.value;
       }
     }
@@ -50,10 +50,10 @@ export function tweenValue(transition, name, value) {
 
   transition.each(function() {
     var schedule = set(this, key, id), v = value.apply(this, arguments);
-    (schedule.values || (schedule.values = {}))[name] = v == null ? null : v + "";
+    (schedule.value || (schedule.value = {}))[name] = v == null ? null : v + "";
   });
 
   return function(node) {
-    return get(node, key, id).values[name];
+    return get(node, key, id).value[name];
   };
 }
