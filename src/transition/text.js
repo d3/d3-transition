@@ -1,19 +1,20 @@
+import {tweenValue} from "./tween";
+
 function textConstant(value) {
-  return value = value == null ? "" : value + "", function() {
+  return function() {
     this.textContent = value;
   };
 }
 
 function textFunction(value) {
   return function() {
-    var v = value.apply(this, arguments);
-    if (v == null) v = "";
-    this.textContent = v;
+    var value1 = value(this);
+    this.textContent = value1 == null ? "" : value1;
   };
 }
 
 export default function(value) {
-  return this.tween("text", (typeof value === "function"
-      ? textFunction
-      : textConstant)(value));
+  return this.tween("text", typeof value === "function"
+      ? textFunction(tweenValue(this, "text", value))
+      : textConstant(value == null ? "" : value + ""));
 }

@@ -43,3 +43,17 @@ export default function(name, value) {
   if (typeof value !== "function") throw new Error;
   return this.each(tweenFunction(key, id, name, value));
 }
+
+export function tweenValue(transition, name, value) {
+  var key = transition._key,
+      id = transition._id;
+
+  transition.each(function() {
+    var schedule = set(this, key, id), v = value.apply(this, arguments);
+    (schedule.values || (schedule.values = {}))[name] = v == null ? null : v + "";
+  });
+
+  return function(node) {
+    return get(node, key, id).values[name];
+  };
+}
