@@ -22,5 +22,5 @@ export default function(select) {
     }
   }
 
-  return new Transition(groups, parents, key, id);
+  return new Transition(subgroups, parents, key, id);
 }
