@@ -1,8 +1,6 @@
 # d3-transition
 
-A transition is a [selection](https://github.com/d3/d3-selection)-like interface for animating changes to the DOM. Instead of applying changes instantaneously, you specify a delay, duration and easing, and then smoothly interpolate the DOM from its current state to the desired target state.
-
-To start a transition, select elements, call [*selection*.transition](#selection_transition), and then apply the desired transition methods. For example:
+A transition is a [selection](https://github.com/d3/d3-selection)-like interface for animating changes to the DOM. Instead of applying changes instantaneously, transitions smoothly interpolate the DOM from its current state to the desired target state over the given duration. To start a transition, select elements, call [*selection*.transition](#selection_transition), and then apply the desired transition methods. For example:
 
 ```js
 d3.select("body")
