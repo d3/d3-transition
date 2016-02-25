@@ -96,7 +96,22 @@ Returns the [selection](https://github.com/d3/d3-selection#selection) correspond
 
 <a name="active" href="#active">#</a> d3.<b>active</b>(<i>node</i>[, <i>name</i>])
 
-Returns the active transition on the specified *node* with the specified *name*, if any. If no *name* is specified, the default empty name is used. Returns null if there is no such active transition on the specified node.
+Returns the active transition on the specified *node* with the specified *name*, if any. If no *name* is specified, the default empty name is used. Returns null if there is no such active transition on the specified node. This method is useful for creating chained transitions. For example, to engage disco mode:
+
+```js
+d3.selectAll("circle").transition()
+    .delay(function(d, i) { return i * 50; })
+    .on("start", function repeat() {
+        d3.active(this)
+            .style("fill", "red")
+          .transition()
+            .style("fill", "green")
+          .transition()
+            .style("fill", "blue")
+          .transition()
+            .on("start", repeat);
+      });
+```
 
 ### Modifying Elements
 
