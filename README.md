@@ -50,7 +50,6 @@ var transition = d3_transition.transition();
 
 Transitions are created using [d3.transition](#transition) or [*selection*.transition](#selection_transition). Transitions start automatically after a delay; see [Timing](#timing).
 
-
 <a name="selection_transition" href="#selection_transition">#</a> <i>selection</i>.<b>transition</b>([<i>name</i>])
 
 …
@@ -60,15 +59,14 @@ Transitions are created using [d3.transition](#transition) or [*selection*.trans
 …
 
 <a name="transition" href="#transition">#</a> d3.<b>transition</b>([<i>name</i>])
-<br><a href="#transition">#</a> d3.<b>transition</b>([<i>transition</i>])
 
-Returns a transition on the root element, `document.documentElement` with the specified *name*. If a *name* is specified, the transition has the specified *name*; if *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
+Returns a transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is specified, the transition has the specified *name*; if *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
 
 ```js
 d3.selection().transition(name)
 ```
 
-If a *transition* is specified instead of a name, returns the transition with the same name and id on the root element, if any, or creates a new transition on the root element, inheriting the given *transition*’s timing parameters. This can be used to apply a transition to multiple distinct selections, or to re-select a transition and modify its configuration for specific elements.
+If the *name* is a transition instead of a string, returns the transition with the same name and id as the given transition on the root element. If no such transition exists, a new transition is created on the root element, inheriting the given transition’s timing. This can be used to apply a transition to multiple distinct selections, or to re-select a transition and modify its configuration for specific elements.
 
 This function can also be used to check if an object is a selection (`instanceof selection`) or to extend the selection prototype. For example, to add a method to check checkboxes:
 
