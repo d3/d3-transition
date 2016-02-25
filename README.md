@@ -8,9 +8,13 @@ d3.select("body")
     .style("background-color", "red");
 ```
 
-D3 has a variety of [built-in interpolators](https://github.com/d3/d3-interpolate). For example, you can transition from the font specification `500 12px sans-serif` to `300 42px sans-serif`, and [interpolateString](https://github.com/d3/d3-interpolate#interpolateString) will find the numbers embedded within the string, interpolating both font size and weight automatically. To specify a custom interpolator, use [*transition*.attrTween](#transition_attrTween), [*transition*.styleTween](#transition_styleTween) or [*transition*.tween](#transition_tween).
+While transitions support most selection methods (such as [*transition*.attr](#transition_attr) and [*transition*.style](#transition_style)), not all methods are supported; for example, you must [append](https://github.com/d3/d3-selection#selection_append) elements before a transition starts. A [*transition*.remove](#transition_remove) operator is provided for convenient removal of elements when the transition ends.
 
-Transitions are exclusive: only one transition of a given name may be *active* on a given element at a given time. Multiple transitions with different names may be simultaneously active on the element, and multiple transitions with the same name may be *scheduled* on the element, provided they do not overlap in time. See [*transition*.transition](#transition_transition), for example. If a newer transition starts on a given element, it automatically interrupts any active transition and cancels any pending transitions that were scheduled prior to the starting transition. This allows new transitions to supersede old transitions, such as in response to a user event, even if the old transitions were delayed. To manually interrupt transitions, use [*selection*.interrupt](#selection_interrupt). To run multiple transitions simultaneously on a given element or elements, give each transition a [unique name](#selection_transition).
+Transitions may have per-element [delays](#transition_delay) and [durations](#transition_duration) computed by functions of data or index; this lets you stagger a transition across a set elements. For example, sorting elements and staggering the reordering improves perception. See [Animated Transitions in Statistical Data Graphics](http://vis.berkeley.edu/papers/animated_transitions/) for more.
+
+Transitions leverage a variety of [built-in interpolators](https://github.com/d3/d3-interpolate). For example, you can transition from the font specification `500 12px sans-serif` to `300 42px sans-serif`, and [d3.interpolateString](https://github.com/d3/d3-interpolate#interpolateString) will find the numbers embedded within the string, interpolating both font size and weight automatically. To specify a custom interpolator, use [*transition*.attrTween](#transition_attrTween), [*transition*.styleTween](#transition_styleTween) or [*transition*.tween](#transition_tween).
+
+Transitions are partially exclusive: only one transition of a given name may be *active* on a given element at a given time. Multiple transitions with different names may be simultaneously active on the element, and multiple transitions with the same name may be *scheduled* on the element, provided they do not overlap in time. See [*transition*.transition](#transition_transition), for example. If a newer transition starts on a given element, it automatically interrupts any active transition and cancels any pending transitions that were scheduled prior to the starting transition. This allows new transitions to supersede old transitions, such as in response to a user event, even if the old transitions were delayed. To manually interrupt transitions, use [*selection*.interrupt](#selection_interrupt). To run multiple transitions simultaneously on a given element or elements, give each transition a [unique name](#selection_transition).
 
 For more on transitions, see [Working with Transitions](http://bost.ocks.org/mike/transition/).
 
@@ -44,6 +48,9 @@ var transition = d3_transition.transition();
 
 ### Selecting Elements
 
+Transitions are created using [d3.transition](#transition) or [*selection*.transition](#selection_transition). Transitions start automatically after a delay; see [Timing](#timing).
+
+
 <a name="selection_transition" href="#selection_transition">#</a> <i>selection</i>.<b>transition</b>([<i>name</i>])
 
 …
@@ -53,12 +60,32 @@ var transition = d3_transition.transition();
 …
 
 <a name="transition" href="#transition">#</a> d3.<b>transition</b>([<i>name</i>])
+<br><a href="#transition">#</a> d3.<b>transition</b>([<i>transition</i>])
 
-Equivalent to:
+Returns a transition on the root element, `document.documentElement` with the specified *name*. If a *name* is specified, the transition has the specified *name*; if *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
 
 ```js
 d3.selection().transition(name)
 ```
+
+If a *transition* is specified instead of a name, returns the transition with the same name and id on the root element, if any, or creates a new transition on the root element, inheriting the given *transition*’s timing parameters. This can be used to apply a transition to multiple distinct selections, or to re-select a transition and modify its configuration for specific elements.
+
+This function can also be used to check if an object is a selection (`instanceof selection`) or to extend the selection prototype. For example, to add a method to check checkboxes:
+
+```js
+d3.selection.prototype.checked = function(value) {
+  return arguments.length < 1
+      ? this.property("checked")
+      : this.property("checked", !!value);
+};
+```
+
+And then to use:
+
+```js
+d3.selectAll("input[type=checkbox]").checked(true);
+```
+
 
 Also, d3.transition can be used to check whether something is an `instanceof` a transition, and to extend or modify the transition prototype.
 
@@ -124,7 +151,9 @@ Returns the active transition on the specified *node* with the specified *name*,
 
 ### Timing
 
-Transitions may have per-element delays and durations, computed using functions of data (or index) as with other selection methods. For example, you can sort and reorder elements with a staggered delay to make the change in order easier to perceive. For more on this topic, see [Animated Transitions in Statistical Data Graphics](http://vis.berkeley.edu/papers/animated_transitions/) by Heer & Robertson.
+Transitions start automatically after a [delay](#transition_delay), which defaults to zero. Note, however, that even a zero-delay transition starts asynchronously after one tick (~17ms); this delay gives you time to configure the transition before it starts. Transitions have a default [duration](#transition_duration) of 250ms.
+
+If another transition is active on a given element, a new zero-delay transition will **not** immediately (synchronously) interrupt the active transition: the old transition does not get pre-empted until the new transition starts, so the old transition is given a final tick. (Within a tick, active transitions are invoked in the order they were scheduled.) Thus, the old transition may overwrite attribute or style values that were set synchronously when the new transition was created. Use [*selection*.interrupt](#selection_interrupt) to interrupt any active transition and prevent it from receiving its final tick.
 
 <a name="transition_delay" href="#transition_delay">#</a> <i>transition</i>.<b>delay</b>([<i>value</i>])
 
