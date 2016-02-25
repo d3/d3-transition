@@ -60,7 +60,7 @@ Transitions are created using [d3.transition](#transition) or [*selection*.trans
 
 <a name="transition" href="#transition">#</a> d3.<b>transition</b>([<i>name</i>])
 
-Returns a transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is specified, the transition has the specified *name*; if *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
+Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is specified, the transition has the specified *name*; if *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
 
 ```js
 d3.selection().transition(name)
