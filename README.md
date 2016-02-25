@@ -66,26 +66,9 @@ Returns a new transition on the root element, `document.documentElement`, with t
 d3.selection().transition(name)
 ```
 
-If the *name* is a transition instead of a string, returns the transition with the same name and id as the given transition on the root element. If no such transition exists, a new transition is created on the root element, inheriting the given transition’s timing. This can be used to apply a transition to multiple distinct selections, or to re-select a transition and modify its configuration for specific elements.
+If the *name* is a transition instead of a string, returns the transition with the same name and id as the given transition on the root element. If no such transition exists, a new transition is created on the root element, inheriting the given transition’s timing. This can be used to apply a transition to multiple distinct selections, or to re-select a transition and modify its configuration for specific elements. See [*selection*.transition](#selection_transition) for more.
 
-This function can also be used to check if an object is a selection (`instanceof selection`) or to extend the selection prototype. For example, to add a method to check checkboxes:
-
-```js
-d3.selection.prototype.checked = function(value) {
-  return arguments.length < 1
-      ? this.property("checked")
-      : this.property("checked", !!value);
-};
-```
-
-And then to use:
-
-```js
-d3.selectAll("input[type=checkbox]").checked(true);
-```
-
-
-Also, d3.transition can be used to check whether something is an `instanceof` a transition, and to extend or modify the transition prototype.
+This function can also be used to check if an object is a transition (`instanceof d3.transition`) or to extend the transition prototype.
 
 <a name="transition_select" href="#transition_select">#</a> <i>transition</i>.<b>select</b>(<i>selector</i>)
 
