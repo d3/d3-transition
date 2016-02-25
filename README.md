@@ -1,6 +1,8 @@
 # d3-transition
 
-A transition is a [selection](https://github.com/d3/d3-selection)-like interface to animate changes to DOM elements smoothly over time, instead of applying those changes instantaneously. To start a transition, select some elements, call [*selection*.transition](#selection_transition), and then apply the desired transition methods. For example:
+A transition is a [selection](https://github.com/d3/d3-selection)-like interface for animating changes to the DOM. Instead of applying changes instantaneously, you specify a delay, duration and easing, and then smoothly interpolate the DOM from its current state to the desired target state.
+
+To start a transition, select elements, call [*selection*.transition](#selection_transition), and then apply the desired transition methods. For example:
 
 ```js
 d3.select("body")
@@ -8,13 +10,11 @@ d3.select("body")
     .style("background-color", "red");
 ```
 
-While transitions and selections share many similar methods, they operate somewhat differently; see below for details.
+D3 has a variety of [built-in interpolators](https://github.com/d3/d3-interpolate). For example, you can transition from the font specification `500 12px sans-serif` to `300 42px sans-serif`, and [interpolateString](https://github.com/d3/d3-interpolate#interpolateString) will find the numbers embedded within the string, interpolating both font size and weight automatically. To specify a custom interpolator, use [*transition*.attrTween](#transition_attrTween), [*transition*.styleTween](#transition_styleTween) or [*transition*.tween](#transition_tween).
 
-D3 has many [built-in interpolators](https://github.com/d3/d3-interpolate) to tween arbitrary values. For example, you can transition from the font `500 12px sans-serif` to `300 42px sans-serif`, and D3 will find the numbers embedded within the string, interpolating both font size and weight automatically. To specify a custom interpolator, use [*transition*.attrTween](#transition_attrTween), [*transition*.styleTween](#transition_styleTween) or [*transition*.tween](#transition_tween).
+Transitions are exclusive: only one transition of a given name may be *active* on a given element at a given time. Multiple transitions with different names may be simultaneously active on the element, and multiple transitions with the same name may be *scheduled* on the element, provided they do not overlap in time. See [*transition*.transition](#transition_transition), for example.
 
-Only one transition of a given name may be *active* on a given element at a given time. However, multiple transitions with different names may be simultaneously active on the element, and multiple transitions with the same name may be *scheduled* on the element, provided they do not overlap in time. See [*transition*.transition](#transition_transition), for example.
-
-If a newer transition starts on a given element, it automatically interrupts any active transition and cancels any pending transitions. This allows new transitions to supersede old transitions, such as in response to a user event, even if the old transitions were delayed. To manually interrupt transitions, use [*selection*.interrupt](#selection_interrupt). To run multiple transitions simultaneously on a given element or elements, give each transition a [unique name](#selection_transition).
+If a newer transition starts on a given element, it automatically interrupts any active transition and cancels any pending transitions that were scheduled prior to the starting transition. This allows new transitions to supersede old transitions, such as in response to a user event, even if the old transitions were delayed. To manually interrupt transitions, use [*selection*.interrupt](#selection_interrupt). To run multiple transitions simultaneously on a given element or elements, give each transition a [unique name](#selection_transition).
 
 For more on transitions, see [Working with Transitions](http://bost.ocks.org/mike/transition/).
 
