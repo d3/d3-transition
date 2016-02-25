@@ -9,10 +9,10 @@ function cancel(key, id) {
         pending = schedules.pending,
         i = pending.length;
     if (schedule && schedule.id === id) {
-      schedules.active = null;
       schedule.timer.stop();
       if (!i) delete this[key];
       schedule.on.call("interrupt", this, this.__data__, schedule.index, schedule.group);
+      schedules.active = null;
       return;
     }
 
