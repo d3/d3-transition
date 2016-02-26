@@ -136,7 +136,21 @@ transition
 
 <a name="transition_transition" href="#transition_transition">#</a> <i>transition</i>.<b>transition</b>()
 
-…
+Returns a new transition on the same selected elements as this transition, scheduled to start when this transition ends. The new transition inherits a reference time equal to this transition’s time plus its [delay](#transition_delay) and [duration](#transition_duration). The new transition also inherits this transition’s name, duration, and [easing](#transition_ease). This method can be used to schedule a sequence of chained transitions. For example:
+
+```js
+d3.selectAll(".apple")
+  .transition() // First go green.
+    .style("fill", "green")
+  .transition() // Then go red.
+    .style("fill", "red")
+  .transition() // Then go brown, and be removed.
+    .delay(1000)
+    .style("fill", "brown")
+    .remove();
+```
+
+The delay for each transition is relative to its previous transition. Thus, in the above example, apples will stay red for one second before the last transition to brown starts.
 
 <a name="transition_selection" href="#transition_selection">#</a> <i>transition</i>.<b>selection</b>()
 
