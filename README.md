@@ -267,7 +267,7 @@ color(d3.selectAll("div").transition(), "red", "blue");
 
 <a name="transition_empty" href="#transition_empty">#</a> <i>transition</i>.<b>empty</b>()
 
-Returns true if this transition is empty. A transition is empty if it contains no elements, or all elements are null. Equivalent to [*selection*.empty](https://github.com/d3/d3-selection#selection_empty).
+Returns true if this transition contains no (non-null) elements. Equivalent to [*selection*.empty](https://github.com/d3/d3-selection#selection_empty).
 
 <a name="transition_nodes" href="#transition_nodes">#</a> <i>transition</i>.<b>nodes</b>()
 
