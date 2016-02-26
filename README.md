@@ -52,7 +52,7 @@ Transitions are created using [d3.transition](#transition) or, more commonly, [*
 
 <a name="selection_transition" href="#selection_transition">#</a> <i>selection</i>.<b>transition</b>([<i>name</i>])
 
-Returns a new transition for the given *selection* with the specified *name*. If a *name* is specified, the transition has the specified *name*; if *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name.
+Returns a new transition on the given *selection* with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name.
 
 If the *name* is a [transition](#transition) instead of a string, returns the transition with the same name and id as the given transition on the *selection*. If no such transition exists, a new transition is created on the *selection*, inheriting the given transition’s timing. This can be used to apply a transition to multiple selections, or to re-select a transition and modify its configuration for specific elements. For example:
 
@@ -69,7 +69,7 @@ Interrupts the active transition of the specified *name* on the selected element
 
 <a name="transition" href="#transition">#</a> d3.<b>transition</b>([<i>name</i>])
 
-Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is specified, the transition has the specified *name*; if *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
+Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
 
 ```js
 d3.selection().transition(name)
