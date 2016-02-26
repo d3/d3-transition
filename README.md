@@ -57,10 +57,14 @@ Returns a new transition on the given *selection* with the specified *name*. If 
 If the *name* is a [transition](#transition) instance, the new transition has the same name, id and timing as the specified transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element. This can be used to synchronize a transition across multiple selections, or to re-select a transition for specific elements and modify its configuration. For example:
 
 ```js
-transition.each(function(d) {
-  var s = d3.select(this), // A single-element selection.
-      t = s.transition(transition); // A single-element transition.
-});
+var t = d3.transition()
+    .duration(750);
+
+d3.selectAll(".apple").transition(t)
+    .style("fill", "red");
+
+d3.selectAll(".orange").transition(t)
+    .style("fill", "orange");
 ```
 
 <a name="selection_interrupt" href="#selection_interrupt">#</a> <i>selection</i>.<b>interrupt</b>([<i>name</i>])
