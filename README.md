@@ -123,7 +123,16 @@ transition
 
 <a name="transition_merge" href="#transition_merge">#</a> <i>transition</i>.<b>merge</b>(<i>selection</i>)
 
-Returns a new transition merging this transition with the specified *selection* (or *transition*). The returned transition has the same number of groups, the same parents, the same name and the same id as this transition. Any missing (null) elements in this transition are filled with the corresponding element, if present (not null), from the specified *selection*. See [*selection*.merge](https://github.com/d3/d3-selection#selection_merge) for more information.
+Returns a new transition merging this transition with the specified *selection* (or *transition*). The returned transition has the same number of groups, the same parents, the same name and the same id as this transition. Any missing (null) elements in this transition are filled with the corresponding element, if present (not null), from the specified *selection*.
+
+This method is equivalent to deriving the selection for this transition via [*transition*.selection](#transition_selection), merging with the specified selection via [*selection*.merge](https://github.com/d3/d3-selection#selection_merge), and then creating a new transition via [*selection*.transition](#selection_transition):
+
+```js
+transition
+  .selection()
+  .merge(selection)
+  .transition(transition)
+```
 
 <a name="transition_transition" href="#transition_transition">#</a> <i>transition</i>.<b>transition</b>()
 
