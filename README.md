@@ -54,7 +54,7 @@ Transitions are created using [d3.transition](#transition) or, more commonly, [*
 
 Returns a new transition on the given *selection* with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name.
 
-If the *name* is a [transition](#transition) instead of a string, returns a transition with the same name and id as the given transition on the *selection*. If no such transition exists, a new transition is created on the *selection*, inheriting the given transition’s timing. This can be used to apply a transition to multiple selections, or to re-select a transition and modify its configuration for specific elements. For example:
+If the *name* is a [transition](#transition) instance, the new transition has the same name, id and timing as the specified transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element. This can be used to synchronize a transition across multiple selections, or to re-select a transition for specific elements and modify its configuration. For example:
 
 ```js
 transition.each(function(d) {
