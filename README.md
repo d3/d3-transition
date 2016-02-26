@@ -84,7 +84,9 @@ This function can also be used to test if something is a transition (`instanceof
 
 <a name="transition_select" href="#transition_select">#</a> <i>transition</i>.<b>select</b>(<i>selector</i>)
 
-For each selected element, selects the first descendant element that matches the specified *selector* string, and returns a transition on the resulting selection. The new transition has the same name, id and timing as this transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element. This method is equivalent to deriving a selection via [*transition*.selection](#transition_selection), creating a subselection via [*selection*.select](https://github.com/d3/d3-selection#selection_select), and then creating a new transition via [*selection*.transition](#selection_transition):
+For each selected element, selects the first descendant element that matches the specified *selector* string, if any, and returns a transition on the resulting selection. The new transition has the same name, id and timing as this transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element.
+
+This method is equivalent to deriving a selection via [*transition*.selection](#transition_selection), creating a subselection via [*selection*.select](https://github.com/d3/d3-selection#selection_select), and then creating a new transition via [*selection*.transition](#selection_transition):
 
 ```js
 transition
