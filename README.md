@@ -144,7 +144,7 @@ d3.selectAll(".apple")
     .style("fill", "green")
   .transition() // Then red.
     .style("fill", "red")
-  .transition() // Then brown, and remove.
+  .transition() // Wait one second. Then brown, and remove.
     .delay(1000)
     .style("fill", "brown")
     .remove();
