@@ -1,8 +1,8 @@
-import {interpolate} from "d3-interpolate";
+import {interpolate, interpolateTransformCss as interpolateTransform} from "d3-interpolate";
 import {window} from "d3-selection";
 import {tweenValue} from "./tween";
 
-function styleRemove(name) {
+function styleRemove(name, interpolate) {
   var value00,
       value10,
       interpolate0;
@@ -22,7 +22,7 @@ function styleRemoveEnd(name) {
   };
 }
 
-function styleConstant(name, value1) {
+function styleConstant(name, interpolate, value1) {
   var value00,
       interpolate0;
   return function() {
@@ -33,7 +33,7 @@ function styleConstant(name, value1) {
   };
 }
 
-function styleFunction(name, value) {
+function styleFunction(name, interpolate, value) {
   var value00,
       value10,
       interpolate0;
@@ -49,10 +49,11 @@ function styleFunction(name, value) {
 }
 
 export default function(name, value, priority) {
+  var i = (name += "") === "transform" ? interpolateTransform : interpolate;
   return value == null ? this
-          .styleTween(name, styleRemove(name))
+          .styleTween(name, styleRemove(name, i))
           .on("end.style." + name, styleRemoveEnd(name))
       : this.styleTween(name, typeof value === "function"
-          ? styleFunction(name, tweenValue(this, "style." + name, value))
-          : styleConstant(name, value + ""), priority);
+          ? styleFunction(name, i, tweenValue(this, "style." + name, value))
+          : styleConstant(name, i, value + ""), priority);
 }

@@ -1,13 +1,6 @@
-import {interpolate, interpolateTransform} from "d3-interpolate";
-import {namespace, namespaces} from "d3-selection";
+import {interpolate, interpolateTransformSvg as interpolateTransform} from "d3-interpolate";
+import {namespace} from "d3-selection";
 import {tweenValue} from "./tween";
-
-// TODO Assumes either ALL selected nodes are SVG, or none are.
-function attrInterpolate(node, name) {
-  return name === "transform" && node.namespaceURI === namespaces.svg
-      ? interpolateTransform
-      : interpolate;
-}
 
 function attrRemove(name) {
   return function() {
@@ -21,18 +14,18 @@ function attrRemoveNS(fullname) {
   };
 }
 
-function attrConstant(name, value1) {
+function attrConstant(name, interpolate, value1) {
   var value00,
       interpolate0;
   return function() {
     var value0 = this.getAttribute(name);
     return value0 === value1 ? null
         : value0 === value00 ? interpolate0
-        : interpolate0 = attrInterpolate(this, name)(value00 = value0, value1);
+        : interpolate0 = interpolate(value00 = value0, value1);
   };
 }
 
-function attrConstantNS(fullname, value1) {
+function attrConstantNS(fullname, interpolate, value1) {
   var value00,
       interpolate0;
   return function() {
@@ -43,7 +36,7 @@ function attrConstantNS(fullname, value1) {
   };
 }
 
-function attrFunction(name, value) {
+function attrFunction(name, interpolate, value) {
   var value00,
       value10,
       interpolate0;
@@ -53,11 +46,11 @@ function attrFunction(name, value) {
     value0 = this.getAttribute(name);
     return value0 === value1 ? null
         : value0 === value00 && value1 === value10 ? interpolate0
-        : interpolate0 = attrInterpolate(this, name)(value00 = value0, value10 = value1);
+        : interpolate0 = interpolate(value00 = value0, value10 = value1);
   };
 }
 
-function attrFunctionNS(fullname, value) {
+function attrFunctionNS(fullname, interpolate, value) {
   var value00,
       value10,
       interpolate0;
@@ -72,9 +65,9 @@ function attrFunctionNS(fullname, value) {
 }
 
 export default function(name, value) {
-  var fullname = namespace(name);
+  var fullname = namespace(name), i = fullname === "transform" ? interpolateTransform : interpolate;
   return this.attrTween(name, typeof value === "function"
-      ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, tweenValue(this, "attr." + name, value))
+      ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value))
       : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname)
-      : (fullname.local ? attrConstantNS : attrConstant)(fullname, value + ""));
+      : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value + ""));
 }
