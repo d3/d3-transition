@@ -239,11 +239,11 @@ If another transition is active on a given element, a new zero-delay transition 
 
 <a name="transition_each" href="#transition_each">#</a> <i>transition</i>.<b>each</b>(<i>function</i>)
 
-Invokes the specified *function* for each selected element, passing in the current datum `d` and index `i`, with the `this` context of the current DOM element. This method can be used to invoke arbitrary code for each selected element, and is useful for creating a context to access parent and child data simultaneously. See [*selection*.each](https://github.com/d3/d3-selection#selection_each) for more.
+Equivalent to [*selection*.each](https://github.com/d3/d3-selection#selection_each). Invokes the specified *function* for each selected element, passing in the current datum `d` and index `i`, with the `this` context of the current DOM element. This method can be used to invoke arbitrary code for each selected element, and is useful for creating a context to access parent and child data simultaneously.
 
 <a name="transition_call" href="#transition_call">#</a> <i>transition</i>.<b>call</b>(<i>function</i>[, <i>arguments…</i>])
 
-Invokes the specified *function* (exactly once), passing in this transition along with any optional *arguments*. Returns this transition. This is equivalent to invoking the function by hand but facilitates method chaining. For example, to set several attributes in a reusable function:
+Equivalent to [*selection*.call](https://github.com/d3/d3-selection#selection_call). Invokes the specified *function* (exactly once), passing in this transition along with any optional *arguments*. Returns this transition. This is equivalent to invoking the function by hand but facilitates method chaining. For example, to set several attributes in a reusable function:
 
 ```js
 function color(transition, fill, stroke) {
@@ -265,20 +265,18 @@ This is equivalent to:
 color(d3.selectAll("div").transition(), "red", "blue");
 ```
 
-See [*selection*.call](https://github.com/d3/d3-selection#selection_call) for more.
-
 <a name="transition_empty" href="#transition_empty">#</a> <i>transition</i>.<b>empty</b>()
 
-…
+Returns true if this transition is empty. A transition is empty if it contains no elements, or all elements are null. Equivalent to [*selection*.empty](https://github.com/d3/d3-selection#selection_empty).
 
 <a name="transition_nodes" href="#transition_nodes">#</a> <i>transition</i>.<b>nodes</b>()
 
-…
+Returns an array of all (non-null) elements in this transition. Equivalent to [*selection*.nodes](https://github.com/d3/d3-selection#selection_nodes).
 
 <a name="transition_node" href="#transition_node">#</a> <i>transition</i>.<b>node</b>()
 
-…
+Returns the first (non-null) element in this transition. If the transition is empty, returns null. Equivalent to [*selection*.node](https://github.com/d3/d3-selection#selection_node).
 
 <a name="transition_size" href="#transition_size">#</a> <i>transition</i>.<b>size</b>()
 
-…
+Returns the total number of elements in this transition. Equivalent to [*selection*.size](https://github.com/d3/d3-selection#selection_size).
