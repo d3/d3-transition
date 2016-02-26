@@ -140,11 +140,11 @@ Returns a new transition on the same selected elements as this transition, sched
 
 ```js
 d3.selectAll(".apple")
-  .transition() // First go green.
+  .transition() // First fade to green.
     .style("fill", "green")
-  .transition() // Then go red.
+  .transition() // Then red.
     .style("fill", "red")
-  .transition() // Then go brown, and be removed.
+  .transition() // Then brown, and remove.
     .delay(1000)
     .style("fill", "brown")
     .remove();
