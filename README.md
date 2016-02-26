@@ -48,7 +48,7 @@ var transition = d3_transition.transition();
 
 ### Selecting Elements
 
-Transitions are created using [d3.transition](#transition) or, more commonly, [*selection*.transition](#selection_transition). Transitions start automatically after a delay; see [Timing](#timing).
+Transitions are derived from [selections](https://github.com/d3/d3-selection) via [*selection*.transition](#selection_transition). You can also create a transition on the document root element using [d3.transition](#transition).
 
 <a name="selection_transition" href="#selection_transition">#</a> <i>selection</i>.<b>transition</b>([<i>name</i>])
 
