@@ -58,7 +58,8 @@ If the *name* is a [transition](#transition) instance, the new transition has th
 
 ```js
 var t = d3.transition()
-    .duration(750);
+    .duration(750)
+    .ease(d3.easeLinear);
 
 d3.selectAll(".apple").transition(t)
     .style("fill", "red");
