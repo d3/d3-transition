@@ -80,7 +80,7 @@ Returns a new transition on the root element, `document.documentElement`, with t
 d3.selection().transition(name)
 ```
 
-This function can also be used to check if an object is a transition (`instanceof d3.transition`) or to extend the transition prototype.
+This function can also be used to test if something is a transition (`instanceof d3.transition`) or to extend the transition prototype.
 
 <a name="transition_select" href="#transition_select">#</a> <i>transition</i>.<b>select</b>(<i>selector</i>)
 
