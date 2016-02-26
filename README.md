@@ -239,11 +239,13 @@ If another transition is active on a given element, a new zero-delay transition 
 
 <a name="transition_each" href="#transition_each">#</a> <i>transition</i>.<b>each</b>(<i>function</i>)
 
-Equivalent to [*selection*.each](https://github.com/d3/d3-selection#selection_each). Invokes the specified *function* for each selected element, passing in the current datum `d` and index `i`, with the `this` context of the current DOM element. This method can be used to invoke arbitrary code for each selected element, and is useful for creating a context to access parent and child data simultaneously.
+Invokes the specified *function* for each selected element, passing in the current datum `d` and index `i`, with the `this` context of the current DOM element. This method can be used to invoke arbitrary code for each selected element, and is useful for creating a context to access parent and child data simultaneously.
+
+Equivalent to [*selection*.each](https://github.com/d3/d3-selection#selection_each).
 
 <a name="transition_call" href="#transition_call">#</a> <i>transition</i>.<b>call</b>(<i>function</i>[, <i>arguments…</i>])
 
-Equivalent to [*selection*.call](https://github.com/d3/d3-selection#selection_call). Invokes the specified *function* (exactly once), passing in this transition along with any optional *arguments*. Returns this transition. This is equivalent to invoking the function by hand but facilitates method chaining. For example, to set several attributes in a reusable function:
+Invokes the specified *function* (exactly once), passing in this transition along with any optional *arguments*. Returns this transition. This is equivalent to invoking the function by hand but facilitates method chaining. For example, to set several attributes in a reusable function:
 
 ```js
 function color(transition, fill, stroke) {
@@ -264,6 +266,8 @@ This is equivalent to:
 ```js
 color(d3.selectAll("div").transition(), "red", "blue");
 ```
+
+Equivalent to [*selection*.call](https://github.com/d3/d3-selection#selection_call).
 
 <a name="transition_empty" href="#transition_empty">#</a> <i>transition</i>.<b>empty</b>()
 
