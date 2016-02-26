@@ -1,6 +1,6 @@
 # d3-transition
 
-A transition is a [selection](https://github.com/d3/d3-selection)-like interface for animating changes to the DOM. Instead of applying changes instantaneously, transitions smoothly interpolate the DOM from its current state to the desired target state over the given duration. To start a transition, select elements, call [*selection*.transition](#selection_transition), and then apply the desired transition methods. For example:
+A transition is a [selection](https://github.com/d3/d3-selection)-like interface for animating changes to the DOM. Instead of applying changes instantaneously, transitions smoothly interpolate the DOM from its current state to the desired target state over a given duration. To start a transition, select elements, call [*selection*.transition](#selection_transition), and then apply the desired changes. For example:
 
 ```js
 d3.select("body")
@@ -8,7 +8,7 @@ d3.select("body")
     .style("background-color", "red");
 ```
 
-While transitions support most selection methods (such as [*transition*.attr](#transition_attr) and [*transition*.style](#transition_style)), not all methods are supported; for example, you must [append](https://github.com/d3/d3-selection#selection_append) elements before a transition starts. A [*transition*.remove](#transition_remove) operator is provided for convenient removal of elements when the transition ends.
+Transitions support most selection methods (such as [*transition*.attr](#transition_attr) and [*transition*.style](#transition_style)), but not all methods are supported; for example, you must [append](https://github.com/d3/d3-selection#selection_append) elements or [bind data](https://github.com/d3/d3-selection#joining-data) before a transition starts. A [*transition*.remove](#transition_remove) operator is provided for convenient removal of elements when the transition ends.
 
 Transitions may have per-element [delays](#transition_delay) and [durations](#transition_duration) computed by functions of data or index; this lets you stagger a transition across a set elements. For example, sorting elements and staggering the reordering improves perception. See [Animated Transitions in Statistical Data Graphics](http://vis.berkeley.edu/papers/animated_transitions/) for more.
 
