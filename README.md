@@ -74,13 +74,13 @@ Interrupts the active transition of the specified *name* on the selected element
 
 <a name="transition" href="#transition">#</a> d3.<b>transition</b>([<i>name</i>])
 
-Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. This method is equivalent to:
+Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. The *name* may also be a [transition](#transition) instance. This method is equivalent to:
 
 ```js
 d3.selection().transition(name)
 ```
 
-If the *name* is a transition instead of a string, returns the transition with the same name and id as the given transition on the root element. If no such transition exists, a new transition is created on the root element, inheriting the given transition’s timing. This can be used to apply a transition to multiple distinct selections, or to re-select a transition and modify its configuration for specific elements. See [*selection*.transition](#selection_transition) for more.
+See [*selection*.transition](#selection_transition) for more.
 
 This function can also be used to check if an object is a transition (`instanceof d3.transition`) or to extend the transition prototype.
 
