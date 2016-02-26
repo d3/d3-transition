@@ -97,7 +97,16 @@ transition
 
 <a name="transition_selectAll" href="#transition_selectAll">#</a> <i>transition</i>.<b>selectAll</b>(<i>selector</i>)
 
-…
+For each selected element, selects all descendant elements that match the specified *selector* string, if any, and returns a transition on the resulting selection. The new transition has the same name, id and timing as this transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element.
+
+This method is equivalent to deriving the selection for this transition via [*transition*.selection](#transition_selection), creating a subselection via [*selection*.selectAll](https://github.com/d3/d3-selection#selection_selectAll), and then creating a new transition via [*selection*.transition](#selection_transition):
+
+```js
+transition
+  .selection()
+  .selectAll(selector)
+  .transition(transition)
+```
 
 <a name="transition_filter" href="#transition_filter">#</a> <i>transition</i>.<b>filter</b>(<i>filter</i>)
 
