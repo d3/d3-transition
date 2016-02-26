@@ -54,7 +54,7 @@ Transitions are created using [d3.transition](#transition) or, more commonly, [*
 
 Returns a new transition on the given *selection* with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name.
 
-If the *name* is a [transition](#transition) instance, the new transition has the same name, id and timing as the specified transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element. This can be used to synchronize a transition across multiple selections, or to re-select a transition for specific elements and modify its configuration. For example:
+If the *name* is a [transition](#transition) instance, the new transition has the same name, id and timing as the specified transition; however, if such a transition already exists on a selected element, the existing transition is returned for that element. This can be used to synchronize a transition across multiple selections, or to re-select a transition for specific elements and modify its configuration. For example:
 
 ```js
 var t = d3.transition()
@@ -84,7 +84,7 @@ This function can also be used to test if something is a transition (`instanceof
 
 <a name="transition_select" href="#transition_select">#</a> <i>transition</i>.<b>select</b>(<i>selector</i>)
 
-For each selected element, selects the first descendant element that matches the specified *selector* string, if any, and returns a transition on the resulting selection. The new transition has the same name, id and timing as this transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element.
+For each selected element, selects the first descendant element that matches the specified *selector* string, if any, and returns a transition on the resulting selection. The new transition has the same name, id and timing as this transition; however, if such a transition already exists on a selected element, the existing transition is returned for that element.
 
 This method is equivalent to deriving the selection for this transition via [*transition*.selection](#transition_selection), creating a subselection via [*selection*.select](https://github.com/d3/d3-selection#selection_select), and then creating a new transition via [*selection*.transition](#selection_transition):
 
@@ -97,7 +97,7 @@ transition
 
 <a name="transition_selectAll" href="#transition_selectAll">#</a> <i>transition</i>.<b>selectAll</b>(<i>selector</i>)
 
-For each selected element, selects all descendant elements that match the specified *selector* string, if any, and returns a transition on the resulting selection. The new transition has the same name, id and timing as this transition; furthermore, if such a transition already exists on a selected element, the existing transition is returned for that element.
+For each selected element, selects all descendant elements that match the specified *selector* string, if any, and returns a transition on the resulting selection. The new transition has the same name, id and timing as this transition; however, if such a transition already exists on a selected element, the existing transition is returned for that element.
 
 This method is equivalent to deriving the selection for this transition via [*transition*.selection](#transition_selection), creating a subselection via [*selection*.selectAll](https://github.com/d3/d3-selection#selection_selectAll), and then creating a new transition via [*selection*.transition](#selection_transition):
 
