@@ -1,6 +1,6 @@
 {
   "name": "d3-transition",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Animated transitions for D3 selections.",
   "keywords": [
     "d3",
