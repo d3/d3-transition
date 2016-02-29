@@ -174,7 +174,9 @@ d3.selectAll("circle").transition()
 
 ### Modifying Elements
 
-…
+After selecting elements and creating a transition with [*selection*.transition](#selection_transition), use the transition’s transformation methods to affect document content.
+
+To experiment with transitions, visit [d3js.org](https://d3js.org) and open your browser’s developer console! (In Chrome, open the console with ⌥⌘J.) Select elements, create a transition, call transition methods and see how the page content changes.
 
 <a name="transition_attr" href="#transition_attr">#</a> <i>transition</i>.<b>attr</b>(<i>name</i>, <i>value</i>)
 
