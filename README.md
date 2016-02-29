@@ -192,7 +192,7 @@ To apply a different interpolator, use [*transition*.attrTween](#transition_attr
 
 <a name="transition_attrTween" href="#transition_attrTween">#</a> <i>transition</i>.<b>attrTween</b>(<i>name</i>[, <i>value</i>])
 
-For each selected element, creates a [tween](#transition_tween) for the attribute with the specified *name* to the specified interpolator *value*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). The *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
+For each selected element, creates a [tween](#transition_tween) for the attribute with the specified *name* to the specified interpolator *value*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). The *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
 
 For example, to interpolate the fill attribute from red to blue:
 
@@ -236,7 +236,7 @@ To apply a different interpolator, use [*transition*.styleTween](#transition_sty
 
 <a name="transition_styleTween" href="#transition_styleTween">#</a> <i>transition</i>.<b>styleTween</b>(<i>name</i>[, <i>value</i>[, <i>priority</i>]]))
 
-For each selected element, creates a [tween](#transition_tween) for the style with the specified *name* to the specified interpolator *value* with the specified *priority*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). The *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
+For each selected element, creates a [tween](#transition_tween) for the style with the specified *name* to the specified interpolator *value* with the specified *priority*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). The *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
 
 For example, to interpolate the fill style from red to blue:
 
