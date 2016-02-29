@@ -49,11 +49,9 @@ Immediately after creating a transition, such as by [*selection*.transition](#se
 
 Shortly after creation, either at the end of the current frame or during the next frame, the transition schedules its start. At this point, the delay and `start` event listeners may no longer be changed.
 
-When the transition subsequently starts, it interrupts the active transition of the same name on the same element, if any, dispatching an `interrupt` event to registered listeners. The starting transition also cancels any scheduled transitions of the same name on the same element that were scheduled before the starting transition.
+When the transition subsequently starts, it interrupts the active transition of the same name on the same element, if any, dispatching an `interrupt` event to registered listeners. The starting transition also cancels any scheduled transitions of the same name on the same element that were scheduled before the starting transition. The transition then dispatches a `start` event to registered listeners. This is the last moment at which the transition may be modified: after starting, the transition’s timing, tweens, and listeners may no longer be changed. The transition initializes its tweens immediately after starting.
 
-The transition then dispatches a `start` event to registered listeners. This is the last moment at which the transition may be modified: after starting, the transition’s timing, tweens, and listeners may no longer be changed.
-
-The transition initializes its tweens immediately after starting. During the current frame, but *after* all transitions starting this frame have been started, the transition invokes its tweens for the first time. Batching tween initialization, which typically involves reading from the DOM, improves performance by avoiding interleaved DOM reads and writes.
+During the current frame, but *after* all transitions starting this frame have been started, the transition invokes its tweens for the first time. Batching tween initialization, which typically involves reading from the DOM, improves performance by avoiding interleaved DOM reads and writes.
 
 For each frame that a transition is active, it invokes its tweens with an [eased](#transition_ease) *t*-value ranging from 0 to 1. Within each frame, the transition invokes its tweens in the order they were registered.
 
