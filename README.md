@@ -37,25 +37,11 @@ var transition = d3_transition.transition();
 
 ## API Reference
 
-* [The Life of a Transition](#the-life-of-a-transition)
 * [Selecting Elements](#selecting-elements)
 * [Modifying Elements](#modifying-elements)
 * [Timing](#timing)
 * [Control Flow](#control-flow)
-
-### The Life of a Transition
-
-Immediately after creating a transition, such as by [*selection*.transition](#selection_transition) or [*transition*.transition](#transition_transition), you may configure the transition using methods such as [*transition*.delay](#transition_delay), [*transition*.duration](#transition_duration), [*transition*.attr](#transition_attr) and [*transition*.style](#transition_style). Methods that specify target values (such as *transition*.attr) are evaluated synchronously; however, methods that require the starting value for interpolation, such as [*transition*.attrTween](#transition_attrTween) and [*transition*.styleTween](#transition_styleTween), must be deferred until the transition starts.
-
-Shortly after creation, either at the end of the current frame or during the next frame, the transition schedules its start. At this point, the delay and `start` event listeners may no longer be changed.
-
-When the transition subsequently starts, it interrupts the active transition of the same name on the same element, if any, dispatching an `interrupt` event to registered listeners. The starting transition also cancels any scheduled transitions of the same name on the same element that were scheduled before the starting transition. The transition then dispatches a `start` event to registered listeners. This is the last moment at which the transition may be modified: after starting, the transition’s timing, tweens, and listeners may no longer be changed. The transition initializes its tweens immediately after starting.
-
-During the frame the transition starts, but *after* all transitions starting this frame have been started, the transition invokes its tweens for the first time. Batching tween initialization, which typically involves reading from the DOM, improves performance by avoiding interleaved DOM reads and writes.
-
-For each frame that a transition is active, it invokes its tweens with an [eased](#transition_ease) *t*-value ranging from 0 to 1. Within each frame, the transition invokes its tweens in the order they were registered.
-
-When a transition ends, it invokes its tweens a final time with a (non-eased) *t*-value of 1. It then dispatches an `end` event to registered listeners. This is the last moment at which the transition may be inspected: after ending, the transition is deleted from the element, and its configuration is destroyed. (A transition’s configuration is also destroyed on interrupt or cancel.)
+* [The Life of a Transition](#the-life-of-a-transition)
 
 ### Selecting Elements
 
@@ -224,11 +210,6 @@ Transitions may have per-element [delays](#transition_delay) and [durations](#tr
 
 Transitions start automatically after the given delay. Note, however, that even a zero-delay transition starts asynchronously after one tick (~17ms); this delay gives you time to configure the transition before it starts. Transitions have a default [duration](#transition_duration) of 250ms.
 
-
-If another transition is active on a given element, a new zero-delay transition will **not** immediately (synchronously) interrupt the active transition: the old transition does not get pre-empted until the new transition starts, so the old transition is given a final tick. (Within a tick, active transitions are invoked in the order they were scheduled.) Thus, the old transition may overwrite attribute or style values that were set synchronously when the new transition was created. Use [*selection*.interrupt](#selection_interrupt) to interrupt any active transition and prevent it from receiving its final tick.
-
-For more on transitions, see [Working with Transitions](http://bost.ocks.org/mike/transition/).
-
 <a name="transition_delay" href="#transition_delay">#</a> <i>transition</i>.<b>delay</b>([<i>value</i>])
 
 …
@@ -298,3 +279,19 @@ Returns the first (non-null) element in this transition. If the transition is em
 <a name="transition_size" href="#transition_size">#</a> <i>transition</i>.<b>size</b>()
 
 Returns the total number of elements in this transition. Equivalent to [*selection*.size](https://github.com/d3/d3-selection#selection_size).
+
+### The Life of a Transition
+
+Immediately after creating a transition, such as by [*selection*.transition](#selection_transition) or [*transition*.transition](#transition_transition), you may configure the transition using methods such as [*transition*.delay](#transition_delay), [*transition*.duration](#transition_duration), [*transition*.attr](#transition_attr) and [*transition*.style](#transition_style). Methods that specify target values (such as *transition*.attr) are evaluated synchronously; however, methods that require the starting value for interpolation, such as [*transition*.attrTween](#transition_attrTween) and [*transition*.styleTween](#transition_styleTween), must be deferred until the transition starts.
+
+Shortly after creation, either at the end of the current frame or during the next frame, the transition schedules its start. At this point, the delay and `start` event listeners may no longer be changed.
+
+When the transition subsequently starts, it interrupts the active transition of the same name on the same element, if any, dispatching an `interrupt` event to registered listeners. The starting transition also cancels any scheduled transitions of the same name on the same element that were scheduled before the starting transition. (Note that interrupts and cancellation happen on start, not creation, and thus even a zero-delay transition will not immediately interrupt the active transition: the old transition is given a final frame. Use [*selection*.interrupt](#selection_interrupt) to interrupt immediately.) The transition then dispatches a `start` event to registered listeners. This is the last moment at which the transition may be modified: after starting, the transition’s timing, tweens, and listeners may no longer be changed. The transition initializes its tweens immediately after starting.
+
+During the frame the transition starts, but *after* all transitions starting this frame have been started, the transition invokes its tweens for the first time. Batching tween initialization, which typically involves reading from the DOM, improves performance by avoiding interleaved DOM reads and writes.
+
+For each frame that a transition is active, it invokes its tweens with an [eased](#transition_ease) *t*-value ranging from 0 to 1. Within each frame, the transition invokes its tweens in the order they were registered.
+
+When a transition ends, it invokes its tweens a final time with a (non-eased) *t*-value of 1. It then dispatches an `end` event to registered listeners. This is the last moment at which the transition may be inspected: after ending, the transition is deleted from the element, and its configuration is destroyed. (A transition’s configuration is also destroyed on interrupt or cancel.)
+
+For more on transitions, see [Working with Transitions](http://bost.ocks.org/mike/transition/).
