@@ -178,11 +178,47 @@ d3.selectAll("circle").transition()
 
 <a name="transition_attr" href="#transition_attr">#</a> <i>transition</i>.<b>attr</b>(<i>name</i>, <i>value</i>)
 
-… Note that unlike [*selection*.attr](https://github.com/d3/d3-selection#selection_attr), *value* is required.
+For each selected element, creates a [tween](#transition_attrTween) for the attribute with the specified *name* to the specified target *value*. The starting value of the tween is the attribute’s current value when the transition starts. The *value* may be specified either as a constant or a function. If a function, it is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element.
+
+If the target value is null, the attribute is removed when the transition starts. Otherwise, the interpolator implementation is based on the type of the target value, using the following algorithm:
+
+1. If *value* is a number, use [interpolateNumber](https://github.com/d3/d3-interpolate#interpolateNumber).
+2. If *value* is a [color](https://github.com/d3/d3-color#color) or a string coercible to a color, use [interpolateRgb](https://github.com/d3/d3-interpolate#interpolateRgb).
+3. Use [interpolateString](https://github.com/d3/d3-interpolate#interpolateString).
+
+Note that unlike [*selection*.attr](https://github.com/d3/d3-selection#selection_attr), a *value* is required; this method cannot be used to inspect the target value for the attribute tween.
 
 <a name="transition_attrTween" href="#transition_attrTween">#</a> <i>transition</i>.<b>attrTween</b>(<i>name</i>[, <i>value</i>])
 
-…
+For each selected element, creates a [tween](#transition_tween) for the attribute with the specified *name* to the specified interpolator *value*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). The *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
+
+For example, to interpolate the fill attribute from red to blue:
+
+```js
+selection.attrTween("fill", function() {
+  return d3.interpolateRgb("red", "blue");
+});
+```
+
+Or to interpolate from the current fill to blue, like [*transition*.attr](#transition_attr):
+
+```js
+selection.attrTween("fill", function() {
+  return d3.interpolateRgb(this.getAttribute("fill"), "blue");
+});
+```
+
+Or to apply a custom rainbow interpolator:
+
+```js
+selection.attrTween("fill", function() {
+  return function(t) {
+    return "hsl(" + t * 360 + ",100%,50%)";
+  };
+});
+```
+
+This method is useful to specify a custom interpolator, such as one that understands [SVG paths](http://bl.ocks.org/mbostock/3916621). A useful technique is *data interpolation*, where [d3.interpolateObject](https://github.com/d3/d3-interpolate#interpolateObject) is used to interpolate two data values, and the resulting value is then used (say, with a [shape](https://github.com/d3/d3-shape)) to compute the new attribute value.
 
 <a name="transition_style" href="#transition_style">#</a> <i>transition</i>.<b>style</b>(<i>name</i>, <i>value</i>[, <i>priority</i>])
 
