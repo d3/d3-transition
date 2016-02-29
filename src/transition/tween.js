@@ -49,8 +49,8 @@ export function tweenValue(transition, name, value) {
       id = transition._id;
 
   transition.each(function() {
-    var schedule = set(this, key, id), v = value.apply(this, arguments);
-    (schedule.value || (schedule.value = {}))[name] = v == null ? null : v + "";
+    var schedule = set(this, key, id);
+    (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
   });
 
   return function(node) {

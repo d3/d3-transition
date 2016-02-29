@@ -1,6 +1,7 @@
-import {interpolate, interpolateTransformCss as interpolateTransform} from "d3-interpolate";
+import {interpolateTransformCss as interpolateTransform} from "d3-interpolate";
 import {window} from "d3-selection";
 import {tweenValue} from "./tween";
+import interpolate from "./interpolate";
 
 function styleRemove(name, interpolate) {
   var value00,
@@ -55,5 +56,5 @@ export default function(name, value, priority) {
           .on("end.style." + name, styleRemoveEnd(name))
       : this.styleTween(name, typeof value === "function"
           ? styleFunction(name, i, tweenValue(this, "style." + name, value))
-          : styleConstant(name, i, value + ""), priority);
+          : styleConstant(name, i, value), priority);
 }

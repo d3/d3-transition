@@ -1,6 +1,7 @@
-import {interpolate, interpolateTransformSvg as interpolateTransform} from "d3-interpolate";
+import {interpolateTransformSvg as interpolateTransform} from "d3-interpolate";
 import {namespace} from "d3-selection";
 import {tweenValue} from "./tween";
+import interpolate from "./interpolate";
 
 function attrRemove(name) {
   return function() {
@@ -69,5 +70,5 @@ export default function(name, value) {
   return this.attrTween(name, typeof value === "function"
       ? (fullname.local ? attrFunctionNS : attrFunction)(fullname, i, tweenValue(this, "attr." + name, value))
       : value == null ? (fullname.local ? attrRemoveNS : attrRemove)(fullname)
-      : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value + ""));
+      : (fullname.local ? attrConstantNS : attrConstant)(fullname, i, value));
 }
