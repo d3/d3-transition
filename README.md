@@ -176,8 +176,6 @@ d3.selectAll("circle").transition()
 
 After selecting elements and creating a transition with [*selection*.transition](#selection_transition), use the transition’s transformation methods to affect document content.
 
-To experiment with transitions, visit [d3js.org](https://d3js.org) and open your browser’s developer console! (In Chrome, open the console with ⌥⌘J.) Select elements, create a transition, call transition methods and see how the page content changes.
-
 <a name="transition_attr" href="#transition_attr">#</a> <i>transition</i>.<b>attr</b>(<i>name</i>, <i>value</i>)
 
 For each selected element, creates an [attribute tween](#transition_attrTween) for the attribute with the specified *name* to the specified target *value*. The starting value of the tween is the attribute’s value when the transition starts. The target *value* may be specified either as a constant or a function. If a function, it is immediately evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element.
@@ -295,9 +293,7 @@ This method is useful to specify a custom interpolator, or to perform side-effec
 
 ### Timing
 
-Transitions may have per-element [delays](#transition_delay) and [durations](#transition_duration) computed by functions of data or index; this lets you stagger a transition across a set elements. For example, sorting elements and staggering the reordering improves perception. See [Animated Transitions in Statistical Data Graphics](http://vis.berkeley.edu/papers/animated_transitions/) for recommendations.
-
-Transitions start automatically after the given delay, which defaults to zero. Transitions have a default [duration](#transition_duration) of 250ms.
+The [easing](#transition_ease), [delay](#transition_delay) and [duration](#transition_duration) of a transition is configurable. For example, a per-element delay can be used to [stagger the reordering](http://bl.ocks.org/mbostock/3885705) of elements, improving perception. See [Animated Transitions in Statistical Data Graphics](http://vis.berkeley.edu/papers/animated_transitions/) for recommendations.
 
 <a name="transition_delay" href="#transition_delay">#</a> <i>transition</i>.<b>delay</b>([<i>value</i>])
 
