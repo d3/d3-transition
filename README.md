@@ -192,7 +192,7 @@ To apply a different interpolator, use [*transition*.attrTween](#transition_attr
 
 <a name="transition_attrTween" href="#transition_attrTween">#</a> <i>transition</i>.<b>attrTween</b>(<i>name</i>[, <i>value</i>])
 
-For each selected element, creates a [tween](#transition_tween) for the attribute with the specified *name* to the specified interpolator *value*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). The *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
+For each selected element, creates a [tween](#transition_tween) for the attribute with the specified *name* with the specified interpolator *value*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). When the transition starts, the *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
 
 For example, to interpolate the fill attribute from red to blue:
 
@@ -236,7 +236,7 @@ To apply a different interpolator, use [*transition*.styleTween](#transition_sty
 
 <a name="transition_styleTween" href="#transition_styleTween">#</a> <i>transition</i>.<b>styleTween</b>(<i>name</i>[, <i>value</i>[, <i>priority</i>]]))
 
-For each selected element, creates a [tween](#transition_tween) for the style with the specified *name* to the specified interpolator *value* with the specified *priority*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). The *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
+For each selected element, creates a [tween](#transition_tween) for the style with the specified *name* with the specified interpolator *value* with the specified *priority*. The *value* must be specified as a function that returns an [interpolator](https://github.com/d3/d3-interpolate). When the transition starts, the *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator is then invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
 
 For example, to interpolate the fill style from red to blue:
 
@@ -270,15 +270,28 @@ This method is useful to specify a custom interpolator, such as with *data inter
 
 For each selected element, sets the [text content](http://www.w3.org/TR/DOM-Level-3-Core/core.html#Node3-textContent) to the specified target *value* when the transition starts. The *value* may be specified either as a constant or a function. If a function, it is immediately evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The function’s return value is then used to set each element’s text content. A null value will clear the content.
 
-To interpolate text rather than to set it on start, use [*transition*.tween](#transition_tween) ([for example](http://bl.ocks.org/mbostock/7004f92cac972edef365)) or append a replacement element and cross-fade opacity ([for example](http://bl.ocks.org/mbostock/f7dcecb19c4af317e464)).
+To interpolate text rather than to set it on start, use [*transition*.tween](#transition_tween) ([for example](http://bl.ocks.org/mbostock/7004f92cac972edef365)) or append a replacement element and cross-fade opacity ([for example](http://bl.ocks.org/mbostock/f7dcecb19c4af317e464)). Text is not interpolated by default because it is usually undesirable.
 
 <a name="transition_remove" href="#transition_remove">#</a> <i>transition</i>.<b>remove</b>()
 
-…
+For each selected element, [removes](https://github.com/d3/d3-selection#selection_remove) the element when the transition ends, as long as the element has no pending transitions. If the element has pending transitions, does nothing.
 
 <a name="transition_tween" href="#transition_tween">#</a> <i>transition</i>.<b>tween</b>(<i>name</i>[, <i>value</i>])
 
-…
+For each selected element, creates a tween with the specified *name* with the specified *value* function. The *value* must be specified as a function that returns a function. When the transition starts, the *value* function is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned function is then invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1].
+
+For example, to interpolate the fill attribute to blue, like [*transition*.attr](#transition_attr):
+
+```js
+selection.tween("attr.fill", function() {
+  var node = this, i = d3.interpolateRgb(node.getAttribute("fill"), "blue");
+  return function(t) {
+    node.setAttribute("fill", i(t));
+  };
+});
+```
+
+This method is useful to specify a custom interpolator, or to perform side-effects during a transition, say to animate the [scroll offset](http://bl.ocks.org/mbostock/1649463).
 
 ### Timing
 
