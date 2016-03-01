@@ -291,7 +291,7 @@ selection.tween("attr.fill", function() {
 });
 ```
 
-This method is useful to specify a custom interpolator, or to perform side-effects during a transition, say to animate the [scroll offset](http://bl.ocks.org/mbostock/1649463).
+This method is useful to specify a custom interpolator, or to perform side-effects, say to animate the [scroll offset](http://bl.ocks.org/mbostock/1649463).
 
 ### Timing
 
