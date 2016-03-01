@@ -402,5 +402,3 @@ During the frame the transition starts, but *after* all transitions starting thi
 For each frame that a transition is active, it invokes its tweens with an [eased](#transition_ease) *t*-value ranging from 0 to 1. Within each frame, the transition invokes its tweens in the order they were registered.
 
 When a transition ends, it invokes its tweens a final time with a (non-eased) *t*-value of 1. It then dispatches an `end` event to registered listeners. This is the last moment at which the transition may be inspected: after ending, the transition is deleted from the element, and its configuration is destroyed. (A transition’s configuration is also destroyed on interrupt or cancel.)
-
-For more on transitions, see [Working with Transitions](http://bost.ocks.org/mike/transition/).
