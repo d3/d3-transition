@@ -74,7 +74,8 @@ Interrupts the active transition of the specified *name* on the selected element
 Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. The *name* may also be a [transition](#transition) instance; see [*selection*.transition](#selection_transition). This method is equivalent to:
 
 ```js
-d3.selection().transition(name)
+d3.selection()
+  .transition(name)
 ```
 
 This function can also be used to test for transitions (`instanceof d3.transition`) or to extend the transition prototype.
