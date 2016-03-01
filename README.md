@@ -172,6 +172,8 @@ d3.selectAll("circle").transition()
       });
 ```
 
+See [chained transitions](http://bl.ocks.org/mbostock/70d5541b547cc222aa02) for an example.
+
 ### Modifying Elements
 
 After selecting elements and creating a transition with [*selection*.transition](#selection_transition), use the transition’s transformation methods to affect document content.
