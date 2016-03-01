@@ -268,7 +268,9 @@ This method is useful to specify a custom interpolator, such as with *data inter
 
 <a name="transition_text" href="#transition_text">#</a> <i>transition</i>.<b>text</b>(<i>value</i>)
 
-… Note that unlike [*selection*.text](https://github.com/d3/d3-selection#selection_text), *value* is required.
+For each selected element, sets the [text content](http://www.w3.org/TR/DOM-Level-3-Core/core.html#Node3-textContent) to the specified target *value* when the transition starts. The *value* may be specified either as a constant or a function. If a function, it is immediately evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The function’s return value is then used to set each element’s text content. A null value will clear the content.
+
+To interpolate text rather than to set it on start, use [*transition*.tween](#transition_tween) ([for example](http://bl.ocks.org/mbostock/7004f92cac972edef365)) or append a replacement element and cross-fade opacity ([for example](http://bl.ocks.org/mbostock/f7dcecb19c4af317e464)).
 
 <a name="transition_remove" href="#transition_remove">#</a> <i>transition</i>.<b>remove</b>()
 
