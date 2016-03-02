@@ -76,6 +76,19 @@ tape("selection.interrupt(name) only cancels pending transitions with the specif
   test.end();
 });
 
+tape("selection.interrupt(name) coerces the name to a string", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      selection = d3_selection.select(root),
+      transition1 = selection.transition("foo"),
+      transition2 = selection.transition();
+  test.equal(transition1._id in root.__transition, true);
+  test.equal(transition2._id in root.__transition, true);
+  test.equal(selection.interrupt({toString: function() { return "foo"; }}), selection);
+  test.equal(transition1._id in root.__transition, false);
+  test.equal(transition2._id in root.__transition, true);
+  test.end();
+});
+
 tape("selection.interrupt() does nothing if there is no transition on the selected elements", function(test) {
   var root = jsdom.jsdom().documentElement,
       selection = d3_selection.select(root);
