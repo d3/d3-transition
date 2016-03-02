@@ -34,7 +34,7 @@ tape("transition.attrTween(name, value) invokes the value function with the expe
   });
 });
 
-tape("transition.attrTween(name, value) passes the eased time to the interpolator function", function(test) {
+tape("transition.attrTween(name, value) passes the eased time to the interpolator", function(test) {
   var root = jsdom.jsdom().documentElement,
       then = d3_timer.now(),
       duration = 250,
@@ -107,4 +107,13 @@ tape("transition.attrTween(name) returns the attribute tween with the specified 
     test.equal(transition.attrTween("foo"), tween);
     test.end();
   }
+});
+
+tape("transition.attrTween(name) coerces the specified name to a string", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      tween = function() {},
+      transition = d3_selection.select(root).transition().attrTween("color", tween);
+
+  test.equal(transition.attrTween({toString: function() { return "color"; }}), tween);
+  test.end();
 });
