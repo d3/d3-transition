@@ -58,6 +58,28 @@ tape("transition.tween(name, value) allows the specified function to return null
   test.end();
 });
 
+tape("transition.tween(name, value) uses copy-on-write to apply changes", function(test) {
+  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+      one = document.querySelector("#one"),
+      two = document.querySelector("#two"),
+      foo = function() {},
+      bar = function() {},
+      transition = d3_selection.selectAll([one, two]).transition(),
+      schedule1 = one.__transition[transition._id],
+      schedule2 = two.__transition[transition._id];
+
+  transition.tween("foo", foo);
+  test.deepEqual(schedule1.tween, [{name: "foo", value: foo}]);
+  test.equal(schedule2.tween, schedule1.tween);
+  transition.tween("foo", bar);
+  test.deepEqual(schedule1.tween, [{name: "foo", value: bar}]);
+  test.equal(schedule2.tween, schedule1.tween);
+  d3_selection.select(two).transition(transition).tween("foo", foo);
+  test.deepEqual(schedule1.tween, [{name: "foo", value: bar}]);
+  test.deepEqual(schedule2.tween, [{name: "foo", value: foo}]);
+  test.end();
+});
+
 tape("transition.tween(name, value) coerces the specified name to a string", function(test) {
   var root = jsdom.jsdom().documentElement,
       tween = function() {},

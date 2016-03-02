@@ -75,3 +75,25 @@ tape("transition.on(\"end\", listener) registers a listener for the end event", 
     test.end();
   }
 });
+
+tape("transition.on(typename, listener) uses copy-on-write to apply changes", function(test) {
+  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+      one = document.querySelector("#one"),
+      two = document.querySelector("#two"),
+      foo = function() {},
+      bar = function() {},
+      transition = d3_selection.selectAll([one, two]).transition(),
+      schedule1 = one.__transition[transition._id],
+      schedule2 = two.__transition[transition._id];
+
+  transition.on("start", foo);
+  test.equal(schedule1.on.on("start"), foo);
+  test.equal(schedule2.on, schedule1.on);
+  transition.on("start", bar);
+  test.equal(schedule1.on.on("start"), bar);
+  test.equal(schedule2.on, schedule1.on);
+  d3_selection.select(two).transition(transition).on("start", foo);
+  test.equal(schedule1.on.on("start"), bar);
+  test.equal(schedule2.on.on("start"), foo);
+  test.end();
+});
