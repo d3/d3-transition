@@ -26,8 +26,8 @@ tape("transition.ease() returns the easing function for the first non-null node"
 });
 
 tape("transition.ease(ease) throws an error if ease is not a function", function(test) {
-  var document = jsdom.jsdom(),
-      transition = d3_selection.select(document.documentElement).transition();
+  var root = jsdom.jsdom().documentElement,
+      transition = d3_selection.select(root).transition();
   test.throws(function() { transition.ease(42); }, /Error/);
   test.throws(function() { transition.ease(null); }, /Error/);
   test.end();
@@ -46,8 +46,9 @@ tape("transition.ease(ease) sets the easing function for each selected element t
 tape("transition.ease(ease) passes the easing function the normalized time in [0, 1]", function(test) {
   var root = jsdom.jsdom().documentElement,
       actual,
-      ease = function(t) { actual = t; return t; },
-      transition = d3_selection.select(root).transition().ease(ease);
+      ease = function(t) { actual = t; return t; };
+
+  d3_selection.select(root).transition().ease(ease);
 
   d3_timer.timeout(function(now) {
     test.equal(actual, now / 250);
@@ -64,8 +65,6 @@ tape("transition.ease(ease) does not invoke the easing function on the last fram
 
 tape("transition.ease(ease) observes the eased time returned by the easing function", function(test) {
   var root = jsdom.jsdom().documentElement,
-      start = d3_timer.now(),
-      duration = 250,
       expected,
       ease = function() { return expected = Math.random() * 2 - 0.5; },
       tween = function() { return function(t) { test.equal(t, schedule.state === 3 ? expected : 1); }; },
