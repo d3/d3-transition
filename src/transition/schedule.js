@@ -120,7 +120,7 @@ function create(node, id, self) {
   }
 
   function tick(elapsed) {
-    var t = elapsed >= self.duration ? (self.state = ENDING, 1) : self.ease.call(null, elapsed / self.duration),
+    var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.state = ENDING, 1),
         i = -1,
         n = tween.length;
 
