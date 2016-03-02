@@ -2,10 +2,52 @@ var tape = require("tape"),
     jsdom = require("jsdom"),
     d3 = require("../../");
 
-tape("d3.transition() returns a transition on the document element", function(test) {
+tape("d3.transition() returns a transition on the document element with the null name", function(test) {
   var document = global.document = jsdom.jsdom();
   try {
-    test.equal(d3.transition().node(), document.documentElement);
+    var transition = d3.transition(),
+        schedule = document.documentElement.__transition[transition._id];
+    test.equal(transition.node(), document.documentElement);
+    test.strictEqual(schedule.name, null);
+    test.end();
+  } finally {
+    delete global.document;
+  }
+});
+
+tape("d3.transition(null) returns a transition on the document element with the null name", function(test) {
+  var document = global.document = jsdom.jsdom();
+  try {
+    var transition = d3.transition(null),
+        schedule = document.documentElement.__transition[transition._id];
+    test.equal(transition.node(), document.documentElement);
+    test.strictEqual(schedule.name, null);
+    test.end();
+  } finally {
+    delete global.document;
+  }
+});
+
+tape("d3.transition(undefined) returns a transition on the document element with the null name", function(test) {
+  var document = global.document = jsdom.jsdom();
+  try {
+    var transition = d3.transition(undefined),
+        schedule = document.documentElement.__transition[transition._id];
+    test.equal(transition.node(), document.documentElement);
+    test.strictEqual(schedule.name, null);
+    test.end();
+  } finally {
+    delete global.document;
+  }
+});
+
+tape("d3.transition(name) returns a transition on the document element with the specified name", function(test) {
+  var document = global.document = jsdom.jsdom();
+  try {
+    var transition = d3.transition("foo"),
+        schedule = document.documentElement.__transition[transition._id];
+    test.equal(transition.node(), document.documentElement);
+    test.strictEqual(schedule.name, "foo");
     test.end();
   } finally {
     delete global.document;
