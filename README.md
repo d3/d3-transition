@@ -275,7 +275,7 @@ To interpolate text rather than to set it on start, use [*transition*.tween](#tr
 
 <a name="transition_remove" href="#transition_remove">#</a> <i>transition</i>.<b>remove</b>()
 
-For each selected element, [removes](https://github.com/d3/d3-selection#selection_remove) the element when the transition ends, as long as the element has no pending transitions. If the element has pending transitions, does nothing.
+For each selected element, [removes](https://github.com/d3/d3-selection#selection_remove) the element when the transition ends, as long as the element has no other active or pending transitions. If the element has other active or pending transitions, does nothing.
 
 <a name="transition_tween" href="#transition_tween">#</a> <i>transition</i>.<b>tween</b>(<i>name</i>[, <i>value</i>])
 
