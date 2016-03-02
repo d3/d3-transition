@@ -49,7 +49,7 @@ Transitions are derived from [selections](https://github.com/d3/d3-selection) vi
 
 <a name="selection_transition" href="#selection_transition">#</a> <i>selection</i>.<b>transition</b>([<i>name</i>])
 
-Returns a new transition on the given *selection* with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name.
+Returns a new transition on the given *selection* with the specified *name*. If a *name* is not specified, null is used. The new transition is only exclusive with other transitions of the same name.
 
 If the *name* is a [transition](#transition) instance, the new transition has the same id, name and timing as the specified transition; however, if a transition with the same id already exists on a selected element, the existing transition is returned for that element. This can be used to synchronize a transition across multiple selections, or to re-select a transition for specific elements and modify its configuration. For example:
 
@@ -67,11 +67,11 @@ d3.selectAll(".orange").transition(t)
 
 <a name="selection_interrupt" href="#selection_interrupt">#</a> <i>selection</i>.<b>interrupt</b>([<i>name</i>])
 
-Interrupts the active transition of the specified *name* on the selected elements, and cancels any pending transitions with the specified *name*, if any. If a name is not specified, the empty name (“”) is used.
+Interrupts the active transition of the specified *name* on the selected elements, and cancels any pending transitions with the specified *name*, if any. If a name is not specified, null is used.
 
 <a name="transition" href="#transition">#</a> d3.<b>transition</b>([<i>name</i>])
 
-Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is not specified, the default empty name (“”) is used. The new transition is only exclusive with other transitions of the same name. The *name* may also be a [transition](#transition) instance; see [*selection*.transition](#selection_transition). This method is equivalent to:
+Returns a new transition on the root element, `document.documentElement`, with the specified *name*. If a *name* is not specified, null is used. The new transition is only exclusive with other transitions of the same name. The *name* may also be a [transition](#transition) instance; see [*selection*.transition](#selection_transition). This method is equivalent to:
 
 ```js
 d3.selection()
@@ -156,7 +156,7 @@ Returns the [selection](https://github.com/d3/d3-selection#selection) correspond
 
 <a name="active" href="#active">#</a> d3.<b>active</b>(<i>node</i>[, <i>name</i>])
 
-Returns the active transition on the specified *node* with the specified *name*, if any. If no *name* is specified, the default empty name is used. Returns null if there is no such active transition on the specified node. This method is useful for creating chained transitions. For example, to initiate disco mode:
+Returns the active transition on the specified *node* with the specified *name*, if any. If no *name* is specified, null is used. Returns null if there is no such active transition on the specified node. This method is useful for creating chained transitions. For example, to initiate disco mode:
 
 ```js
 d3.selectAll("circle").transition()

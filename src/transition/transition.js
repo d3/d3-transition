@@ -2,15 +2,15 @@ import {Transition, newId} from "./index";
 import schedule, {get} from "./schedule";
 
 export default function() {
-  var key = this._key,
+  var name = this._name,
       id0 = this._id,
       id1 = newId();
 
   for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
     for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
       if (node = group[i]) {
-        var inherit = get(node, key, id0);
-        schedule(node, key, id1, i, group, {
+        var inherit = get(node, id0);
+        schedule(node, name, id1, i, group, {
           time: inherit.time + inherit.delay + inherit.duration,
           delay: 0,
           duration: inherit.duration,
@@ -20,5 +20,5 @@ export default function() {
     }
   }
 
-  return new Transition(groups, this._parents, key, id1);
+  return new Transition(groups, this._parents, name, id1);
 }

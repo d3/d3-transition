@@ -14,5 +14,5 @@ export default function(selection) {
     merges[j] = groups0[j];
   }
 
-  return new Transition(merges, this._parents, this._key, this._id);
+  return new Transition(merges, this._parents, this._name, this._id);
 }

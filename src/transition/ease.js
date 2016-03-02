@@ -1,17 +1,16 @@
 import {get, set} from "./schedule";
 
-function easeConstant(key, id, value) {
+function easeConstant(id, value) {
   if (typeof value !== "function") throw new Error;
   return function() {
-    set(this, key, id).ease = value;
+    set(this, id).ease = value;
   };
 }
 
 export default function(value) {
-  var key = this._key,
-      id = this._id;
+  var id = this._id;
 
   return arguments.length
-      ? this.each(easeConstant(key, id, value))
-      : get(this.node(), key, id).ease;
+      ? this.each(easeConstant(id, value))
+      : get(this.node(), id).ease;
 }

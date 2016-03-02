@@ -1,24 +1,23 @@
 import {get, set} from "./schedule";
 
-function durationFunction(key, id, value) {
+function durationFunction(id, value) {
   return function() {
-    set(this, key, id).duration = +value.apply(this, arguments);
+    set(this, id).duration = +value.apply(this, arguments);
   };
 }
 
-function durationConstant(key, id, value) {
+function durationConstant(id, value) {
   return value = +value, function() {
-    set(this, key, id).duration = value;
+    set(this, id).duration = value;
   };
 }
 
 export default function(value) {
-  var key = this._key,
-      id = this._id;
+  var id = this._id;
 
   return arguments.length
       ? this.each((typeof value === "function"
           ? durationFunction
-          : durationConstant)(key, id, value))
-      : get(this.node(), key, id).duration;
+          : durationConstant)(id, value))
+      : get(this.node(), id).duration;
 }

@@ -12,5 +12,5 @@ export default function(match) {
     }
   }
 
-  return new Transition(subgroups, this._parents, this._key, this._id);
+  return new Transition(subgroups, this._parents, this._name, this._id);
 }

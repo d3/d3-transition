@@ -8,11 +8,11 @@ function start(name) {
   });
 }
 
-function onFunction(key, id, name, listener) {
+function onFunction(id, name, listener) {
   if (typeof listener !== "function") throw new Error;
   var on0, on1, sit = start(name) ? init : set;
   return function() {
-    var schedule = sit(this, key, id),
+    var schedule = sit(this, id),
         on = schedule.on;
 
     // If this node shared a dispatch with the previous node,
@@ -25,10 +25,9 @@ function onFunction(key, id, name, listener) {
 }
 
 export default function(name, listener) {
-  var key = this._key,
-      id = this._id;
+  var id = this._id;
 
   return arguments.length < 2
-      ? get(this.node(), key, id).on.on(name)
-      : this.each(onFunction(key, id, name, listener));
+      ? get(this.node(), id).on.on(name)
+      : this.each(onFunction(id, name, listener));
 }

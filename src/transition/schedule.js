@@ -4,16 +4,18 @@ import {timer, timeout} from "d3-timer";
 var emptyOn = dispatch("start", "end", "interrupt");
 var emptyTween = [];
 
-var CREATED = 0,
-    SCHEDULED = 1,
-    STARTED = 2;
+export var CREATED = 0;
+export var SCHEDULED = 1;
+export var STARTING = 2;
+export var STARTED = 3;
+export var ENDED = 4;
 
-export default function(node, key, id, index, group, timing) {
-  var schedules = node[key];
-  if (!schedules) node[key] = schedules = {active: null, pending: []};
-  else if (has(node, key, id)) return;
-  start(node, key, {
-    id: id,
+export default function(node, name, id, index, group, timing) {
+  var schedules = node.__transition;
+  if (!schedules) node.__transition = {};
+  else if (id in schedules) return;
+  create(node, id, {
+    name: name,
     index: index, // For context during callback.
     group: group, // For context during callback.
     on: emptyOn,
@@ -27,40 +29,31 @@ export default function(node, key, id, index, group, timing) {
   });
 }
 
-function has(node, key, id) {
-  var schedules = node[key];
-  if (!schedules) return;
-  var schedule = schedules.active;
-  if (schedule && schedule.id === id) return schedule;
-  var pending = schedules.pending, i = pending.length;
-  while (--i >= 0) if ((schedule = pending[i]).id === id) return schedule;
-}
-
-export function init(node, key, id) {
-  var schedule = has(node, key, id);
-  if (!schedule || schedule.state > CREATED) throw new Error("too late");
+export function init(node, id) {
+  var schedule = node.__transition;
+  if (!schedule || !(schedule = schedule[id]) || schedule.state > CREATED) throw new Error("too late");
   return schedule;
 }
 
-export function set(node, key, id) {
-  var schedule = has(node, key, id);
-  if (!schedule || schedule.state > SCHEDULED) throw new Error("too late");
+export function set(node, id) {
+  var schedule = node.__transition;
+  if (!schedule || !(schedule = schedule[id]) || schedule.state > STARTING) throw new Error("too late");
   return schedule;
 }
 
-export function get(node, key, id) {
-  var schedule = has(node, key, id);
-  if (!schedule) throw new Error("too late");
+export function get(node, id) {
+  var schedule = node.__transition;
+  if (!schedule || !(schedule = schedule[id])) throw new Error("too late");
   return schedule;
 }
 
-function start(node, key, self) {
-  var schedules = node[key],
+function create(node, id, self) {
+  var schedules = node.__transition,
       tween;
 
   // Initialize the self timer when the transition is created.
   // Note the actual delay is not known until the first callback!
-  schedules.pending.push(self);
+  schedules[id] = self;
   self.timer = timer(schedule, 0, self.time);
 
   // If the delay is greater than this first sleep, sleep some more;
@@ -72,36 +65,37 @@ function start(node, key, self) {
   }
 
   function start(elapsed) {
-    var interrupted = schedules.active,
-        pending = schedules.pending,
-        i, j, n, o;
+    var i, j, n, o;
 
-    // Interrupt the active transition, if any.
-    // Dispatch the interrupt event.
-    if (interrupted) {
-      interrupted.timer.stop();
-      interrupted.on.call("interrupt", node, node.__data__, interrupted.index, interrupted.group);
+    for (i in schedules) {
+      o = schedules[i];
+      if (o.name !== self.name) continue;
+
+      // Interrupt the active transition, if any.
+      // Dispatch the interrupt event.
+      if (o.state === STARTED) {
+        o.state = ENDED;
+        o.timer.stop();
+        o.on.call("interrupt", node, node.__data__, o.index, o.group);
+        delete schedules[i];
+      }
+
+      // Cancel any pre-empted transitions. No interrupt event is dispatched
+      // because the cancelled transitions never started. Note that this also
+      // removes this transition from the pending list!
+      else if (+i < id) {
+        o.state = ENDED;
+        o.timer.stop();
+        delete schedules[i];
+      }
     }
-
-    // Cancel any pre-empted transitions. No interrupt event is dispatched
-    // because the cancelled transitions never started. Note that this also
-    // removes this transition from the pending list!
-    for (i = 0, j = -1, n = pending.length; i < n; ++i) {
-      o = pending[i];
-      if (o.id < self.id) o.timer.stop();
-      else if (o.id > self.id) pending[++j] = o;
-    }
-    pending.length = j + 1;
-
-    // Mark this transition as active.
-    schedules.active = self;
 
     // Defer the first tick to end of the current frame; see mbostock/d3#1576.
     // Note the transition may be canceled after start and before the first tick!
     // Note this must be scheduled before the start event; see d3/d3-transition#16!
     // Assuming this is successful, subsequent callbacks go straight to tick.
     timeout(function() {
-      if (schedules.active === self) {
+      if (self.state === STARTED) {
         self.timer.restart(tick, self.delay, self.time);
         tick(elapsed);
       }
@@ -109,6 +103,7 @@ function start(node, key, self) {
 
     // Dispatch the start event.
     // Note this must be done before the tween are initialized.
+    self.state = STARTING;
     self.on.call("start", node, node.__data__, self.index, self.group);
     self.state = STARTED;
 
@@ -133,10 +128,11 @@ function start(node, key, self) {
 
     // Dispatch the end event.
     if (t >= 1) {
-      self.on.call("end", node, node.__data__, self.index, self.group);
-      schedules.active = null;
-      if (!schedules.pending.length) delete node[key];
+      self.state = ENDED;
       self.timer.stop();
+      self.on.call("end", node, node.__data__, self.index, self.group);
+      for (i in schedules) if (+i !== id) return void delete schedules[id];
+      delete node.__transition;
     }
   }
 }

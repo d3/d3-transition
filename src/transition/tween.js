@@ -1,9 +1,9 @@
 import {get, set} from "./schedule";
 
-function tweenFunction(key, id, name, value) {
+function tweenFunction(id, name, value) {
   var tween0, tween1;
   return function() {
-    var schedule = set(this, key, id),
+    var schedule = set(this, id),
         tween = schedule.tween;
 
     // If this node shared tween with the previous node,
@@ -25,13 +25,12 @@ function tweenFunction(key, id, name, value) {
 }
 
 export default function(name, value) {
-  var key = this._key,
-      id = this._id;
+  var id = this._id;
 
   name += "";
 
   if (arguments.length < 2) {
-    var tween = get(this.node(), key, id).tween;
+    var tween = get(this.node(), id).tween;
     for (var i = 0, n = tween.length, t; i < n; ++i) {
       if ((t = tween[i]).name === name) {
         return t.value;
@@ -41,19 +40,18 @@ export default function(name, value) {
   }
 
   if (typeof value !== "function") throw new Error;
-  return this.each(tweenFunction(key, id, name, value));
+  return this.each(tweenFunction(id, name, value));
 }
 
 export function tweenValue(transition, name, value) {
-  var key = transition._key,
-      id = transition._id;
+  var id = transition._id;
 
   transition.each(function() {
-    var schedule = set(this, key, id);
+    var schedule = set(this, id);
     (schedule.value || (schedule.value = {}))[name] = value.apply(this, arguments);
   });
 
   return function(node) {
-    return get(node, key, id).value[name];
+    return get(node, id).value[name];
   };
 }

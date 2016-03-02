@@ -19,10 +19,10 @@ import transition_tween from "./tween";
 
 var id = 0;
 
-export function Transition(groups, parents, key, id) {
+export function Transition(groups, parents, name, id) {
   this._groups = groups;
   this._parents = parents;
-  this._key = key;
+  this._name = name;
   this._id = id;
 }
 
@@ -32,10 +32,6 @@ export default function transition(name) {
 
 export function newId() {
   return ++id;
-}
-
-export function namekey(name) {
-  return name ? "__transition" + name : "__transition";
 }
 
 var selection_prototype = selection.prototype;

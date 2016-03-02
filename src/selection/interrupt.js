@@ -1,23 +1,24 @@
-import {namekey} from "../transition/index";
+import {STARTED, ENDED} from "../transition/schedule";
 
 export default function(name) {
-  var key = namekey(name);
+  name = name == null ? null : name + "";
   return this.each(function() {
-    var schedule = this[key];
-    if (schedule) {
-      var pending = schedule.pending,
-          active = schedule.active,
-          i, n;
-      if (active) {
-        active.on.call("interrupt", this, this.__data__, active.index, active.group); // TODO try-catch?
-        schedule.active = null;
-        active.timer.stop();
-      }
-      for (i = 0, n = pending.length; i < n; ++i) {
-        pending[i].timer.stop();
-      }
-      pending.length = 0;
-      delete this[key];
+    var schedules = this.__transition,
+        schedule,
+        empty = true,
+        i;
+
+    if (!schedules) return;
+
+    for (i in schedules) {
+      if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
+      var active = schedule.state === STARTED;
+      schedule.state = ENDED;
+      schedule.timer.stop();
+      if (active) schedule.on.call("interrupt", this, this.__data__, schedule.index, schedule.group);
+      delete schedules[i];
     }
+
+    if (empty) delete this.__transition;
   });
 }

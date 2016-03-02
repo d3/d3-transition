@@ -1,4 +1,4 @@
-import {Transition, newId, namekey} from "../transition/index";
+import {Transition, newId} from "../transition/index";
 import schedule, {get} from "../transition/schedule";
 import {easeCubicInOut} from "d3-ease";
 import {now} from "d3-timer";
@@ -11,23 +11,22 @@ var defaultTiming = {
 };
 
 export default function(name) {
-  var key,
-      id,
+  var id,
       timing;
 
   if (name instanceof Transition) {
-    key = name._key, id = name._id, timing = get(name.node(), key, id);
+    id = name._id, timing = get(name.node(), id), name = name._name;
   } else {
-    key = namekey(name), id = newId(), (timing = defaultTiming).time = now();
+    id = newId(), (timing = defaultTiming).time = now(), name = name == null ? null : name + "";
   }
 
   for (var groups = this._groups, m = groups.length, j = 0; j < m; ++j) {
     for (var group = groups[j], n = group.length, node, i = 0; i < n; ++i) {
       if (node = group[i]) {
-        schedule(node, key, id, i, group, timing);
+        schedule(node, name, id, i, group, timing);
       }
     }
   }
 
-  return new Transition(groups, this._parents, key, id);
+  return new Transition(groups, this._parents, name, id);
 }

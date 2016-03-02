@@ -3,7 +3,7 @@ import {Transition} from "./index";
 import schedule, {get} from "./schedule";
 
 export default function(select) {
-  var key = this._key,
+  var name = this._name,
       id = this._id;
 
   if (typeof select !== "function") select = selector(select);
@@ -13,10 +13,10 @@ export default function(select) {
       if ((node = group[i]) && (subnode = select.call(node, node.__data__, i, group))) {
         if ("__data__" in node) subnode.__data__ = node.__data__;
         subgroup[i] = subnode;
-        schedule(subgroup[i], key, id, i, subgroup, get(node, key, id));
+        schedule(subgroup[i], name, id, i, subgroup, get(node, id));
       }
     }
   }
 
-  return new Transition(subgroups, this._parents, key, id);
+  return new Transition(subgroups, this._parents, name, id);
 }
