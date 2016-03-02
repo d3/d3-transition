@@ -8,7 +8,8 @@ export var CREATED = 0;
 export var SCHEDULED = 1;
 export var STARTING = 2;
 export var STARTED = 3;
-export var ENDED = 4;
+export var ENDING = 4;
+export var ENDED = 5;
 
 export default function(node, name, id, index, group, timing) {
   var schedules = node.__transition;
@@ -105,6 +106,7 @@ function create(node, id, self) {
     // Note this must be done before the tween are initialized.
     self.state = STARTING;
     self.on.call("start", node, node.__data__, self.index, self.group);
+    if (self.state !== STARTING) return; // interrupted
     self.state = STARTED;
 
     // Initialize the tween, deleting null tween.
@@ -118,16 +120,16 @@ function create(node, id, self) {
   }
 
   function tick(elapsed) {
-    var t = elapsed / self.duration,
-        e = t >= 1 ? 1 : self.ease.call(null, t),
-        i, n;
+    var t = elapsed >= self.duration ? (self.state = ENDING, 1) : self.ease.call(null, elapsed / self.duration),
+        i = -1,
+        n = tween.length;
 
-    for (i = 0, n = tween.length; i < n; ++i) {
-      tween[i].call(null, e);
+    while (++i < n) {
+      tween[i].call(null, t);
     }
 
     // Dispatch the end event.
-    if (t >= 1) {
+    if (self.state === ENDING) {
       self.state = ENDED;
       self.timer.stop();
       self.on.call("end", node, node.__data__, self.index, self.group);
