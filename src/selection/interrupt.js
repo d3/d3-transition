@@ -5,6 +5,7 @@ export default function(name) {
   return this.each(function() {
     var schedules = this.__transition,
         schedule,
+        active,
         empty = true,
         i;
 
@@ -12,7 +13,7 @@ export default function(name) {
 
     for (i in schedules) {
       if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
-      var active = schedule.state === STARTED;
+      active = schedule.state === STARTED;
       schedule.state = ENDED;
       schedule.timer.stop();
       if (active) schedule.on.call("interrupt", this, this.__data__, schedule.index, schedule.group);
