@@ -278,3 +278,25 @@ tape("selection.interrupt() has no effect on an ended transition", function(test
     test.end();
   }
 });
+
+tape("selection.interrupt() has no effect on an interrupting transition", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      interrupts = 0,
+      selection = d3_selection.select(root),
+      transition = selection.transition().duration(50).on("interrupt", interrupted),
+      schedule = root.__transition[transition._id];
+
+  d3_timer.timeout(function() {
+    test.equal(schedule.state, 3); // STARTED
+    selection.interrupt();
+    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.timer._call, null);
+    test.equal(interrupts, 1);
+    test.end();
+  });
+
+  function interrupted() {
+    ++interrupts;
+    selection.interrupt();
+  }
+});
