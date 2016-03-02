@@ -11,3 +11,5 @@ extends:
 
 rules:
     no-cond-assign: 0
+    no-sparse-arrays: 0
+    no-unused-vars: 0

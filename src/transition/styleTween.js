@@ -11,7 +11,7 @@ function styleTween(name, value, priority) {
 }
 
 export default function(name, value, priority) {
-  var key = "style." + name;
+  var key = "style." + (name += "");
   return arguments.length < 2
       ? (key = this.tween(key)) && key._value
       : this.tween(key, styleTween(name, value, priority == null ? "" : priority));
