@@ -64,7 +64,7 @@ export default function(name, value) {
     return null;
   }
 
-  return this.each((value ? tweenFunction : tweenRemove)(id, name, value));
+  return this.each((value == null ? tweenRemove : tweenFunction)(id, name, value));
 }
 
 export function tweenValue(transition, name, value) {
