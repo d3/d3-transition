@@ -8,7 +8,7 @@ require("../../");
 tape("transition.on(type, listener) throws an error if listener is not a function", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
-  test.throws(function() { transition.on("start", 42); }, /Error/);
+  test.throws(function() { transition.on("start", 42); });
   test.end();
 });
 
@@ -27,15 +27,38 @@ tape("transition.on(typename) returns the listener with the specified typename, 
 tape("transition.on(typename) throws an error if the specified type is not supported", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
-  test.throws(function() { transition.on("foo"); }, /Error/);
+  test.throws(function() { transition.on("foo"); });
   test.end();
 });
 
 tape("transition.on(typename, listener) throws an error if the specified type is not supported", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
-  test.throws(function() { transition.on("foo", function() {}); }, /Error/);
+  test.throws(function() { transition.on("foo", function() {}); });
   test.end();
+});
+
+tape("transition.on(typename, listener) throws an error if the specified listener is not a function", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      transition = d3_selection.select(root).transition();
+  test.throws(function() { transition.on("foo", 42); });
+  test.end();
+});
+
+tape("transition.on(typename, null) removes the listener with the specified typename, if any", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      starts = 0,
+      transition = d3_selection.select(root).transition().on("start.foo", function() { ++starts; }),
+      schedule = root.__transition[transition._id];
+
+  test.equal(transition.on("start.foo", null), transition);
+  test.equal(transition.on("start.foo"), undefined);
+  test.equal(schedule.on.on("start.foo"), undefined);
+
+  d3_timer.timeout(function() {
+    test.equal(starts, 0);
+    test.end();
+  });
 });
 
 tape("transition.on(\"start\", listener) registers a listener for the start event", function(test) {

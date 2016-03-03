@@ -28,8 +28,8 @@ tape("transition.ease() returns the easing function for the first non-null node"
 tape("transition.ease(ease) throws an error if ease is not a function", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
-  test.throws(function() { transition.ease(42); }, /Error/);
-  test.throws(function() { transition.ease(null); }, /Error/);
+  test.throws(function() { transition.ease(42); });
+  test.throws(function() { transition.ease(null); });
   test.end();
 });
 

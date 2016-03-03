@@ -86,7 +86,7 @@ tape("transition.attrTween(name, value) coerces the specified name to a string",
 tape("transition.attrTween(name, value) throws an error if value is not null and not a function", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
-  test.throws(function() { transition.attrTween("foo", 42); }, /Error/);
+  test.throws(function() { transition.attrTween("foo", 42); });
   test.end();
 });
 

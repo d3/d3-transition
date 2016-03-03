@@ -9,7 +9,6 @@ function start(name) {
 }
 
 function onFunction(id, name, listener) {
-  if (typeof listener !== "function") throw new Error;
   var on0, on1, sit = start(name) ? init : set;
   return function() {
     var schedule = sit(this, id),
