@@ -87,11 +87,25 @@ tape("transition.styleTween(name, value) coerces the specified name to a string"
   }, 125);
 });
 
-tape("transition.styleTween(name, value) throws an error if value is not a function", function(test) {
+tape("transition.styleTween(name, value) throws an error if value is not null and not a function", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.styleTween("color", 42); }, /Error/);
   test.end();
+});
+
+tape("transition.styleTween(name, null) removes the specified style tween", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      interpolate = d3_interpolate.interpolateHcl("red", "blue"),
+      transition = d3_selection.select(root).transition().styleTween("color", function() { return interpolate; }).styleTween("color", null);
+
+  test.equal(transition.styleTween("color"), null);
+  test.equal(transition.tween("style.color"), null);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.style.getPropertyValue("color"), "");
+    test.end();
+  }, 125);
 });
 
 tape("transition.styleTween(name) returns the style tween with the specified name", function(test) {

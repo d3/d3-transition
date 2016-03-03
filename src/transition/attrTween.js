@@ -25,9 +25,8 @@ function attrTween(name, value) {
 export default function(name, value) {
   var key = "attr." + name;
   if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+  if (!value) return this.tween(key, null);
   if (typeof value !== "function") throw new Error;
   var fullname = namespace(name);
-  return this.tween(key, (fullname.local
-      ? attrTweenNS
-      : attrTween)(fullname, value));
+  return this.tween(key, (fullname.local ? attrTweenNS : attrTween)(fullname, value));
 }

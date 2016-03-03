@@ -1,7 +1,32 @@
 import {get, set} from "./schedule";
 
+function tweenRemove(id, name) {
+  var tween0, tween1;
+  return function() {
+    var schedule = set(this, id),
+        tween = schedule.tween;
+
+    // If this node shared tween with the previous node,
+    // just assign the updated shared tween and we’re done!
+    // Otherwise, copy-on-write.
+    if (tween !== tween0) {
+      tween1 = tween0 = tween;
+      for (var i = 0, n = tween1.length; i < n; ++i) {
+        if (tween1[i].name === name) {
+          tween1 = tween1.slice();
+          tween1.splice(i, 1);
+          break;
+        }
+      }
+    }
+
+    schedule.tween = tween1;
+  };
+}
+
 function tweenFunction(id, name, value) {
   var tween0, tween1;
+  if (typeof value !== "function") throw new Error;
   return function() {
     var schedule = set(this, id),
         tween = schedule.tween;
@@ -39,8 +64,7 @@ export default function(name, value) {
     return null;
   }
 
-  if (typeof value !== "function") throw new Error;
-  return this.each(tweenFunction(id, name, value));
+  return this.each((value ? tweenFunction : tweenRemove)(id, name, value));
 }
 
 export function tweenValue(transition, name, value) {

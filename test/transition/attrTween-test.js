@@ -13,7 +13,7 @@ tape("transition.attrTween(name, value) defines an attribute tween using the int
       transition = d3_selection.select(root).transition().attrTween("foo", function() { return interpolate; });
 
   d3_timer.timeout(function(elapsed) {
-    test.deepEqual(root.getAttribute("foo"), interpolate(d3_ease.easeCubic(elapsed / 250)));
+    test.strictEqual(root.getAttribute("foo"), interpolate(d3_ease.easeCubic(elapsed / 250)));
     test.end();
   }, 125);
 });
@@ -55,8 +55,8 @@ tape("transition.attrTween(name, value) allows the specified function to return 
       transition = selection.transition().attrTween("foo", function() {}).attrTween("svg:bar", function() {});
 
   d3_timer.timeout(function(elapsed) {
-    test.deepEqual(root.getAttribute("foo"), "42");
-    test.deepEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "bar"), "43");
+    test.strictEqual(root.getAttribute("foo"), "42");
+    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "bar"), "43");
     test.end();
   }, 125);
 });
@@ -67,7 +67,7 @@ tape("transition.attrTween(name, value) defines a namespaced attribute tween usi
       transition = d3_selection.select(root).transition().attrTween("svg:foo", function() { return interpolate; });
 
   d3_timer.timeout(function(elapsed) {
-    test.deepEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), interpolate(d3_ease.easeCubic(elapsed / 250)));
+    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), interpolate(d3_ease.easeCubic(elapsed / 250)));
     test.end();
   }, 125);
 });
@@ -78,16 +78,30 @@ tape("transition.attrTween(name, value) coerces the specified name to a string",
       transition = d3_selection.select(root).transition().attrTween({toString: function() { return "foo"; }}, function() { return interpolate; });
 
   d3_timer.timeout(function(elapsed) {
-    test.deepEqual(root.getAttribute("foo"), interpolate(d3_ease.easeCubic(elapsed / 250)));
+    test.strictEqual(root.getAttribute("foo"), interpolate(d3_ease.easeCubic(elapsed / 250)));
     test.end();
   }, 125);
 });
 
-tape("transition.attrTween(name, value) throws an error if value is not a function", function(test) {
+tape("transition.attrTween(name, value) throws an error if value is not null and not a function", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.attrTween("foo", 42); }, /Error/);
   test.end();
+});
+
+tape("transition.attrTween(name, null) removes the specified attribute tween", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      interpolate = d3_interpolate.interpolateHcl("red", "blue"),
+      transition = d3_selection.select(root).transition().attrTween("foo", function() { return interpolate; }).attrTween("foo", null);
+
+  test.equal(transition.attrTween("foo"), null);
+  test.equal(transition.tween("attr.foo"), null);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.hasAttribute("foo"), false);
+    test.end();
+  }, 125);
 });
 
 tape("transition.attrTween(name) returns the attribute tween with the specified name", function(test) {

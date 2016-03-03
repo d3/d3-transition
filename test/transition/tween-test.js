@@ -80,6 +80,30 @@ tape("transition.tween(name, value) uses copy-on-write to apply changes", functi
   test.end();
 });
 
+tape("transition.tween(name, value) uses copy-on-write to apply removals", function(test) {
+  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+      one = document.querySelector("#one"),
+      two = document.querySelector("#two"),
+      foo = function() {},
+      transition = d3_selection.selectAll([one, two]).transition(),
+      schedule1 = one.__transition[transition._id],
+      schedule2 = two.__transition[transition._id];
+
+  transition.tween("foo", foo);
+  test.deepEqual(schedule1.tween, [{name: "foo", value: foo}]);
+  test.equal(schedule2.tween, schedule1.tween);
+  transition.tween("bar", null);
+  test.deepEqual(schedule1.tween, [{name: "foo", value: foo}]);
+  test.equal(schedule2.tween, schedule1.tween);
+  transition.tween("foo", null);
+  test.deepEqual(schedule1.tween, []);
+  test.equal(schedule2.tween, schedule1.tween);
+  d3_selection.select(two).transition(transition).tween("foo", foo);
+  test.deepEqual(schedule1.tween, []);
+  test.deepEqual(schedule2.tween, [{name: "foo", value: foo}]);
+  test.end();
+});
+
 tape("transition.tween(name, value) coerces the specified name to a string", function(test) {
   var root = jsdom.jsdom().documentElement,
       tween = function() {},
@@ -98,11 +122,25 @@ tape("transition.tween(name) coerces the specified name to a string", function(t
   test.end();
 });
 
-tape("transition.tween(name, value) throws an error if value is not a function", function(test) {
+tape("transition.tween(name, value) throws an error if value is not null and not a function", function(test) {
   var root = jsdom.jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.tween("foo", 42); }, /Error/);
   test.end();
+});
+
+tape("transition.tween(name, null) removes the specified tween", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      frames = 0,
+      interpolate = function() { ++frames; },
+      transition = d3_selection.select(root).transition().tween("foo", function() { return interpolate; }).tween("foo", null);
+
+  test.equal(transition.tween("foo"), null);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(frames, 0);
+    test.end();
+  }, 125);
 });
 
 tape("transition.tween(name) returns the tween with the specified name", function(test) {

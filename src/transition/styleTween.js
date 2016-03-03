@@ -1,5 +1,4 @@
 function styleTween(name, value, priority) {
-  if (typeof value !== "function") throw new Error;
   function tween() {
     var node = this, i = value.apply(node, arguments);
     return i && function(t) {
@@ -12,7 +11,8 @@ function styleTween(name, value, priority) {
 
 export default function(name, value, priority) {
   var key = "style." + (name += "");
-  return arguments.length < 2
-      ? (key = this.tween(key)) && key._value
-      : this.tween(key, styleTween(name, value, priority == null ? "" : priority));
+  if (arguments.length < 2) return (key = this.tween(key)) && key._value;
+  if (!value) return this.tween(key, null);
+  if (typeof value !== "function") throw new Error;
+  return this.tween(key, styleTween(name, value, priority == null ? "" : priority));
 }
