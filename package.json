@@ -23,8 +23,8 @@
   "scripts": {
     "pretest": "mkdir -p build && node -e 'process.stdout.write(\"export var version = \\\"\" + require(\"./package.json\").version + \"\\\";\\n\");' > build/version.js && rollup -f umd -g d3-color:d3_color,d3-interpolate:d3_interpolate,d3-ease:d3_ease,d3-dispatch:d3_dispatch,d3-selection:d3_selection,d3-timer:d3_timer -n d3_transition -o build/d3-transition.js -- index.js",
     "test": "faucet `find test -name '*-test.js'` && eslint index.js src test",
-    "prepublish": "npm run test && uglifyjs build/d3-transition.js -c -m -o build/d3-transition.min.js && rm -f build/d3-transition.zip && zip -j build/d3-transition.zip -- LICENSE README.md build/d3-transition.js build/d3-transition.min.js",
-    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags && cp build/d3-transition.js ../d3.github.com/d3-transition.v0.2.js && cp build/d3-transition.min.js ../d3.github.com/d3-transition.v0.2.min.js && cd ../d3.github.com && git add d3-transition.v0.2.js d3-transition.v0.2.min.js && git commit -m \"d3-transition ${VERSION}\" && git push"
+    "prepublish": "npm run test && uglifyjs build/d3-transition.js -c -m -o build/d3-transition.min.js && rm -f build/d3-transition.zip",
+    "postpublish": "VERSION=`node -e 'console.log(require(\"./package.json\").version)'`; git push && git push --tags && cp build/d3-transition.js ../d3.github.com/d3-transition.v0.2.js && cp build/d3-transition.min.js ../d3.github.com/d3-transition.v0.2.min.js && cd ../d3.github.com && git add d3-transition.v0.2.js d3-transition.v0.2.min.js && git commit -m \"d3-transition ${VERSION}\" && git push && zip -j build/d3-transition.zip -- LICENSE README.md build/d3-transition.js build/d3-transition.min.js"
   },
   "dependencies": {
     "d3-color": "~0.4.0",
