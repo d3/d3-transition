@@ -51,7 +51,7 @@ Transitions are derived from [selections](https://github.com/d3/d3-selection) vi
 
 Returns a new transition on the given *selection* with the specified *name*. If a *name* is not specified, null is used. The new transition is only exclusive with other transitions of the same name.
 
-If the *name* is a [transition](#transition) instance, the new transition has the same id, name and timing as the specified transition; however, if a transition with the same id already exists on a selected element, the existing transition is returned for that element. This can be used to synchronize a transition across multiple selections, or to re-select a transition for specific elements and modify its configuration. For example:
+If the *name* is a [transition](#transition) instance, the returned transition has the same id and name as the specified transition. If a transition with the same id already exists on a selected element, the existing transition is returned for that element. Otherwise, the timing of the returned transition is inherited from the existing transition of the same id on the nearest ancestor of each selected element. Thus, this method can be used to synchronize a transition across multiple selections, or to re-select a transition for specific elements and modify its configuration. For example:
 
 ```js
 var t = d3.transition()

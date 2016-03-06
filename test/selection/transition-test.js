@@ -81,25 +81,34 @@ tape("selection.transition(name) coerces the name to a string", function(test) {
   test.end();
 });
 
-tape("selection.transition(transition) inherits the id, name and timing from the specified transition", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'>one</h1><h1 id='two'>two</h1>"),
+tape("selection.transition(transition) inherits the id, name and timing from the corresponding parent in the specified transition", function(test) {
+  var document = jsdom.jsdom("<h1 id='one'><child></h1><h1 id='two'><child></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
-      selection1 = d3_selection.select(one),
-      transition1 = selection1.transition().delay(50).duration(100).ease(d3_ease.easeBounce),
-      schedule1 = one.__transition[transition1._id];
+      selection = d3_selection.selectAll([one, two]),
+      transition = selection.transition().delay(function(d, i) { return i * 50; }).duration(100).ease(d3_ease.easeBounce),
+      schedule1 = one.__transition[transition._id],
+      schedule2 = two.__transition[transition._id],
+      transition1b = d3_selection.select(one.firstChild).transition(transition),
+      schedule1b = one.firstChild.__transition[transition._id];
+
+  test.equal(transition1b._id, transition._id);
+  test.equal(schedule1b.name, schedule1.name);
+  test.equal(schedule1b.delay, schedule1.delay);
+  test.equal(schedule1b.duration, schedule1.duration);
+  test.equal(schedule1b.ease, schedule1.ease);
+  test.equal(schedule1b.time, schedule1.time);
 
   d3_timer.timeout(function() {
-    var selection2 = d3_selection.select(two),
-        transition2 = selection2.transition(transition1),
-        schedule2 = two.__transition[transition2._id];
+    var transition2b = d3_selection.select(two.firstChild).transition(transition),
+        schedule2b = two.firstChild.__transition[transition._id];
 
-    test.equal(transition1._id, transition2._id);
-    test.equal(schedule1.name, schedule2.name);
-    test.equal(schedule1.delay, schedule2.delay);
-    test.equal(schedule1.duration, schedule2.duration);
-    test.equal(schedule1.ease, schedule2.ease);
-    test.equal(schedule1.time, schedule2.time);
+    test.equal(transition2b._id, transition._id);
+    test.equal(schedule2b.name, schedule2.name);
+    test.equal(schedule2b.delay, schedule2.delay);
+    test.equal(schedule2b.duration, schedule2.duration);
+    test.equal(schedule2b.ease, schedule2.ease);
+    test.equal(schedule2b.time, schedule2.time);
     test.end();
   }, 10);
 });
