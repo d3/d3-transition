@@ -4,6 +4,7 @@
   "description": "Animated transitions for D3 selections.",
   "keywords": [
     "d3",
+    "d3-module",
     "dom",
     "transition",
     "animation"
