@@ -1,7 +1,8 @@
 var tape = require("tape"),
     jsdom = require("jsdom"),
     d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection");
+    d3_selection = require("d3-selection"),
+    state = require("./state");
 
 require("../../");
 
@@ -67,7 +68,7 @@ tape("transition.on(\"start\", listener) registers a listener for the start even
       schedule = root.__transition[transition._id];
 
   function started() {
-    test.equal(schedule.state, 2); // STARTING
+    test.equal(schedule.state, state.STARTING);
     test.end();
   }
 });
@@ -79,7 +80,7 @@ tape("transition.on(\"interrupt\", listener) registers a listener for the interr
       schedule = root.__transition[transition._id];
 
   function interrupted() {
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.end();
   }
 
@@ -94,7 +95,7 @@ tape("transition.on(\"end\", listener) registers a listener for the end event", 
       schedule = root.__transition[transition._id];
 
   function ended() {
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.end();
   }
 });

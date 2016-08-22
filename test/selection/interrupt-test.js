@@ -1,7 +1,8 @@
 var tape = require("tape"),
     jsdom = require("jsdom"),
     d3_selection = require("d3-selection"),
-    d3_timer = require("d3-timer");
+    d3_timer = require("d3-timer"),
+    state = require("../transition/state");
 
 require("../../");
 
@@ -105,10 +106,10 @@ tape("selection.interrupt() dispatches an interrupt event to the started transit
       transition = selection.transition().on("interrupt", function() { ++interrupts; });
   d3_timer.timeout(function() {
     var schedule = root.__transition[transition._id];
-    test.equal(schedule.state, 3); // STARTED
+    test.equal(schedule.state, state.STARTED);
     selection.interrupt();
     test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(root.__transition, undefined);
     test.equal(interrupts, 1);
     test.end();
@@ -140,10 +141,10 @@ tape("selection.interrupt() does not dispatch an interrupt event to a starting t
 
   function started() {
     var schedule = root.__transition[transition._id];
-    test.equal(schedule.state, 2); // STARTING
+    test.equal(schedule.state, state.STARTING);
     selection.interrupt();
     test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(root.__transition, undefined);
     test.equal(interrupts, 0);
     test.end();
@@ -157,10 +158,10 @@ tape("selection.interrupt() prevents a created transition from starting", functi
       transition = selection.transition().on("start", function() { ++starts; }),
       schedule = root.__transition[transition._id];
 
-  test.equal(schedule.state, 0); // CREATED
+  test.equal(schedule.state, state.CREATED);
   selection.interrupt();
   test.equal(schedule.timer._call, null);
-  test.equal(schedule.state, 5); // ENDED
+  test.equal(schedule.state, state.ENDED);
   test.equal(root.__transition, undefined);
 
   d3_timer.timeout(function() {
@@ -177,10 +178,10 @@ tape("selection.interrupt() prevents a scheduled transition from starting", func
       schedule = root.__transition[transition._id];
 
   d3_timer.timeout(function() {
-    test.equal(schedule.state, 1); // SCHEDULED
+    test.equal(schedule.state, state.SCHEDULED);
     selection.interrupt();
     test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(root.__transition, undefined);
   });
 
@@ -198,10 +199,10 @@ tape("selection.interrupt() prevents a starting transition from initializing twe
       schedule = root.__transition[transition._id];
 
   function started() {
-    test.equal(schedule.state, 2); // STARTING
+    test.equal(schedule.state, state.STARTING);
     selection.interrupt();
     test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(root.__transition, undefined);
   }
 
@@ -220,7 +221,7 @@ tape("selection.interrupt() during tween initialization prevents an active trans
 
   d3_timer.timeout(function() {
     test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(root.__transition, undefined);
     test.equal(tweens, 0);
     test.end();
@@ -237,10 +238,10 @@ tape("selection.interrupt() prevents an active transition from continuing", func
 
   d3_timer.timeout(function() {
     interrupted = true;
-    test.equal(schedule.state, 3); // STARTED
+    test.equal(schedule.state, state.STARTED);
     selection.interrupt();
     test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(root.__transition, undefined);
   }, 10);
 
@@ -260,7 +261,7 @@ tape("selection.interrupt() during the final tween invocation prevents the end e
   function tween() {
     return function(t) {
       if (t >= 1) {
-        test.equal(schedule.state, 4); // ENDING
+        test.equal(schedule.state, state.ENDING);
         selection.interrupt();
       }
     };
@@ -268,7 +269,7 @@ tape("selection.interrupt() during the final tween invocation prevents the end e
 
   d3_timer.timeout(function() {
     test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(root.__transition, undefined);
     test.equal(ends, 0);
     test.end();
@@ -282,10 +283,10 @@ tape("selection.interrupt() has no effect on an ended transition", function(test
       schedule = root.__transition[transition._id];
 
   function ended() {
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(schedule.timer._call, null);
     selection.interrupt();
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(schedule.timer._call, null);
     test.equal(root.__transition, undefined);
     test.end();
@@ -300,9 +301,9 @@ tape("selection.interrupt() has no effect on an interrupting transition", functi
       schedule = root.__transition[transition._id];
 
   d3_timer.timeout(function() {
-    test.equal(schedule.state, 3); // STARTED
+    test.equal(schedule.state, state.STARTED);
     selection.interrupt();
-    test.equal(schedule.state, 5); // ENDED
+    test.equal(schedule.state, state.ENDED);
     test.equal(schedule.timer._call, null);
     test.equal(interrupts, 1);
     test.end();

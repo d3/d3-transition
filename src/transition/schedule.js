@@ -8,8 +8,9 @@ export var CREATED = 0;
 export var SCHEDULED = 1;
 export var STARTING = 2;
 export var STARTED = 3;
-export var ENDING = 4;
-export var ENDED = 5;
+export var RUNNING = 4;
+export var ENDING = 5;
+export var ENDED = 6;
 
 export default function(node, name, id, index, group, timing) {
   var schedules = node.__transition;
@@ -72,9 +73,14 @@ function create(node, id, self) {
       o = schedules[i];
       if (o.name !== self.name) continue;
 
+      // While this element already has a starting transition during this frame,
+      // deferring starting an interrupting transition until that transition has
+      // a chance to tick (and possibly end); see d3/d3-transition#54!
+      if (o.state === STARTED) return void timeout(start);
+
       // Interrupt the active transition, if any.
       // Dispatch the interrupt event.
-      if (o.state === STARTED) {
+      if (o.state === RUNNING) {
         o.state = ENDED;
         o.timer.stop();
         o.on.call("interrupt", node, node.__data__, o.index, o.group);
@@ -91,12 +97,13 @@ function create(node, id, self) {
       }
     }
 
-    // Defer the first tick to end of the current frame; see mbostock/d3#1576.
+    // Defer the first tick to end of the current frame; see d3/d3#1576.
     // Note the transition may be canceled after start and before the first tick!
     // Note this must be scheduled before the start event; see d3/d3-transition#16!
     // Assuming this is successful, subsequent callbacks go straight to tick.
     timeout(function() {
       if (self.state === STARTED) {
+        self.state = RUNNING;
         self.timer.restart(tick, self.delay, self.time);
         tick(elapsed);
       }

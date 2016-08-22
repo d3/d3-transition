@@ -2,7 +2,8 @@ var tape = require("tape"),
     jsdom = require("jsdom"),
     d3_ease = require("d3-ease"),
     d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection");
+    d3_selection = require("d3-selection"),
+    state = require("./state");
 
 require("../../");
 
@@ -58,7 +59,7 @@ tape("transition.ease(ease) passes the easing function the normalized time in [0
 
 tape("transition.ease(ease) does not invoke the easing function on the last frame", function(test) {
   var root = jsdom.jsdom().documentElement,
-      ease = function(t) { test.equal(schedule.state, 3); return t; },
+      ease = function(t) { test.equal(schedule.state, state.RUNNING); return t; },
       transition = d3_selection.select(root).transition().ease(ease).on("end", function() { test.end(); }),
       schedule = root.__transition[transition._id];
 });
@@ -67,7 +68,7 @@ tape("transition.ease(ease) observes the eased time returned by the easing funct
   var root = jsdom.jsdom().documentElement,
       expected,
       ease = function() { return expected = Math.random() * 2 - 0.5; },
-      tween = function() { return function(t) { test.equal(t, schedule.state === 3 ? expected : 1); }; },
+      tween = function() { return function(t) { test.equal(t, schedule.state === state.ENDING ? 1 : expected); }; },
       transition = d3_selection.select(root).transition().ease(ease).tween("tween", tween).on("end", function() { test.end(); }),
       schedule = root.__transition[transition._id];
 });

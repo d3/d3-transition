@@ -3,7 +3,8 @@ var tape = require("tape"),
     d3_ease = require("d3-ease"),
     d3_timer = require("d3-timer"),
     d3_interpolate = require("d3-interpolate"),
-    d3_selection = require("d3-selection");
+    d3_selection = require("d3-selection"),
+    state = require("./state");
 
 require("../../");
 
@@ -46,7 +47,7 @@ tape("transition.tween(name, value) passes the eased time to the interpolator", 
   function interpolate(t) {
     "use strict";
     test.equal(this, null);
-    test.equal(t, schedule.state === 3 ? ease((d3_timer.now() - then) / duration) : 1);
+    test.equal(t, schedule.state === state.ENDING ? 1 : ease((d3_timer.now() - then) / duration));
   }
 });
 
