@@ -25,7 +25,7 @@ tape("d3.active(node) returns null if the specified node has no active transitio
   d3_timer.timeout(function() {
     test.strictEqual(d3_transition.active(root), null);
     test.end();
-  }, 100);
+  }, 150);
 });
 
 tape("d3.active(node, null) returns null if the specified node has no active transition with the null name", function(test) {
@@ -49,7 +49,7 @@ tape("d3.active(node, null) returns null if the specified node has no active tra
   d3_timer.timeout(function() {
     test.strictEqual(d3_transition.active(root, null), null);
     test.end();
-  }, 100);
+  }, 150);
 });
 
 tape("d3.active(node, undefined) returns null if the specified node has no active transition with the null name", function(test) {
@@ -73,7 +73,7 @@ tape("d3.active(node, undefined) returns null if the specified node has no activ
   d3_timer.timeout(function() {
     test.strictEqual(d3_transition.active(root, undefined), null);
     test.end();
-  }, 100);
+  }, 150);
 });
 
 tape("d3.active(node, name) returns null if the specified node has no active transition with the specified name", function(test) {
@@ -100,7 +100,7 @@ tape("d3.active(node, name) returns null if the specified node has no active tra
   d3_timer.timeout(function() {
     test.strictEqual(d3_transition.active(root, "foo"), null);
     test.end();
-  }, 100);
+  }, 150);
 });
 
 tape("d3.active(node) returns the active transition on the specified node with the null name", function(test) {

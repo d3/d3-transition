@@ -283,13 +283,15 @@ tape("selection.interrupt() has no effect on an ended transition", function(test
       schedule = root.__transition[transition._id];
 
   function ended() {
-    test.equal(schedule.state, state.ENDED);
-    test.equal(schedule.timer._call, null);
-    selection.interrupt();
-    test.equal(schedule.state, state.ENDED);
-    test.equal(schedule.timer._call, null);
-    test.equal(root.__transition, undefined);
-    test.end();
+    process.nextTick(function() {
+      test.equal(schedule.state, state.ENDED);
+      test.equal(schedule.timer._call, null);
+      selection.interrupt();
+      test.equal(schedule.state, state.ENDED);
+      test.equal(schedule.timer._call, null);
+      test.equal(root.__transition, undefined);
+      test.end();
+    });
   }
 });
 

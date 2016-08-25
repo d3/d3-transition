@@ -58,16 +58,19 @@ function create(node, id, self) {
   schedules[id] = self;
   self.timer = timer(schedule, 0, self.time);
 
-  // If the delay is greater than this first sleep, sleep some more;
-  // otherwise, start immediately.
   function schedule(elapsed) {
     self.state = SCHEDULED;
+    self.timer.restart(start, self.delay, self.time);
+
+    // If the elapsed delay is less than our first sleep, start immediately.
     if (self.delay <= elapsed) start(elapsed - self.delay);
-    else self.timer.restart(start, self.delay, self.time);
   }
 
   function start(elapsed) {
     var i, j, n, o;
+
+    // If the state is not SCHEDULED, then we previously errored on start.
+    if (self.state !== SCHEDULED) return self.timer.stop(), stop();
 
     for (i in schedules) {
       o = schedules[i];
@@ -76,7 +79,7 @@ function create(node, id, self) {
       // While this element already has a starting transition during this frame,
       // deferring starting an interrupting transition until that transition has
       // a chance to tick (and possibly end); see d3/d3-transition#54!
-      if (o.state === STARTED) return void timeout(start);
+      if (o.state === STARTED) return timeout(start);
 
       // Interrupt the active transition, if any.
       // Dispatch the interrupt event.
@@ -127,7 +130,7 @@ function create(node, id, self) {
   }
 
   function tick(elapsed) {
-    var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.state = ENDING, 1),
+    var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.stop(), timeout(stop), self.state = ENDING, 1),
         i = -1,
         n = tween.length;
 
@@ -136,12 +139,13 @@ function create(node, id, self) {
     }
 
     // Dispatch the end event.
-    if (self.state === ENDING) {
-      self.state = ENDED;
-      self.timer.stop();
-      self.on.call("end", node, node.__data__, self.index, self.group);
-      for (i in schedules) if (+i !== id) return void delete schedules[id];
-      delete node.__transition;
-    }
+    if (self.state === ENDING) self.on.call("end", node, node.__data__, self.index, self.group);
+  }
+
+  function stop() {
+    self.state = ENDED;
+    delete schedules[id];
+    for (var i in schedules) return; // eslint-disable-line no-unused-vars
+    delete node.__transition;
   }
 }

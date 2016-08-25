@@ -95,7 +95,7 @@ tape("transition.on(\"end\", listener) registers a listener for the end event", 
       schedule = root.__transition[transition._id];
 
   function ended() {
-    test.equal(schedule.state, state.ENDED);
+    test.equal(schedule.state, state.ENDING);
     test.end();
   }
 });
