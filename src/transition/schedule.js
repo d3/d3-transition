@@ -70,7 +70,7 @@ function create(node, id, self) {
     var i, j, n, o;
 
     // If the state is not SCHEDULED, then we previously errored on start.
-    if (self.state !== SCHEDULED) return self.timer.stop(), stop();
+    if (self.state !== SCHEDULED) return stop();
 
     for (i in schedules) {
       o = schedules[i];
@@ -130,7 +130,7 @@ function create(node, id, self) {
   }
 
   function tick(elapsed) {
-    var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.stop(), timeout(stop), self.state = ENDING, 1),
+    var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING, 1),
         i = -1,
         n = tween.length;
 
@@ -139,11 +139,15 @@ function create(node, id, self) {
     }
 
     // Dispatch the end event.
-    if (self.state === ENDING) self.on.call("end", node, node.__data__, self.index, self.group);
+    if (self.state === ENDING) {
+      self.on.call("end", node, node.__data__, self.index, self.group);
+      stop();
+    }
   }
 
   function stop() {
     self.state = ENDED;
+    self.timer.stop();
     delete schedules[id];
     for (var i in schedules) return; // eslint-disable-line no-unused-vars
     delete node.__transition;
