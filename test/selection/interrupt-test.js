@@ -283,7 +283,7 @@ tape("selection.interrupt() has no effect on an ended transition", function(test
       schedule = root.__transition[transition._id];
 
   function ended() {
-    process.nextTick(function() {
+    d3_timer.timeout(function() {
       test.equal(schedule.state, state.ENDED);
       test.equal(schedule.timer._call, null);
       selection.interrupt();
