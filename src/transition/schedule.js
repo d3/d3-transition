@@ -77,8 +77,8 @@ function create(node, id, self) {
       if (o.name !== self.name) continue;
 
       // While this element already has a starting transition during this frame,
-      // deferring starting an interrupting transition until that transition has
-      // a chance to tick (and possibly end); see d3/d3-transition#54!
+      // defer starting an interrupting transition until that transition has a
+      // chance to tick (and possibly end); see d3/d3-transition#54!
       if (o.state === STARTED) return timeout(start);
 
       // Interrupt the active transition, if any.
