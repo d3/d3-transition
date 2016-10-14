@@ -1,4 +1,4 @@
-import {STARTED, ENDED} from "./transition/schedule";
+import {STARTING, ENDING, ENDED} from "./transition/schedule";
 
 export default function(node, name) {
   var schedules = node.__transition,
@@ -13,7 +13,7 @@ export default function(node, name) {
 
   for (i in schedules) {
     if ((schedule = schedules[i]).name !== name) { empty = false; continue; }
-    active = schedule.state === STARTED;
+    active = schedule.state > STARTING && schedule.state < ENDING;
     schedule.state = ENDED;
     schedule.timer.stop();
     if (active) schedule.on.call("interrupt", node, node.__data__, schedule.index, schedule.group);

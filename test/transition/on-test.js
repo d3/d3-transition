@@ -73,7 +73,7 @@ tape("transition.on(\"start\", listener) registers a listener for the start even
   }
 });
 
-tape("transition.on(\"interrupt\", listener) registers a listener for the interrupt event", function(test) {
+tape("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during start)", function(test) {
   var root = jsdom.jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().on("interrupt", interrupted),
@@ -87,6 +87,22 @@ tape("transition.on(\"interrupt\", listener) registers a listener for the interr
   d3_timer.timeout(function() {
     selection.interrupt();
   });
+});
+
+tape("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during run)", function(test) {
+  var root = jsdom.jsdom().documentElement,
+      selection = d3_selection.select(root),
+      transition = selection.transition().on("interrupt", interrupted),
+      schedule = root.__transition[transition._id];
+
+  function interrupted() {
+    test.equal(schedule.state, state.ENDED);
+    test.end();
+  }
+
+  d3_timer.timeout(function() {
+    selection.interrupt();
+  }, 50);
 });
 
 tape("transition.on(\"end\", listener) registers a listener for the end event", function(test) {
