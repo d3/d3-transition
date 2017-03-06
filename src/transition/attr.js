@@ -20,7 +20,7 @@ function attrConstant(name, interpolate, value1) {
       interpolate0;
   return function() {
     var value0 = this.getAttribute(name);
-    return value0 === value1 ? null
+    return value0 === value1 + '' ? null
         : value0 === value00 ? interpolate0
         : interpolate0 = interpolate(value00 = value0, value1);
   };
@@ -31,7 +31,7 @@ function attrConstantNS(fullname, interpolate, value1) {
       interpolate0;
   return function() {
     var value0 = this.getAttributeNS(fullname.space, fullname.local);
-    return value0 === value1 ? null
+    return value0 === value1 + '' ? null
         : value0 === value00 ? interpolate0
         : interpolate0 = interpolate(value00 = value0, value1);
   };
