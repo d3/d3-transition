@@ -56,5 +56,5 @@ export default function(name, value, priority) {
           .on("end.style." + name, styleRemoveEnd(name))
       : this.styleTween(name, typeof value === "function"
           ? styleFunction(name, i, tweenValue(this, "style." + name, value))
-          : styleConstant(name, i, value), priority);
+          : styleConstant(name, i, value + ""), priority);
 }
