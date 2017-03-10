@@ -245,7 +245,7 @@ This method is useful to specify a custom interpolator, such as one that underst
 
 <a name="transition_style" href="#transition_style">#</a> <i>transition</i>.<b>style</b>(<i>name</i>, <i>value</i>[, <i>priority</i>]) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/style.js "Source")
 
-For each selected element, assigns the [style tween](#transition_styleTween) for the style with the specified *name* to the specified target *value* with the specified *priority*. The starting value of the tween is the style’s computed value when the transition starts. The target *value* may be specified either as a constant or a function. If a function, it is immediately evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element.
+For each selected element, assigns the [style tween](#transition_styleTween) for the style with the specified *name* to the specified target *value* with the specified *priority*. The starting value of the tween is the style’s inline value if present, and otherwise its computed value, when the transition starts. The target *value* may be specified either as a constant or a function. If a function, it is immediately evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element.
 
 If the target value is null, the style is removed when the transition starts. Otherwise, an interpolator is chosen based on the type of the target value, using the following algorithm:
 
@@ -273,7 +273,7 @@ Or to interpolate from the current fill to blue, like [*transition*.style](#tran
 
 ```js
 selection.styleTween("fill", function() {
-  return d3.interpolateRgb(getComputedStyle(this).getPropertyValue("fill"), "blue");
+  return d3.interpolateRgb(this.style.fill, "blue");
 });
 ```
 
