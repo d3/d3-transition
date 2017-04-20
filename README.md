@@ -218,7 +218,7 @@ If the specified *factory* is null, removes the previously-assigned attribute tw
 For example, to interpolate the fill attribute from red to blue:
 
 ```js
-selection.attrTween("fill", function() {
+transition.attrTween("fill", function() {
   return d3.interpolateRgb("red", "blue");
 });
 ```
@@ -226,7 +226,7 @@ selection.attrTween("fill", function() {
 Or to interpolate from the current fill to blue, like [*transition*.attr](#transition_attr):
 
 ```js
-selection.attrTween("fill", function() {
+transition.attrTween("fill", function() {
   return d3.interpolateRgb(this.getAttribute("fill"), "blue");
 });
 ```
@@ -234,7 +234,7 @@ selection.attrTween("fill", function() {
 Or to apply a custom rainbow interpolator:
 
 ```js
-selection.attrTween("fill", function() {
+transition.attrTween("fill", function() {
   return function(t) {
     return "hsl(" + t * 360 + ",100%,50%)";
   };
@@ -264,7 +264,7 @@ If the specified *factory* is null, removes the previously-assigned style tween 
 For example, to interpolate the fill style from red to blue:
 
 ```js
-selection.styleTween("fill", function() {
+transition.styleTween("fill", function() {
   return d3.interpolateRgb("red", "blue");
 });
 ```
@@ -272,7 +272,7 @@ selection.styleTween("fill", function() {
 Or to interpolate from the current fill to blue, like [*transition*.style](#transition_style):
 
 ```js
-selection.styleTween("fill", function() {
+transition.styleTween("fill", function() {
   return d3.interpolateRgb(getComputedStyle(this).getPropertyValue("fill"), "blue");
 });
 ```
@@ -280,7 +280,7 @@ selection.styleTween("fill", function() {
 Or to apply a custom rainbow interpolator:
 
 ```js
-selection.styleTween("fill", function() {
+transition.styleTween("fill", function() {
   return function(t) {
     return "hsl(" + t * 360 + ",100%,50%)";
   };
@@ -306,7 +306,7 @@ For each selected element, assigns the tween with the specified *name* with the 
 For example, to interpolate the fill attribute to blue, like [*transition*.attr](#transition_attr):
 
 ```js
-selection.tween("attr.fill", function() {
+transition.tween("attr.fill", function() {
   var node = this, i = d3.interpolateRgb(node.getAttribute("fill"), "blue");
   return function(t) {
     node.setAttribute("fill", i(t));
