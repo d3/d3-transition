@@ -40,7 +40,7 @@
     "eslint": "3",
     "package-preamble": "0.1",
     "rollup": "0.41",
-    "jsdom": "9",
+    "jsdom": "10",
     "tape": "4",
     "uglify-js": "^2.8.11"
   }

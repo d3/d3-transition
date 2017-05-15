@@ -1,5 +1,5 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_ease = require("d3-ease"),
     d3_timer = require("d3-timer"),
     d3_interpolate = require("d3-interpolate"),
@@ -9,7 +9,7 @@ var tape = require("tape"),
 require("../../");
 
 tape("transition.styleTween(name, value) defines a style tween using the interpolator returned by the specified function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       ease = d3_ease.easeCubic,
       transition = d3_selection.select(root).transition().styleTween("color", function() { return interpolate; });
@@ -22,7 +22,7 @@ tape("transition.styleTween(name, value) defines a style tween using the interpo
 });
 
 tape("transition.styleTween(name, value, priority) defines a style tween using the interpolator returned by the specified function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       ease = d3_ease.easeCubic,
       transition = d3_selection.select(root).transition().styleTween("color", function() { return interpolate; }, "important");
@@ -35,7 +35,7 @@ tape("transition.styleTween(name, value, priority) defines a style tween using t
 });
 
 tape("transition.styleTween(name, value) invokes the value function with the expected context and arguments", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       result = [],
@@ -51,7 +51,7 @@ tape("transition.styleTween(name, value) invokes the value function with the exp
 });
 
 tape("transition.styleTween(name, value) passes the eased time to the interpolator", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       then = d3_timer.now(),
       duration = 250,
       ease = d3_ease.easeCubic,
@@ -66,7 +66,7 @@ tape("transition.styleTween(name, value) passes the eased time to the interpolat
 });
 
 tape("transition.styleTween(name, value) allows the specified function to return null for a noop", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root).style("color", "red"),
       transition = selection.transition().styleTween("color", function() {});
 
@@ -77,7 +77,7 @@ tape("transition.styleTween(name, value) allows the specified function to return
 });
 
 tape("transition.styleTween(name, value) coerces the specified name to a string", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       ease = d3_ease.easeCubic,
       transition = d3_selection.select(root).transition().styleTween({toString: function() { return "color"; }}, function() { return interpolate; });
@@ -89,14 +89,14 @@ tape("transition.styleTween(name, value) coerces the specified name to a string"
 });
 
 tape("transition.styleTween(name, value) throws an error if value is not null and not a function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.styleTween("color", 42); });
   test.end();
 });
 
 tape("transition.styleTween(name, null) removes the specified style tween", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       transition = d3_selection.select(root).transition().styleTween("color", function() { return interpolate; }).styleTween("color", null);
 
@@ -110,7 +110,7 @@ tape("transition.styleTween(name, null) removes the specified style tween", func
 });
 
 tape("transition.styleTween(name) returns the style tween with the specified name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       tween = function() { return interpolate; },
       transition = d3_selection.select(root).transition().styleTween("color", tween).on("start", started).on("end", ended);
@@ -129,7 +129,7 @@ tape("transition.styleTween(name) returns the style tween with the specified nam
 });
 
 tape("transition.styleTween(name) coerces the specified name to a string", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       tween = function() {},
       transition = d3_selection.select(root).transition().styleTween("color", tween);
 

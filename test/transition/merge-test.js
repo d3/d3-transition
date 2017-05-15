@@ -1,10 +1,10 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_selection = require("d3-selection"),
     d3_transition = require("../../");
 
 tape("transition.merge(other) merges elements from the specified other transition for null elements in this transition", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition1 = d3_selection.selectAll([null, two]).transition(),
@@ -19,7 +19,7 @@ tape("transition.merge(other) merges elements from the specified other transitio
 });
 
 tape("transition.merge(other) throws an error if the other transition has a different id", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition1 = d3_selection.selectAll([null, two]).transition(),

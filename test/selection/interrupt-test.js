@@ -1,5 +1,5 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_selection = require("d3-selection"),
     d3_timer = require("d3-timer"),
     state = require("../transition/state");
@@ -7,14 +7,14 @@ var tape = require("tape"),
 require("../../");
 
 tape("selection.interrupt() returns the selection", function(test) {
-  var document = jsdom.jsdom(),
+  var document = jsdom(),
       selection = d3_selection.select(document);
   test.equal(selection.interrupt(), selection);
   test.end();
 });
 
 tape("selection.interrupt() cancels any pending transitions on the selected elements", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition(),
       transition2 = transition1.transition();
@@ -26,7 +26,7 @@ tape("selection.interrupt() cancels any pending transitions on the selected elem
 });
 
 tape("selection.interrupt() only cancels pending transitions with the null name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition("foo"),
       transition2 = selection.transition();
@@ -39,7 +39,7 @@ tape("selection.interrupt() only cancels pending transitions with the null name"
 });
 
 tape("selection.interrupt(null) only cancels pending transitions with the null name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition("foo"),
       transition2 = selection.transition();
@@ -52,7 +52,7 @@ tape("selection.interrupt(null) only cancels pending transitions with the null n
 });
 
 tape("selection.interrupt(undefined) only cancels pending transitions with the null name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition("foo"),
       transition2 = selection.transition();
@@ -65,7 +65,7 @@ tape("selection.interrupt(undefined) only cancels pending transitions with the n
 });
 
 tape("selection.interrupt(name) only cancels pending transitions with the specified name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition("foo"),
       transition2 = selection.transition();
@@ -78,7 +78,7 @@ tape("selection.interrupt(name) only cancels pending transitions with the specif
 });
 
 tape("selection.interrupt(name) coerces the name to a string", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition("foo"),
       transition2 = selection.transition();
@@ -91,7 +91,7 @@ tape("selection.interrupt(name) coerces the name to a string", function(test) {
 });
 
 tape("selection.interrupt() does nothing if there is no transition on the selected elements", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root);
   test.equal(root.__transition, undefined);
   test.equal(selection.interrupt(), selection);
@@ -100,7 +100,7 @@ tape("selection.interrupt() does nothing if there is no transition on the select
 });
 
 tape("selection.interrupt() dispatches an interrupt event to the started transition on the selected elements", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interrupts = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().on("interrupt", function() { ++interrupts; });
@@ -117,7 +117,7 @@ tape("selection.interrupt() dispatches an interrupt event to the started transit
 });
 
 tape("selection.interrupt() destroys the schedule after dispatching the interrupt event", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().on("interrupt", interrupted);
 
@@ -134,7 +134,7 @@ tape("selection.interrupt() destroys the schedule after dispatching the interrup
 });
 
 tape("selection.interrupt() does not dispatch an interrupt event to a starting transition", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interrupts = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().on("interrupt", function() { ++interrupts; }).on("start", started);
@@ -152,7 +152,7 @@ tape("selection.interrupt() does not dispatch an interrupt event to a starting t
 });
 
 tape("selection.interrupt() prevents a created transition from starting", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       starts = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().on("start", function() { ++starts; }),
@@ -171,7 +171,7 @@ tape("selection.interrupt() prevents a created transition from starting", functi
 });
 
 tape("selection.interrupt() prevents a scheduled transition from starting", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       starts = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().delay(50).on("start", function() { ++starts; }),
@@ -192,7 +192,7 @@ tape("selection.interrupt() prevents a scheduled transition from starting", func
 });
 
 tape("selection.interrupt() prevents a starting transition from initializing tweens", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       tweens = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().tween("tween", function() { ++tweens; }).on("start", started),
@@ -213,7 +213,7 @@ tape("selection.interrupt() prevents a starting transition from initializing twe
 });
 
 tape("selection.interrupt() during tween initialization prevents an active transition from continuing", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       tweens = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().tween("tween", function() { selection.interrupt(); return function() { ++tweens; }; }),
@@ -229,7 +229,7 @@ tape("selection.interrupt() during tween initialization prevents an active trans
 });
 
 tape("selection.interrupt() prevents an active transition from continuing", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interrupted = false,
       tweens = 0,
       selection = d3_selection.select(root),
@@ -252,7 +252,7 @@ tape("selection.interrupt() prevents an active transition from continuing", func
 });
 
 tape("selection.interrupt() during the final tween invocation prevents the end event from being dispatched", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       ends = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().duration(50).tween("tween", tween).on("end", function() { ++ends; }),
@@ -277,7 +277,7 @@ tape("selection.interrupt() during the final tween invocation prevents the end e
 });
 
 tape("selection.interrupt() has no effect on an ended transition", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().duration(50).on("end", ended),
       schedule = root.__transition[transition._id];
@@ -296,7 +296,7 @@ tape("selection.interrupt() has no effect on an ended transition", function(test
 });
 
 tape("selection.interrupt() has no effect on an interrupting transition", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interrupts = 0,
       selection = d3_selection.select(root),
       transition = selection.transition().duration(50).on("interrupt", interrupted),

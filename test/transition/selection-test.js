@@ -1,11 +1,11 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_selection = require("d3-selection");
 
 require("../../");
 
 tape("transition.selection() returns the transition’s selection", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'>one</h1><h1 id='two'>two</h1>"),
+  var document = jsdom("<h1 id='one'>one</h1><h1 id='two'>two</h1>"),
       selection0 = d3_selection.select(document.body).selectAll("h1"),
       transition = selection0.transition(),
       selection1 = transition.selection();

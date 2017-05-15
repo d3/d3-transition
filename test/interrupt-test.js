@@ -1,10 +1,10 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("./jsdom"),
     d3_selection = require("d3-selection"),
     d3_transition = require("../");
 
 tape("d3.interrupt(node) cancels any pending transitions on the specified node", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition(),
       transition2 = transition1.transition();
@@ -16,7 +16,7 @@ tape("d3.interrupt(node) cancels any pending transitions on the specified node",
 });
 
 tape("selection.interrupt(name) only cancels pending transitions with the specified name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition("foo"),
       transition2 = selection.transition();

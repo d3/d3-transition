@@ -1,12 +1,12 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_timer = require("d3-timer"),
     d3_selection = require("d3-selection");
 
 require("../../");
 
 tape("transition.remove() creates an end listener to remove the element", function(test) {
-  var document = jsdom.jsdom(),
+  var document = jsdom(),
       root = document.documentElement,
       body = document.body,
       selection = d3_selection.select(body),
@@ -27,7 +27,7 @@ tape("transition.remove() creates an end listener to remove the element", functi
 });
 
 tape("transition.remove() creates an end listener named end.remove", function(test) {
-  var document = jsdom.jsdom(),
+  var document = jsdom(),
       root = document.documentElement,
       body = document.body,
       selection = d3_selection.select(body),

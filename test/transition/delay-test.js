@@ -1,11 +1,11 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_selection = require("d3-selection");
 
 require("../../");
 
 tape("transition.delay() returns the delay for the first non-null node", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition1 = d3_selection.select(one).transition(),
@@ -24,7 +24,7 @@ tape("transition.delay() returns the delay for the first non-null node", functio
 });
 
 tape("transition.delay(number) sets the delay for each selected element to the specified number", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition = d3_selection.selectAll([one, two]).transition().delay(50);
@@ -34,7 +34,7 @@ tape("transition.delay(number) sets the delay for each selected element to the s
 });
 
 tape("transition.delay(value) coerces the specified value to a number", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition = d3_selection.selectAll([one, two]).transition().delay("50");
@@ -44,7 +44,7 @@ tape("transition.delay(value) coerces the specified value to a number", function
 });
 
 tape("transition.delay(function) passes the expected arguments and context to the function", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       result = [],
@@ -58,7 +58,7 @@ tape("transition.delay(function) passes the expected arguments and context to th
 });
 
 tape("transition.delay(function) sets the delay for each selected element to the number returned by the specified function", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition = d3_selection.selectAll([one, two]).transition().delay(function(d, i) { return i * 20; });
@@ -68,7 +68,7 @@ tape("transition.delay(function) sets the delay for each selected element to the
 });
 
 tape("transition.delay(function) coerces the value returned by the specified function to a number", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition = d3_selection.selectAll([one, two]).transition().delay(function(d, i) { return i * 20 + ""; });

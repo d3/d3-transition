@@ -1,12 +1,12 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_timer = require("d3-timer"),
     d3_selection = require("d3-selection");
 
 require("../../");
 
 tape("transition.text(value) creates a tween to set the text content to the specified value post-start", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().text("hello").on("start", started);
 
@@ -21,7 +21,7 @@ tape("transition.text(value) creates a tween to set the text content to the spec
 });
 
 tape("transition.text(value) creates a tween to set the text content to the value returned by the specified function post-start", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().text(function() { return "hello"; }).on("start", started);
 
@@ -36,7 +36,7 @@ tape("transition.text(value) creates a tween to set the text content to the valu
 });
 
 tape("transition.text(value) immediately evaluates the specified function with the expected context and arguments", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       selection = d3_selection.selectAll([one, two]).data(["red", "green"]),
@@ -56,7 +56,7 @@ tape("transition.text(value) immediately evaluates the specified function with t
 });
 
 tape("transition.text(value) creates a tween with the name \"text\"", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().text("hello");
   test.equal(transition.tween("text").call(root), undefined);

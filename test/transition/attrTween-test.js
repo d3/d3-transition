@@ -1,5 +1,5 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_ease = require("d3-ease"),
     d3_timer = require("d3-timer"),
     d3_interpolate = require("d3-interpolate"),
@@ -9,7 +9,7 @@ var tape = require("tape"),
 require("../../");
 
 tape("transition.attrTween(name, value) defines an attribute tween using the interpolator returned by the specified function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       transition = d3_selection.select(root).transition().attrTween("foo", function() { return interpolate; });
 
@@ -20,7 +20,7 @@ tape("transition.attrTween(name, value) defines an attribute tween using the int
 });
 
 tape("transition.attrTween(name, value) invokes the value function with the expected context and arguments", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       result = [],
@@ -36,7 +36,7 @@ tape("transition.attrTween(name, value) invokes the value function with the expe
 });
 
 tape("transition.attrTween(name, value) passes the eased time to the interpolator", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       then = d3_timer.now(),
       duration = 250,
       ease = d3_ease.easeCubic,
@@ -51,7 +51,7 @@ tape("transition.attrTween(name, value) passes the eased time to the interpolato
 });
 
 tape("transition.attrTween(name, value) allows the specified function to return null for a noop", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("foo", "42").attr("svg:bar", "43"),
       transition = selection.transition().attrTween("foo", function() {}).attrTween("svg:bar", function() {});
 
@@ -63,7 +63,7 @@ tape("transition.attrTween(name, value) allows the specified function to return 
 });
 
 tape("transition.attrTween(name, value) defines a namespaced attribute tween using the interpolator returned by the specified function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       transition = d3_selection.select(root).transition().attrTween("svg:foo", function() { return interpolate; });
 
@@ -74,7 +74,7 @@ tape("transition.attrTween(name, value) defines a namespaced attribute tween usi
 });
 
 tape("transition.attrTween(name, value) coerces the specified name to a string", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       transition = d3_selection.select(root).transition().attrTween({toString: function() { return "foo"; }}, function() { return interpolate; });
 
@@ -85,14 +85,14 @@ tape("transition.attrTween(name, value) coerces the specified name to a string",
 });
 
 tape("transition.attrTween(name, value) throws an error if value is not null and not a function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.attrTween("foo", 42); });
   test.end();
 });
 
 tape("transition.attrTween(name, null) removes the specified attribute tween", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       transition = d3_selection.select(root).transition().attrTween("foo", function() { return interpolate; }).attrTween("foo", null);
 
@@ -106,7 +106,7 @@ tape("transition.attrTween(name, null) removes the specified attribute tween", f
 });
 
 tape("transition.attrTween(name) returns the attribute tween with the specified name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       interpolate = d3_interpolate.interpolateHcl("red", "blue"),
       tween = function() { return interpolate; },
       transition = d3_selection.select(root).transition().attrTween("foo", tween).on("start", started).on("end", ended);
@@ -125,7 +125,7 @@ tape("transition.attrTween(name) returns the attribute tween with the specified 
 });
 
 tape("transition.attrTween(name) coerces the specified name to a string", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       tween = function() {},
       transition = d3_selection.select(root).transition().attrTween("color", tween);
 

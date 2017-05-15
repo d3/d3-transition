@@ -1,10 +1,10 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_selection = require("d3-selection"),
     d3_transition = require("../../");
 
 tape("transition.selectAll(selector) selects the descendants matching the specified selector, then derives a transition", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'><child/></h1><h1 id='two'><child/></h1>"),
+  var document = jsdom("<h1 id='one'><child/></h1><h1 id='two'><child/></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition1 = d3_selection.selectAll([one, two]).data([1, 2]).transition().delay(function(d) { return d * 10; }),
@@ -22,7 +22,7 @@ tape("transition.selectAll(selector) selects the descendants matching the specif
 });
 
 tape("transition.selectAll(function) selects the descendants returned by the specified function, then derives a transition", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'><child/></h1><h1 id='two'><child/></h1>"),
+  var document = jsdom("<h1 id='one'><child/></h1><h1 id='two'><child/></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition1 = d3_selection.selectAll([one, two]).data([1, 2]).transition().delay(function(d) { return d * 10; }),

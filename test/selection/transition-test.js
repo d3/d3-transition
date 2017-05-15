@@ -1,12 +1,12 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_timer = require("d3-timer"),
     d3_ease = require("d3-ease"),
     d3_selection = require("d3-selection"),
     d3_transition = require("../../");
 
 tape("selection.transition() returns an instanceof d3.transition", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition();
   test.equal(transition instanceof d3_transition.transition, true);
@@ -14,7 +14,7 @@ tape("selection.transition() returns an instanceof d3.transition", function(test
 });
 
 tape("selection.transition() uses the default timing parameters", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition(),
       schedule = root.__transition[transition._id];
@@ -26,7 +26,7 @@ tape("selection.transition() uses the default timing parameters", function(test)
 });
 
 tape("selection.transition() assigns a monotonically-increasing id", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition1 = selection.transition(),
       transition2 = selection.transition(),
@@ -37,7 +37,7 @@ tape("selection.transition() assigns a monotonically-increasing id", function(te
 });
 
 tape("selection.transition() uses a default name of null", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition(),
       schedule = root.__transition[transition._id];
@@ -46,7 +46,7 @@ tape("selection.transition() uses a default name of null", function(test) {
 });
 
 tape("selection.transition(null) uses a name of null", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition(null),
       schedule = root.__transition[transition._id];
@@ -55,7 +55,7 @@ tape("selection.transition(null) uses a name of null", function(test) {
 });
 
 tape("selection.transition(undefined) uses a name of null", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition(undefined),
       schedule = root.__transition[transition._id];
@@ -64,7 +64,7 @@ tape("selection.transition(undefined) uses a name of null", function(test) {
 });
 
 tape("selection.transition(name) uses the specified name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition("foo"),
       schedule = root.__transition[transition._id];
@@ -73,7 +73,7 @@ tape("selection.transition(name) uses the specified name", function(test) {
 });
 
 tape("selection.transition(name) coerces the name to a string", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition({toString: function() { return "foo"; }}),
       schedule = root.__transition[transition._id];
@@ -82,7 +82,7 @@ tape("selection.transition(name) coerces the name to a string", function(test) {
 });
 
 tape("selection.transition(transition) inherits the id, name and timing from the corresponding parent in the specified transition", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'><child></h1><h1 id='two'><child></h1>"),
+  var document = jsdom("<h1 id='one'><child></h1><h1 id='two'><child></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       selection = d3_selection.selectAll([one, two]),
@@ -114,7 +114,7 @@ tape("selection.transition(transition) inherits the id, name and timing from the
 });
 
 tape("selection.transition(transition) reselects the existing transition with the specified transition’s id, if any", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       foo = function foo() {},
       bar = function bar() {},
       selection = d3_selection.select(root),

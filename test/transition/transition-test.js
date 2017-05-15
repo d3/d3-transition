@@ -1,5 +1,5 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_timer = require("d3-timer"),
     d3_selection = require("d3-selection");
 
@@ -9,7 +9,7 @@ tape("transition.transition() allows preceeding transitions with zero duration t
   var end0 = false,
       end1 = false,
       end2 = false,
-      root = jsdom.jsdom().documentElement,
+      root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition0 = selection.transition().duration(0).on("end", function() { end0 = true; }),
       transition1 = selection.transition().duration(0).on("end", function() { end1 = true; }),

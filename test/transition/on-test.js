@@ -1,5 +1,5 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("../jsdom"),
     d3_timer = require("d3-timer"),
     d3_selection = require("d3-selection"),
     state = require("./state");
@@ -7,14 +7,14 @@ var tape = require("tape"),
 require("../../");
 
 tape("transition.on(type, listener) throws an error if listener is not a function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.on("start", 42); });
   test.end();
 });
 
 tape("transition.on(typename) returns the listener with the specified typename, if any", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       foo = function() {},
       bar = function() {},
       transition = d3_selection.select(root).transition().on("start", foo).on("start.bar", bar);
@@ -26,28 +26,28 @@ tape("transition.on(typename) returns the listener with the specified typename, 
 });
 
 tape("transition.on(typename) throws an error if the specified type is not supported", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.on("foo"); });
   test.end();
 });
 
 tape("transition.on(typename, listener) throws an error if the specified type is not supported", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.on("foo", function() {}); });
   test.end();
 });
 
 tape("transition.on(typename, listener) throws an error if the specified listener is not a function", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition();
   test.throws(function() { transition.on("foo", 42); });
   test.end();
 });
 
 tape("transition.on(typename, null) removes the listener with the specified typename, if any", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       starts = 0,
       transition = d3_selection.select(root).transition().on("start.foo", function() { ++starts; }),
       schedule = root.__transition[transition._id];
@@ -63,7 +63,7 @@ tape("transition.on(typename, null) removes the listener with the specified type
 });
 
 tape("transition.on(\"start\", listener) registers a listener for the start event", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition().on("start", started),
       schedule = root.__transition[transition._id];
 
@@ -74,7 +74,7 @@ tape("transition.on(\"start\", listener) registers a listener for the start even
 });
 
 tape("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during start)", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().on("interrupt", interrupted),
       schedule = root.__transition[transition._id];
@@ -90,7 +90,7 @@ tape("transition.on(\"interrupt\", listener) registers a listener for the interr
 });
 
 tape("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during run)", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().on("interrupt", interrupted),
       schedule = root.__transition[transition._id];
@@ -106,7 +106,7 @@ tape("transition.on(\"interrupt\", listener) registers a listener for the interr
 });
 
 tape("transition.on(\"end\", listener) registers a listener for the end event", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       transition = d3_selection.select(root).transition().duration(50).on("end", ended),
       schedule = root.__transition[transition._id];
 
@@ -117,7 +117,7 @@ tape("transition.on(\"end\", listener) registers a listener for the end event", 
 });
 
 tape("transition.on(typename, listener) uses copy-on-write to apply changes", function(test) {
-  var document = jsdom.jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       foo = function() {},

@@ -1,11 +1,11 @@
 var tape = require("tape"),
-    jsdom = require("jsdom"),
+    jsdom = require("./jsdom"),
     d3_timer = require("d3-timer"),
     d3_selection = require("d3-selection"),
     d3_transition = require("../");
 
 tape("d3.active(node) returns null if the specified node has no active transition with the null name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
@@ -29,7 +29,7 @@ tape("d3.active(node) returns null if the specified node has no active transitio
 });
 
 tape("d3.active(node, null) returns null if the specified node has no active transition with the null name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
@@ -53,7 +53,7 @@ tape("d3.active(node, null) returns null if the specified node has no active tra
 });
 
 tape("d3.active(node, undefined) returns null if the specified node has no active transition with the null name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
@@ -77,7 +77,7 @@ tape("d3.active(node, undefined) returns null if the specified node has no activ
 });
 
 tape("d3.active(node, name) returns null if the specified node has no active transition with the specified name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
@@ -104,7 +104,7 @@ tape("d3.active(node, name) returns null if the specified node has no active tra
 });
 
 tape("d3.active(node) returns the active transition on the specified node with the null name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().on("start", check).tween("tween", tweened).on("end", ended);
 
@@ -130,7 +130,7 @@ tape("d3.active(node) returns the active transition on the specified node with t
 });
 
 tape("d3.active(node, name) returns the active transition on the specified node with the specified name", function(test) {
-  var root = jsdom.jsdom().documentElement,
+  var root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition("foo").on("start", check).tween("tween", tweened).on("end", ended);
 
