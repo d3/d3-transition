@@ -31,21 +31,23 @@ export default function(node, name, id, index, group, timing) {
   });
 }
 
+var tooLateErrorMessage = "You are trying to modify a transition that has already started, or derive a transition from one that has ended";
+
 export function init(node, id) {
   var schedule = node.__transition;
-  if (!schedule || !(schedule = schedule[id]) || schedule.state > CREATED) throw new Error("too late");
+  if (!schedule || !(schedule = schedule[id]) || schedule.state > CREATED) throw new Error(tooLateErrorMessage);
   return schedule;
 }
 
 export function set(node, id) {
   var schedule = node.__transition;
-  if (!schedule || !(schedule = schedule[id]) || schedule.state > STARTING) throw new Error("too late");
+  if (!schedule || !(schedule = schedule[id]) || schedule.state > STARTING) throw new Error(tooLateErrorMessage);
   return schedule;
 }
 
 export function get(node, id) {
   var schedule = node.__transition;
-  if (!schedule || !(schedule = schedule[id])) throw new Error("too late");
+  if (!schedule || !(schedule = schedule[id])) throw new Error(tooLateErrorMessage);
   return schedule;
 }
 
