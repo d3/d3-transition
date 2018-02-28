@@ -16,7 +16,7 @@ export default function(node, name) {
     active = schedule.state > STARTING && schedule.state < ENDING;
     schedule.state = ENDED;
     schedule.timer.stop();
-    if (active) schedule.on.call("interrupt", node, node.__data__, schedule.index, schedule.group);
+    schedule.on.call(active ? "interrupt" : "cancel", node, node.__data__, schedule.index, schedule.group);
     delete schedules[i];
   }
 
