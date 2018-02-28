@@ -1,7 +1,7 @@
 import {dispatch} from "d3-dispatch";
 import {timer, timeout} from "d3-timer";
 
-var emptyOn = dispatch("start", "end", "interrupt");
+var emptyOn = dispatch("start", "end", "cancel", "interrupt");
 var emptyTween = [];
 
 export var CREATED = 0;
@@ -82,7 +82,6 @@ function create(node, id, self) {
       if (o.state === STARTED) return timeout(start);
 
       // Interrupt the active transition, if any.
-      // Dispatch the interrupt event.
       if (o.state === RUNNING) {
         o.state = ENDED;
         o.timer.stop();
@@ -90,12 +89,11 @@ function create(node, id, self) {
         delete schedules[i];
       }
 
-      // Cancel any pre-empted transitions. No interrupt event is dispatched
-      // because the cancelled transitions never started. Note that this also
-      // removes this transition from the pending list!
+      // Cancel any pre-empted transitions.
       else if (+i < id) {
         o.state = ENDED;
         o.timer.stop();
+        o.on.call("cancel", node, node.__data__, o.index, o.group);
         delete schedules[i];
       }
     }

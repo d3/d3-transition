@@ -357,6 +357,7 @@ Adds or removes a *listener* to each selected element for the specified event *t
 * `start` - when the transition starts.
 * `end` - when the transition ends.
 * `interrupt` - when the transition is interrupted.
+* `cancel` - when the transition is cancelled.
 
 See [The Life of a Transition](#the-life-of-a-transition) for more. Note that these are *not* native DOM events as implemented by [*selection*.on](https://github.com/d3/d3-selection#selection_on) and [*selection*.dispatch](https://github.com/d3/d3-selection#selection_dispatch), but transition events!
 
