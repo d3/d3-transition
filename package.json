@@ -15,7 +15,7 @@
     "name": "Mike Bostock",
     "url": "http://bost.ocks.org/mike"
   },
-  "main": "build/d3-transition.js",
+  "main": "dist/d3-transition.js",
   "module": "index",
   "jsnext:main": "index",
   "repository": {
@@ -23,10 +23,10 @@
     "url": "https://github.com/d3/d3-transition.git"
   },
   "scripts": {
-    "pretest": "rm -rf build && mkdir build && rollup --banner \"$(preamble)\" -f umd -g d3-color:d3,d3-interpolate:d3,d3-ease:d3,d3-dispatch:d3,d3-selection:d3,d3-timer:d3 -n d3 -o build/d3-transition.js -- index.js",
-    "test": "tape 'test/**/*-test.js' && eslint index.js src test",
-    "prepublish": "npm run test && uglifyjs --preamble \"$(preamble)\" build/d3-transition.js -c -m -o build/d3-transition.min.js",
-    "postpublish": "git push && git push --tags && cd ../d3.github.com && git pull && cp ../d3-transition/build/d3-transition.js d3-transition.v1.js && cp ../d3-transition/build/d3-transition.min.js d3-transition.v1.min.js && git add d3-transition.v1.js d3-transition.v1.min.js && git commit -m \"d3-transition ${npm_package_version}\" && git push && cd - && zip -j build/d3-transition.zip -- LICENSE README.md build/d3-transition.js build/d3-transition.min.js"
+    "pretest": "rm -rf dist && mkdir dist && rollup -c --banner \"$(preamble)\"",
+    "test": "tape 'test/**/*-test.js' && eslint index.js src",
+    "prepublishOnly": "npm run test && uglifyjs -b beautify=false,preamble=\"'$(preamble)'\" dist/d3-transition.js -c -m -o dist/d3-transition.min.js",
+    "postpublish": "git push && git push --tags && cd ../d3.github.com && git pull && cp ../d3-transition/dist/d3-transition.js d3-transition.v1.js && cp ../d3-transition/dist/d3-transition.min.js d3-transition.v1.min.js && git add d3-transition.v1.js d3-transition.v1.min.js && git commit -m \"d3-transition ${npm_package_version}\" && git push && cd - && zip -j dist/d3-transition.zip -- LICENSE README.md dist/d3-transition.js dist/d3-transition.min.js"
   },
   "dependencies": {
     "d3-color": "1",
@@ -37,11 +37,11 @@
     "d3-timer": "1"
   },
   "devDependencies": {
-    "eslint": "3",
+    "eslint": "4",
     "package-preamble": "0.1",
-    "rollup": "0.41",
-    "jsdom": "10",
+    "rollup": "0.55",
+    "jsdom": "11",
     "tape": "4",
-    "uglify-js": "^2.8.11"
+    "uglify-js": "3.2"
   }
 }
