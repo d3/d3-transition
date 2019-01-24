@@ -42,7 +42,6 @@ function styleFunction(name, interpolate, value) {
     var string0 = style(this, name),
         value1 = value(this),
         string1 = value1 + "";
-    console.log({value1});
     if (value1 == null) string1 = value1 = (this.style.removeProperty(name), style(this, name));
     return string0 === string1 ? null
         : string0 === string00 && string1 === string10 ? interpolate0
