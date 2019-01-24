@@ -63,6 +63,88 @@ tape("transition.attr(name, value) creates a namespaced tween to the value retur
   }, 125);
 });
 
+tape("transition.attr(name, constant) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).attr("foo", 1),
+      transition = selection.transition().attr("foo", 1);
+
+  d3_timer.timeout(function(elapsed) {
+    root.setAttribute("foo", 2);
+  }, 125);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.getAttribute("foo"), "2");
+    test.end();
+  }, 250);
+});
+
+tape("transition.attr(ns:name, constant) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).attr("svg:foo", 1),
+      transition = selection.transition().attr("svg:foo", 1);
+
+  d3_timer.timeout(function(elapsed) {
+    root.setAttributeNS("http://www.w3.org/2000/svg", "foo", 2);
+  }, 125);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), "2");
+    test.end();
+  }, 250);
+});
+
+tape("transition.attr(name, function) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).attr("foo", 1),
+      transition = selection.transition().attr("foo", function() { return 1; });
+
+  d3_timer.timeout(function(elapsed) {
+    root.setAttribute("foo", 2);
+  }, 125);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.getAttribute("foo"), "2");
+    test.end();
+  }, 250);
+});
+
+tape("transition.attr(ns:name, function) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).attr("svg:foo", 1),
+      transition = selection.transition().attr("svg:foo", function() { return 1; });
+
+  d3_timer.timeout(function(elapsed) {
+    root.setAttributeNS("http://www.w3.org/2000/svg", "foo", 2);
+  }, 125);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), "2");
+    test.end();
+  }, 250);
+});
+
+tape("transition.attr(name, constant) uses interpolateNumber if value is a number", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).attr("foo", "15px"),
+      transition = selection.transition().attr("foo", 10);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.getAttribute("foo"), "NaN");
+    test.end();
+  }, 125);
+});
+
+tape("transition.attr(name, function) uses interpolateNumber if value is a number", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).attr("foo", "15px"),
+      transition = selection.transition().attr("foo", () => 10);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.getAttribute("foo"), "NaN");
+    test.end();
+  }, 125);
+});
+
 tape("transition.attr(name, value) immediately evaluates the specified function with the expected context and arguments", function(test) {
   var document = jsdom("<h1 id='one' fill='cyan'></h1><h1 id='two' fill='magenta'></h1>"),
       one = document.querySelector("#one"),

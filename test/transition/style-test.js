@@ -103,6 +103,36 @@ tape("transition.style(name, value) creates an tween which removes the specified
   });
 });
 
+tape("transition.style(name, constant) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).style("opacity", 1),
+      transition = selection.transition().style("opacity", 1);
+
+  d3_timer.timeout(function(elapsed) {
+    root.style.opacity = 0.5;
+  }, 125);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.style.getPropertyValue("opacity"), "0.5");
+    test.end();
+  }, 250);
+});
+
+tape("transition.style(name, function) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).style("opacity", 1),
+      transition = selection.transition().style("opacity", function() { return 1; });
+
+  d3_timer.timeout(function(elapsed) {
+    root.style.opacity = 0.5;
+  }, 125);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.style.getPropertyValue("opacity"), "0.5");
+    test.end();
+  }, 250);
+});
+
 tape("transition.style(name, value) interpolates numbers", function(test) {
   var root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
@@ -113,6 +143,28 @@ tape("transition.style(name, value) interpolates numbers", function(test) {
 
   d3_timer.timeout(function(elapsed) {
     test.strictEqual(root.style.getPropertyValue("opacity"), interpolate(ease(elapsed / duration)) + "");
+    test.end();
+  }, 125);
+});
+
+tape("transition.style(name, constant) uses interpolateNumber if value is a number", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).style("font-size", "15px"),
+      transition = selection.transition().style("font-size", 10);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.style.getPropertyValue("font-size"), "NaN");
+    test.end();
+  }, 125);
+});
+
+tape("transition.style(name, function) uses interpolateNumber if value is a number", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).style("font-size", "15px"),
+      transition = selection.transition().style("font-size", () => 10);
+
+  d3_timer.timeout(function(elapsed) {
+    test.strictEqual(root.style.getPropertyValue("font-size"), "NaN");
     test.end();
   }, 125);
 });
