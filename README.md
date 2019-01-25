@@ -350,6 +350,10 @@ If a *value* is not specified, returns the current easing function for the first
 
 For advanced usage, transitions provide methods for custom control flow.
 
+<a name="transition_end" href="#transition_end">#</a> <i>transition</i>.<b>end</b>() [<>](https://github.com/d3/d3-transition/blob/master/src/transition/end.js "Source")
+
+Returns a promise that resolves when every selected element finishes transitioning. If any element’s transition is cancelled or interrupted, the promise rejects.
+
 <a name="transition_on" href="#transition_on">#</a> <i>transition</i>.<b>on</b>(<i>typenames</i>[, <i>listener</i>]) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/on.js "Source")
 
 Adds or removes a *listener* to each selected element for the specified event *typenames*. The *typenames* is one of the following string event types:
