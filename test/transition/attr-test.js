@@ -289,7 +289,7 @@ tape("transition.attr(name, value) creates an attrTween with the specified name"
   var root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("fill", "red"),
       transition = selection.transition().attr("fill", "blue");
-  test.equal(transition.attrTween("fill").call(root)(0.5), "rgb(128, 0, 128)");
+  test.equal(transition.attrTween("fill").call(root).call(root, 0.5), "rgb(128, 0, 128)");
   test.end();
 });
 
@@ -297,7 +297,7 @@ tape("transition.attr(name, value) creates a tween with the name \"attr.name\"",
   var root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("fill", "red"),
       transition = selection.transition().attr("fill", "blue");
-  transition.tween("attr.fill").call(root)(0.5);
+  transition.tween("attr.fill").call(root).call(root, 0.5);
   test.equal(root.getAttribute("fill"), "rgb(128, 0, 128)");
   test.end();
 });

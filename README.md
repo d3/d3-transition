@@ -307,9 +307,9 @@ For example, to interpolate the fill attribute to blue, like [*transition*.attr]
 
 ```js
 transition.tween("attr.fill", function() {
-  var node = this, i = d3.interpolateRgb(node.getAttribute("fill"), "blue");
+  var i = d3.interpolateRgb(this.getAttribute("fill"), "blue");
   return function(t) {
-    node.setAttribute("fill", i(t));
+    this.setAttribute("fill", i(t));
   };
 });
 ```
@@ -420,7 +420,7 @@ Immediately after creating a transition, such as by [*selection*.transition](#se
 
 Shortly after creation, either at the end of the current frame or during the next frame, the transition is scheduled. At this point, the delay and `start` event listeners may no longer be changed; attempting to do so throws an error with the message “too late: already scheduled” (or if the transition has ended, “transition not found”).
 
-When the transition subsequently starts, it interrupts the active transition of the same name on the same element, if any, dispatching an `interrupt` event to registered listeners. (Note that interrupts happen on start, not creation, and thus even a zero-delay transition will not immediately interrupt the active transition: the old transition is given a final frame. Use [*selection*.interrupt](#selection_interrupt) to interrupt immediately.) The starting transition also cancels any pending transitions of the same name on the same element that were created before the starting transition. The transition then dispatches a `start` event to registered listeners. This is the last moment at which the transition may be modified: after starting, the transition’s timing, tweens, and listeners may no longer be changed; attempting to do so throws an error with the message “too late: already started” (or if the transition has ended, “transition not found”). The transition initializes its tweens immediately after starting.
+When the transition subsequently starts, it interrupts the active transition of the same name on the same element, if any, dispatching an `interrupt` event to registered listeners. (Note that interrupts happen on start, not creation, and thus even a zero-delay transition will not immediately interrupt the active transition: the old transition is given a final frame. Use [*selection*.interrupt](#selection_interrupt) to interrupt immediately.) The starting transition also cancels any pending transitions of the same name on the same element that were created before the starting transition. The transition then dispatches a `start` event to registered listeners. This is the last moment at which the transition may be modified: the transition’s timing, tweens, and listeners may not be changed when it is running; attempting to do so throws an error with the message “too late: already running” (or if the transition has ended, “transition not found”). The transition initializes its tweens immediately after starting.
 
 During the frame the transition starts, but *after* all transitions starting this frame have been started, the transition invokes its tweens for the first time. Batching tween initialization, which typically involves reading from the DOM, improves performance by avoiding interleaved DOM reads and writes.
 

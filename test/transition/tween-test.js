@@ -46,7 +46,7 @@ tape("transition.tween(name, value) passes the eased time to the interpolator", 
 
   function interpolate(t) {
     "use strict";
-    test.equal(this, null);
+    test.equal(this, root);
     test.equal(t, schedule.state === state.ENDING ? 1 : ease((d3_timer.now() - then) / duration));
   }
 });

@@ -59,6 +59,15 @@ tape("transition.style(name, value) immediately evaluates the specified function
   }, 125);
 });
 
+tape("transition.style(name, value) recycles tweens ", function(test) {
+  var document = jsdom("<h1 id='one' style='color:#f0f;'></h1><h1 id='two' style='color:#f0f;'></h1>"),
+      one = document.querySelector("#one"),
+      two = document.querySelector("#two"),
+      transition = d3_selection.selectAll([one, two]).transition().style("color", "red");
+  test.strictEqual(one.__transition[transition._id].tween, two.__transition[transition._id].tween);
+  test.end();
+});
+
 tape("transition.style(name, value) constructs an interpolator using the current value on start", function(test) {
   var root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
@@ -77,6 +86,21 @@ tape("transition.style(name, null) creates an tween which removes the specified 
   var root = jsdom().documentElement,
       selection = d3_selection.select(root).style("color", "red"),
       transition = selection.transition().style("color", null).on("start", started);
+
+  function started() {
+    test.equal(root.style.getPropertyValue("color"), "red");
+  }
+
+  d3_timer.timeout(function(elapsed) {
+    test.equal(root.style.getPropertyValue("color"), "");
+    test.end();
+  });
+});
+
+tape("transition.style(name, null) creates an tween which removes the specified style post-start", function(test) {
+  var root = jsdom().documentElement,
+      selection = d3_selection.select(root).style("color", "red"),
+      transition = selection.transition().style("color", () => null).on("start", started);
 
   function started() {
     test.equal(root.style.getPropertyValue("color"), "red");
@@ -201,7 +225,7 @@ tape("transition.style(name, value) creates an styleTween with the specified nam
   var root = jsdom().documentElement,
       selection = d3_selection.select(root).style("color", "red"),
       transition = selection.transition().style("color", "blue");
-  test.equal(transition.styleTween("color").call(root)(0.5), "rgb(128, 0, 128)");
+  test.equal(transition.styleTween("color").call(root).call(root, 0.5), "rgb(128, 0, 128)");
   test.end();
 });
 
@@ -209,7 +233,7 @@ tape("transition.style(name, value) creates a tween with the name \"style.name\"
   var root = jsdom().documentElement,
       selection = d3_selection.select(root).style("color", "red"),
       transition = selection.transition().style("color", "blue");
-  transition.tween("style.color").call(root)(0.5);
+  transition.tween("style.color").call(root).call(root, 0.5);
   test.equal(root.style.getPropertyValue("color"), "rgb(128, 0, 128)");
   test.end();
 });
