@@ -1,4 +1,4 @@
-import {get, set, init} from "./schedule";
+import {get, set, init} from "./schedule.js";
 
 function start(name) {
   return (name + "").trim().split(/^|\s+/).every(function(t) {

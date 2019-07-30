@@ -1,4 +1,4 @@
-import interrupt from "../interrupt";
+import interrupt from "../interrupt.js";
 
 export default function(name) {
   return this.each(function() {

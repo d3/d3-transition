@@ -1,5 +1,5 @@
-import {Transition, newId} from "./index";
-import schedule, {get} from "./schedule";
+import {Transition, newId} from "./index.js";
+import schedule, {get} from "./schedule.js";
 
 export default function() {
   var name = this._name,

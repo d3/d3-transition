@@ -1,5 +1,5 @@
-import {Transition, newId} from "../transition/index";
-import schedule from "../transition/schedule";
+import {Transition, newId} from "../transition/index.js";
+import schedule from "../transition/schedule.js";
 import {easeCubicInOut} from "d3-ease";
 import {now} from "d3-timer";
 

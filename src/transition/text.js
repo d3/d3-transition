@@ -1,4 +1,4 @@
-import {tweenValue} from "./tween";
+import {tweenValue} from "./tween.js";
 
 function textConstant(value) {
   return function() {
