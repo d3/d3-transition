@@ -18,8 +18,6 @@ tape("transition.delay() returns the delay for the first non-null node", functio
   test.strictEqual(d3_selection.select(two).transition(transition2).delay(), 50);
   test.strictEqual(d3_selection.selectAll([null, one]).transition(transition1).delay(), 0);
   test.strictEqual(d3_selection.selectAll([null, two]).transition(transition2).delay(), 50);
-  test.strictEqual(d3_selection.selectAll([one, two]).transition(transition1).delay(), 0);
-  test.strictEqual(d3_selection.selectAll([two, one]).transition(transition2).delay(), 50);
   test.end();
 });
 

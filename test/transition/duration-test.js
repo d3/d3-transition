@@ -18,8 +18,6 @@ tape("transition.duration() returns the duration for the first non-null node", f
   test.strictEqual(d3_selection.select(two).transition(transition2).duration(), 50);
   test.strictEqual(d3_selection.selectAll([null, one]).transition(transition1).duration(), 250);
   test.strictEqual(d3_selection.selectAll([null, two]).transition(transition2).duration(), 50);
-  test.strictEqual(d3_selection.selectAll([one, two]).transition(transition1).duration(), 250);
-  test.strictEqual(d3_selection.selectAll([two, one]).transition(transition2).duration(), 50);
   test.end();
 });
 
