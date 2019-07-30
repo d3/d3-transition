@@ -1,4 +1,4 @@
-import {set} from "./schedule";
+import {set} from "./schedule.js";
 
 export default function() {
   var on0, on1, that = this, id = that._id, size = that.size();

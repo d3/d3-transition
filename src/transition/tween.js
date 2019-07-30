@@ -1,4 +1,4 @@
-import {get, set} from "./schedule";
+import {get, set} from "./schedule.js";
 
 function tweenRemove(id, name) {
   var tween0, tween1;

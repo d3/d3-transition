@@ -1,8 +1,8 @@
 import {interpolateTransformCss as interpolateTransform} from "d3-interpolate";
 import {style} from "d3-selection";
-import {set} from "./schedule";
-import {tweenValue} from "./tween";
-import interpolate from "./interpolate";
+import {set} from "./schedule.js";
+import {tweenValue} from "./tween.js";
+import interpolate from "./interpolate.js";
 
 function styleNull(name, interpolate) {
   var string00,

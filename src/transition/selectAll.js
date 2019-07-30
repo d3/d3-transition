@@ -1,6 +1,6 @@
 import {selectorAll} from "d3-selection";
-import {Transition} from "./index";
-import schedule, {get} from "./schedule";
+import {Transition} from "./index.js";
+import schedule, {get} from "./schedule.js";
 
 export default function(select) {
   var name = this._name,

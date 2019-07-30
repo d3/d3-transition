@@ -1,4 +1,4 @@
-import {get, init} from "./schedule";
+import {get, init} from "./schedule.js";
 
 function delayFunction(id, value) {
   return function() {

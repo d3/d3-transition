@@ -1,4 +1,4 @@
-import "./selection/index";
-export {default as transition} from "./transition/index";
-export {default as active} from "./active";
-export {default as interrupt} from "./interrupt";
+import "./selection/index.js";
+export {default as transition} from "./transition/index.js";
+export {default as active} from "./active.js";
+export {default as interrupt} from "./interrupt.js";

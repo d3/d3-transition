@@ -1,4 +1,4 @@
-import {Transition} from "./index";
+import {Transition} from "./index.js";
 
 export default function(transition) {
   if (transition._id !== this._id) throw new Error;

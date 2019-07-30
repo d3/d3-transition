@@ -1,4 +1,4 @@
-import {get, set} from "./schedule";
+import {get, set} from "./schedule.js";
 
 function easeConstant(id, value) {
   if (typeof value !== "function") throw new Error;
