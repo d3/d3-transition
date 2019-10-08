@@ -1,7 +1,7 @@
 import {interpolateTransformSvg as interpolateTransform} from "d3-interpolate";
 import {namespace} from "d3-selection";
-import {tweenValue} from "./tween";
-import interpolate from "./interpolate";
+import {tweenValue} from "./tween.js";
+import interpolate from "./interpolate.js";
 
 function attrRemove(name) {
   return function() {

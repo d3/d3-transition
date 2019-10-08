@@ -1,5 +1,5 @@
 import {matcher} from "d3-selection";
-import {Transition} from "./index";
+import {Transition} from "./index.js";
 
 export default function(match) {
   if (typeof match !== "function") match = matcher(match);

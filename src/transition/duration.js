@@ -1,4 +1,4 @@
-import {get, set} from "./schedule";
+import {get, set} from "./schedule.js";
 
 function durationFunction(id, value) {
   return function() {

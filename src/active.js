@@ -1,5 +1,5 @@
-import {Transition} from "./transition/index";
-import {SCHEDULED} from "./transition/schedule";
+import {Transition} from "./transition/index.js";
+import {SCHEDULED} from "./transition/schedule.js";
 
 var root = [null];
 

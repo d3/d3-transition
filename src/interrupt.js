@@ -1,4 +1,4 @@
-import {STARTING, ENDING, ENDED} from "./transition/schedule";
+import {STARTING, ENDING, ENDED} from "./transition/schedule.js";
 
 export default function(node, name) {
   var schedules = node.__transition,
