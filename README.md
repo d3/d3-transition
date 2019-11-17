@@ -293,7 +293,21 @@ This method is useful to specify a custom interpolator, such as with *data inter
 
 For each selected element, sets the [text content](http://www.w3.org/TR/DOM-Level-3-Core/core.html#Node3-textContent) to the specified target *value* when the transition starts. The *value* may be specified either as a constant or a function. If a function, it is immediately evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The function’s return value is then used to set each element’s text content. A null value will clear the content.
 
-To interpolate text rather than to set it on start, use [*transition*.tween](#transition_tween) ([for example](http://bl.ocks.org/mbostock/7004f92cac972edef365)) or append a replacement element and cross-fade opacity ([for example](http://bl.ocks.org/mbostock/f7dcecb19c4af317e464)). Text is not interpolated by default because it is usually undesirable.
+To interpolate text rather than to set it on start, use [*transition*.textTween](#transition_textTween) ([for example](http://bl.ocks.org/mbostock/7004f92cac972edef365)) or append a replacement element and cross-fade opacity ([for example](http://bl.ocks.org/mbostock/f7dcecb19c4af317e464)). Text is not interpolated by default because it is usually undesirable.
+
+<a name="transition_textTween" href="#transition_textTween">#</a> <i>transition</i>.<b>textTween</b>(<i>factory</i>) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/textTween.js "Source")
+
+If *factory* is specified and not null, assigns the text [tween](#transition_tween) to the specified interpolator *factory*. An interpolator factory is a function that returns an [interpolator](https://github.com/d3/d3-interpolate); when the transition starts, the *factory* is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator will then be invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1]. Lastly, the return value of the interpolator will be used to set the text. The interpolator must return a string.
+
+For example, to interpolate the text with integers from 0 to 100:
+
+```js
+transition.textTween(function() {
+  return d3.interpolateRound(0, 100);
+});
+```
+
+If the specified *factory* is null, removes the previously-assigned text tween, if any. If *factory* is not specified, returns the current interpolator factory for text, or undefined if no such tween exists.
 
 <a name="transition_remove" href="#transition_remove">#</a> <i>transition</i>.<b>remove</b>() [<>](https://github.com/d3/d3-transition/blob/master/src/transition/remove.js "Source")
 
