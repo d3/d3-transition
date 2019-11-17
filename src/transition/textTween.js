@@ -1,6 +1,6 @@
 function textInterpolate(i) {
   return function(t) {
-    this.textContent = i(t);
+    this.textContent = i.call(this, t);
   };
 }
 
