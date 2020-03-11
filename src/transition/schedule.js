@@ -130,7 +130,7 @@ function create(node, id, self) {
   function getProgress(elapsed) {
     if (self.paused) {
       if (self.progress >= 0) {
-        elapsed = self.progress * self.duration;
+        elapsed = self._lastprogress !== self.progress ? self.progress * self.duration : -1;
       } else {
         self.progress = elapsed / self.duration;
       }
