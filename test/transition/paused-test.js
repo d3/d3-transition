@@ -110,7 +110,7 @@ tape("transition.on(\"progress\", listener) event to notify animation progress",
   }, 150);
 
   function onProgress(data, index, grp, progress) {
-    test.ok(progress > lastProgress, progress);
+    test.ok(progress >= lastProgress, `${progress} >= ${lastProgress}`);
     lastProgress = progress;
   }
 
@@ -119,6 +119,43 @@ tape("transition.on(\"progress\", listener) event to notify animation progress",
     test.ok(t > 150);
     test.strictEqual(transition.progress(), 1);
     test.strictEqual(lastProgress, 1);
+    test.end();
+  }
+});
+
+tape("transition.on(\"progress\", listener) event should work on paused status", function(test) {
+  var root = jsdom().documentElement,
+      duration = 100,
+      selection = d3_selection.select(root).attr("t", 0),
+      transition = selection.transition().duration(duration).attr("t", 100).paused(true)
+      .on('progress', onProgress)
+      .on("end", ended);
+  var beginTime = d3_timer.now();
+  var progresses = [];
+
+  d3_timer.timeout(function(elapsed) {
+    test.ok(progresses.length);
+    test.strictEqual(transition.progress(), progresses[0]);
+    transition.progress(0.2);
+  }, 50);
+
+  d3_timer.timeout(function(elapsed) {
+    test.ok(progresses.length === 2, `progresses.length(${progresses.length}) === 2`);
+    test.strictEqual(transition.progress(), progresses[1]);
+    transition.progress(1);
+  }, 100);
+
+  function onProgress(data, index, grp, progress) {
+    progresses.push(progress);
+  }
+
+  function ended() {
+    var t = d3_timer.now() - beginTime;
+    test.ok(t >= 100);
+    test.ok(t < 150);
+    test.ok(progresses.length === 3, `progresses.length(${progresses.length}) === 3`);
+    test.strictEqual(progresses[2], 1);
+    test.strictEqual(transition.progress(), 1);
     test.end();
   }
 });
