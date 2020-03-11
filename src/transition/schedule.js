@@ -127,7 +127,20 @@ function create(node, id, self) {
     tween.length = j + 1;
   }
 
+  function getProgress(elapsed) {
+    if (self.paused) {
+      if (self.progress >= 0) elapsed = self.progress * self.duration;
+      else self.progress = elapsed / self.duration;
+    } else if (self.progress >= 0) {
+      self.timer.restart(tick, 0, self.time + self.progress * self.duration);
+      elapsed = self.progress = -1;
+    }
+    return elapsed;
+  }
+
   function tick(elapsed) {
+    elapsed = getProgress(elapsed);
+    if (elapsed < 0) return;
     var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING, 1),
         i = -1,
         n = tween.length;
