@@ -377,7 +377,7 @@ If a *value* is not specified, returns the current value of the paused for the f
 
 <a name="transition_progress" href="#transition_progress">#</a> <i>transition</i>.<b>progress</b>([<i>value</i>]) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/progress.js "Source")
 
-The progress is a value between 0(begin) to 1(end). You can set the progress of the transition at any time, Note: the value is negative if get the progress on the runtime status.
+The progress is a value between 0(begin) to 1(end). You can set or get the progress of the transition at any time.
 
 ```js
 transition.progress(0.5);

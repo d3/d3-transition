@@ -12,6 +12,11 @@ function progressConstant(id, value) {
   };
 }
 
+function abs(value) {
+  if (value < 0) value = -value;
+  return value;
+}
+
 export default function(value) {
   var id = this._id;
 
@@ -19,5 +24,5 @@ export default function(value) {
       ? this.each((typeof value === "function"
           ? progressFunction
           : progressConstant)(id, value))
-      : get(this.node(), id).progress;
+      : abs(get(this.node(), id).progress);
 }
