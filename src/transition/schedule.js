@@ -1,7 +1,7 @@
 import {dispatch} from "d3-dispatch";
 import {timer, timeout} from "d3-timer";
 
-var emptyOn = dispatch("start", "end", "cancel", "interrupt");
+var emptyOn = dispatch("start", "end", "cancel", "interrupt", "progress");
 var emptyTween = [];
 
 export var CREATED = 0;
@@ -129,15 +129,22 @@ function create(node, id, self) {
 
   function getProgress(elapsed) {
     if (self.paused) {
-      if (self.progress >= 0) elapsed = self.progress * self.duration;
-      else self.progress = elapsed / self.duration;
+      if (self.progress >= 0) {
+        elapsed = self.progress * self.duration;
+      } else {
+        self.progress = elapsed / self.duration;
+        self.on.call("progress", node, node.__data__, self.index, self.group, self.progress);
+      }
     } else if (self.progress >= 0) {
       self.timer.restart(tick, 0, self.time + self.progress * self.duration);
-      elapsed = self.progress = -1;
-    } else if (elapsed >= self.duration) {
-      self.progress = -1;
+      elapsed = self.progress = - (self.progress + 1e-10);
     } else {
-      self.progress = - (elapsed / self.duration);
+      if (elapsed >= self.duration) {
+        self.progress = -1;
+      } else {
+        self.progress = - (elapsed / self.duration);
+      }
+      self.on.call("progress", node, node.__data__, self.index, self.group, -self.progress);
     }
     return elapsed;
   }
