@@ -40,7 +40,7 @@ tape("transition.paused(true) allows pause the transition animation", function(t
   }
 });
 
-tape.only("transition.progress() allows get the progrss of the transition animation", function(test) {
+tape("transition.progress() allows get the progrss of the transition animation", function(test) {
   var root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 100,
