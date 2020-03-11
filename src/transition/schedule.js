@@ -134,7 +134,8 @@ function create(node, id, self) {
     } else if (self.progress >= 0) {
       self.timer.restart(tick, 0, self.time + self.progress * self.duration);
       elapsed = self.progress = -1;
-    }
+    } else
+      self.progress = - (elapsed / self.duration);
     return elapsed;
   }
 
