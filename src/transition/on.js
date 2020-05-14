@@ -1,7 +1,7 @@
 import {get, set, init} from "./schedule.js";
 
 function start(name) {
-  return (name + "").trim().split(/^|\s+/).every(function(t) {
+  return (name + "").trim().split(/\s+/).filter(function(t) { return t; }).every(function(t) {
     var i = t.indexOf(".");
     if (i >= 0) t = t.slice(0, i);
     return !t || t === "start";
