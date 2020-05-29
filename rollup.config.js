@@ -5,7 +5,7 @@ const config = {
   input: "src/index.js",
   external: Object.keys(meta.dependencies || {}).filter(key => /^d3-/.test(key)),
   output: {
-    file: `dist/${meta.name}.js`,
+    file: `dist/${meta.name.replace("@recifs/", "")}.js`,
     name: "d3",
     format: "umd",
     indent: false,
