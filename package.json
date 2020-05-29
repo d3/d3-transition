@@ -1,6 +1,6 @@
 {
   "name": "@recifs/d3-transition",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-alpha.3",
   "description": "Animated transitions for D3 selections.",
   "keywords": [
     "d3",
