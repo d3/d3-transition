@@ -42,7 +42,7 @@
     "d3-timer": "1 - 2"
   },
   "peerDependencies": {
-    "d3-selection": "1.1.0 - 2"
+    "d3-selection": "2"
   },
   "devDependencies": {
     "d3-selection": "1.1.0 - 2",
