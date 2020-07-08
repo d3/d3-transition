@@ -24,6 +24,6 @@ export default function() {
     });
 
     // The selection was empty, resolve end immediately
-    if (!size) resolve();
+    if (size === 0) resolve();
   });
 }
