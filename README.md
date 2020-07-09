@@ -394,7 +394,7 @@ Returns a promise that resolves when every selected element finishes transitioni
 Adds or removes a *listener* to each selected element for the specified event *typenames*. The *typenames* is one of the following string event types:
 
 * `start` - when the transition starts.
-* `progress` - notify the the transition progress.
+* `progress` - notify when the transition progresses.
 * `end` - when the transition ends.
 * `interrupt` - when the transition is interrupted.
 * `cancel` - when the transition is cancelled.
