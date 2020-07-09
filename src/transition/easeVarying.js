@@ -10,6 +10,5 @@ function easeVarying(id, value) {
 
 export default function(value) {
   if (typeof value !== "function") throw new Error;
-  var id = this._id;
-  return this.each(easeVarying(id, value));
+  return this.each(easeVarying(this._id, value));
 }
