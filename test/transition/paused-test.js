@@ -162,7 +162,7 @@ tape("transition.on(\"progress\", listener) event should work on paused status",
 
 tape("transition.progress(true) should pause the animation", function(test) {
   var root = jsdom().documentElement,
-      duration = 1500,
+      duration = 2000,
       selection = d3_selection.select(root).attr("t", 0),
       transition = selection.transition().duration(duration).attr("t", 100)
       .on("progress", onProgress)
@@ -174,14 +174,14 @@ tape("transition.progress(true) should pause the animation", function(test) {
   d3_timer.timeout(function(elapsed) {
     transition.paused(true);
     lastProgress = transition.progress();
-    test.ok(lastProgress >= 0.5, "lastProgress should >= 0.5");
-    test.ok(lastProgress <= 0.6, "lastProgress should <= 0.6");
-  }, 750);
+    test.ok(lastProgress >= 0.25, lastProgress + " progress should >= 0.25");
+    test.ok(lastProgress <= 0.35, lastProgress + " progress should <= 0.35");
+  }, 600);
 
   d3_timer.timeout(function(elapsed) {
     needCheck = 1;
     transition.paused(false);
-  }, 1600);
+  }, 2100);
 
   function onProgress(data, index, grp, progress) {
     if (needCheck && needCheck <=2) {
