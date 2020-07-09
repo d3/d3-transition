@@ -128,7 +128,7 @@ tape("transition.on(\"progress\", listener) event should work on paused status",
       duration = 100,
       selection = d3_selection.select(root).attr("t", 0),
       transition = selection.transition().duration(duration).attr("t", 100).paused(true)
-      .on('progress', onProgress)
+      .on("progress", onProgress)
       .on("end", ended);
   var beginTime = d3_timer.now();
   var progresses = [];
