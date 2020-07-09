@@ -160,7 +160,7 @@ tape("transition.on(\"progress\", listener) event should work on paused status",
   }
 });
 
-tape.only("transition.progress(true) should pause the animation", function(test) {
+tape("transition.progress(true) should pause the animation", function(test) {
   var root = jsdom().documentElement,
       duration = 1500,
       selection = d3_selection.select(root).attr("t", 0),
