@@ -159,3 +159,41 @@ tape("transition.on(\"progress\", listener) event should work on paused status",
     test.end();
   }
 });
+
+tape.only("transition.progress(true) should pause the animation", function(test) {
+  var root = jsdom().documentElement,
+      duration = 1500,
+      selection = d3_selection.select(root).attr("t", 0),
+      transition = selection.transition().duration(duration).attr("t", 100)
+      .on("progress", onProgress)
+      .on("end", ended);
+  var needCheck = 0;
+  var lastProgress;
+  var lastProgress2;
+
+  d3_timer.timeout(function(elapsed) {
+    transition.paused(true);
+    lastProgress = transition.progress();
+    test.ok(lastProgress >= 0.5, "lastProgress should >= 0.5");
+    test.ok(lastProgress <= 0.6, "lastProgress should <= 0.6");
+  }, 750);
+
+  d3_timer.timeout(function(elapsed) {
+    needCheck = 1;
+    transition.paused(false);
+  }, 1600);
+
+  function onProgress(data, index, grp, progress) {
+    if (needCheck && needCheck <=2) {
+      if (needCheck === 2) lastProgress2 = progress;
+      test.ok(progress - lastProgress <= 0.1, "(progress - lastProgress) should <= 0.1 ");
+      needCheck++;
+    }
+  }
+
+  function ended() {
+    test.ok(typeof lastProgress2 === 'number', 'already checked');
+    test.strictEqual(transition.progress(), 1, 'progress should be end');
+    test.end();
+  }
+});
