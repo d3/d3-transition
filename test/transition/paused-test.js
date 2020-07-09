@@ -83,7 +83,7 @@ tape("transition.on(\"progress\", listener) event to notify animation progress",
       duration = 100,
       selection = d3_selection.select(root).attr("t", 0),
       transition = selection.transition().duration(duration).attr("t", 100)
-      .on('progress', onProgress)
+      .on("progress", onProgress)
       .on("end", ended);
   var beginTime = d3_timer.now();
   var oldProgress;
