@@ -366,7 +366,7 @@ The [paused](#transition_paused) and [progress](#transition_progress) of a trans
 
 <a name="transition_paused" href="#transition_paused">#</a> <i>transition</i>.<b>paused</b>([<i>value</i>]) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/paused.js "Source")
 
-To pause the transition animation, set the transition paused to `true`, or `false` to resume. he *value* may be specified either as a constant or a function.
+To pause the transition animation, set the transition paused to `true`, or `false` to resume. The *value* may be specified either as a constant or a function.
 
 ```js
 transition.paused(true);
