@@ -360,6 +360,10 @@ Specifies the transition [easing function](https://github.com/d3/d3-ease) for al
 
 If a *value* is not specified, returns the current easing function for the first (non-null) element in the transition. This is generally useful only if you know that the transition contains exactly one element.
 
+<a name="transition_easeVarying" href="#transition_easeVarying">#</a> <i>transition</i>.<b>easeVarying</b>(<i>factory</i>) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/easeVarying.js "Source")
+
+Specifies a factory for the transition [easing function](https://github.com/d3/d3-ease). The *factory* must be a function. It is invoked for each node of the selection, being passed the current datum (*d*), the current index (*i*), and the current group (*nodes*), with *this* as the current DOM element. It must return an easing function.
+
 ### Control Flow
 
 For advanced usage, transitions provide methods for custom control flow.
