@@ -22,5 +22,8 @@ export default function() {
 
       schedule.on = on1;
     });
+
+    // The selection was empty, resolve end immediately
+    if (size === 0) resolve();
   });
 }
