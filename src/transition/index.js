@@ -14,6 +14,7 @@ import transition_selection from "./selection.js";
 import transition_style from "./style.js";
 import transition_styleTween from "./styleTween.js";
 import transition_text from "./text.js";
+import transition_textTween from "./textTween.js";
 import transition_transition from "./transition.js";
 import transition_tween from "./tween.js";
 import transition_end from "./end.js";
@@ -57,6 +58,7 @@ Transition.prototype = transition.prototype = {
   style: transition_style,
   styleTween: transition_styleTween,
   text: transition_text,
+  textTween: transition_textTween,
   remove: transition_remove,
   tween: transition_tween,
   delay: transition_delay,
