@@ -1,6 +1,6 @@
 {
   "name": "d3-transition",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.0-rc.2",
   "publishConfig": {
     "tag": "next"
   },
@@ -45,7 +45,7 @@
     "d3-timer": "1 - 2"
   },
   "peerDependencies": {
-    "d3-selection": "2.0.0.rc.3"
+    "d3-selection": "2.0.0-rc.3"
   },
   "devDependencies": {
     "d3-selection": "1.1.0 - 2",
