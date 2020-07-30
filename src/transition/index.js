@@ -66,5 +66,6 @@ Transition.prototype = transition.prototype = {
   duration: transition_duration,
   ease: transition_ease,
   easeVarying: transition_easeVarying,
-  end: transition_end
+  end: transition_end,
+  [Symbol.iterator]: selection_prototype[Symbol.iterator]
 };
