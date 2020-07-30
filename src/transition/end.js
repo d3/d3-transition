@@ -1,7 +1,7 @@
 import {set} from "./schedule.js";
 
 export default function() {
-  var on0, on1, that = this, id = that._id, size = that.size();
+  var on0, on1, that = this, id = that._id, size = that.selection().size();
   return new Promise(function(resolve, reject) {
     var cancel = {value: reject},
         end = {value: function() { if (--size === 0) resolve(); }};
