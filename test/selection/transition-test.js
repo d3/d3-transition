@@ -129,3 +129,24 @@ tape("selection.transition(transition) reselects the existing transition with th
   test.equal(transition2.tween("tween"), bar);
   test.end();
 });
+
+tape("selection.transition(transition) throws an error if the specified transition is not found", function(test) {
+  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+      one = document.querySelector("#one"),
+      two = document.querySelector("#two"),
+      transition1 = d3_selection.select(one).transition(),
+      transition2 = d3_selection.select(two).transition().delay(50);
+  try {
+    d3_selection.select(two).transition(transition1);
+    test.fail();
+  } catch (error) {
+    test.deepEqual(error.message, `transition ${transition1._id} not found`);
+  }
+  try {
+    d3_selection.select(one).transition(transition2);
+    test.fail();
+  } catch (error) {
+    test.deepEqual(error.message, `transition ${transition2._id} not found`);
+  }
+  test.end();
+});

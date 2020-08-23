@@ -14,7 +14,7 @@ function inherit(node, id) {
   var timing;
   while (!(timing = node.__transition) || !(timing = timing[id])) {
     if (!(node = node.parentNode)) {
-      return defaultTiming.time = now(), defaultTiming;
+      throw new Error(`transition ${id} not found`);
     }
   }
   return timing;
