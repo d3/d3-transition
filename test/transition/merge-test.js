@@ -7,8 +7,9 @@ tape("transition.merge(other) merges elements from the specified other transitio
   var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
-      transition1 = d3_selection.selectAll([null, two]).transition(),
-      transition2 = d3_selection.selectAll([one, null]).transition(transition1),
+      transition0 = d3_selection.select(document.documentElement).transition(),
+      transition1 = d3_selection.selectAll([null, two]).transition(transition0),
+      transition2 = d3_selection.selectAll([one, null]).transition(transition0),
       transition3 = transition1.merge(transition2);
   test.equal(transition3 instanceof d3_transition.transition, true);
   test.deepEqual(transition3._groups, [[one, two]]);

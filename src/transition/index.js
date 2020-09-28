@@ -4,6 +4,7 @@ import transition_attrTween from "./attrTween.js";
 import transition_delay from "./delay.js";
 import transition_duration from "./duration.js";
 import transition_ease from "./ease.js";
+import transition_easeVarying from "./easeVarying.js";
 import transition_filter from "./filter.js";
 import transition_merge from "./merge.js";
 import transition_on from "./on.js";
@@ -68,5 +69,7 @@ Transition.prototype = transition.prototype = {
   paused: transition_paused,
   progress: transition_progress,
   ease: transition_ease,
-  end: transition_end
+  easeVarying: transition_easeVarying,
+  end: transition_end,
+  [Symbol.iterator]: selection_prototype[Symbol.iterator]
 };

@@ -21,8 +21,6 @@ tape("transition.ease() returns the easing function for the first non-null node"
   test.strictEqual(d3_selection.select(two).transition(transition2).ease(), d3_ease.easeBounce);
   test.strictEqual(d3_selection.selectAll([null, one]).transition(transition1).ease(), d3_ease.easeCubic);
   test.strictEqual(d3_selection.selectAll([null, two]).transition(transition2).ease(), d3_ease.easeBounce);
-  test.strictEqual(d3_selection.selectAll([one, two]).transition(transition1).ease(), d3_ease.easeCubic);
-  test.strictEqual(d3_selection.selectAll([two, one]).transition(transition2).ease(), d3_ease.easeBounce);
   test.end();
 });
 
