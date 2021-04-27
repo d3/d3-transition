@@ -1,4 +1,4 @@
-var tape = require("tape"),
+const tape = require("tape"),
     jsdom = require("../jsdom"),
     d3_ease = require("d3-ease"),
     d3_timer = require("d3-timer"),
@@ -7,8 +7,8 @@ var tape = require("tape"),
 
 require("../../");
 
-tape("transition.attr(name, value) creates an tween to the specified value", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates an tween to the specified value", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateRgb("red", "blue"),
@@ -16,13 +16,12 @@ tape("transition.attr(name, value) creates an tween to the specified value", fun
       transition = selection.transition().attr("fill", "blue");
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("fill"), interpolate(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("fill"), interpolate(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, value) creates a namespaced tween to the specified value", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates a namespaced tween to the specified value", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateRgb("red", "blue"),
@@ -30,13 +29,12 @@ tape("transition.attr(name, value) creates a namespaced tween to the specified v
       transition = selection.transition().attr("svg:fill", "blue");
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), interpolate(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), interpolate(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, value) creates an tween to the value returned by the specified function", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates an tween to the value returned by the specified function", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateRgb("red", "blue"),
@@ -44,13 +42,12 @@ tape("transition.attr(name, value) creates an tween to the value returned by the
       transition = selection.transition().attr("fill", function() { return "blue"; });
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("fill"), interpolate(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("fill"), interpolate(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, value) creates a namespaced tween to the value returned by the specified function", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates a namespaced tween to the value returned by the specified function", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateRgb("red", "blue"),
@@ -58,13 +55,12 @@ tape("transition.attr(name, value) creates a namespaced tween to the value retur
       transition = selection.transition().attr("svg:fill", function() { return "blue"; });
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), interpolate(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), interpolate(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, constant) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, constant) is a noop if the string-coerced value matches the current value on tween initialization", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("foo", 1),
       transition = selection.transition().attr("foo", 1);
 
@@ -73,13 +69,12 @@ tape("transition.attr(name, constant) is a noop if the string-coerced value matc
   }, 125);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("foo"), "2");
-    test.end();
-  }, 250);
+    assert.strictEqual(root.getAttribute("foo"), "2");
+}, 250);
 });
 
-tape("transition.attr(ns:name, constant) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(ns:name, constant) is a noop if the string-coerced value matches the current value on tween initialization", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("svg:foo", 1),
       transition = selection.transition().attr("svg:foo", 1);
 
@@ -88,13 +83,12 @@ tape("transition.attr(ns:name, constant) is a noop if the string-coerced value m
   }, 125);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), "2");
-    test.end();
-  }, 250);
+    assert.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), "2");
+}, 250);
 });
 
-tape("transition.attr(name, function) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, function) is a noop if the string-coerced value matches the current value on tween initialization", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("foo", 1),
       transition = selection.transition().attr("foo", function() { return 1; });
 
@@ -103,13 +97,12 @@ tape("transition.attr(name, function) is a noop if the string-coerced value matc
   }, 125);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("foo"), "2");
-    test.end();
-  }, 250);
+    assert.strictEqual(root.getAttribute("foo"), "2");
+}, 250);
 });
 
-tape("transition.attr(ns:name, function) is a noop if the string-coerced value matches the current value on tween initialization", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(ns:name, function) is a noop if the string-coerced value matches the current value on tween initialization", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("svg:foo", 1),
       transition = selection.transition().attr("svg:foo", function() { return 1; });
 
@@ -118,35 +111,32 @@ tape("transition.attr(ns:name, function) is a noop if the string-coerced value m
   }, 125);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), "2");
-    test.end();
-  }, 250);
+    assert.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "foo"), "2");
+}, 250);
 });
 
-tape("transition.attr(name, constant) uses interpolateNumber if value is a number", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, constant) uses interpolateNumber if value is a number", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("foo", "15px"),
       transition = selection.transition().attr("foo", 10);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("foo"), "NaN");
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("foo"), "NaN");
+}, 125);
 });
 
-tape("transition.attr(name, function) uses interpolateNumber if value is a number", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, function) uses interpolateNumber if value is a number", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("foo", "15px"),
       transition = selection.transition().attr("foo", () => 10);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("foo"), "NaN");
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("foo"), "NaN");
+}, 125);
 });
 
-tape("transition.attr(name, value) immediately evaluates the specified function with the expected context and arguments", function(test) {
-  var document = jsdom("<h1 id='one' fill='cyan'></h1><h1 id='two' fill='magenta'></h1>"),
+it("transition.attr(name, value) immediately evaluates the specified function with the expected context and arguments", () => {
+  const document = jsdom("<h1 id='one' fill='cyan'></h1><h1 id='two' fill='magenta'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       ease = d3_ease.easeCubic,
@@ -157,20 +147,19 @@ tape("transition.attr(name, value) immediately evaluates the specified function 
       result = [],
       transition = selection.transition().attr("fill", function(d, i, nodes) { result.push([d, i, nodes, this]); return d; });
 
-  test.deepEqual(result, [
+  assert.deepStrictEqual(result, [
     ["red", 0, [one, two], one],
     ["green", 1, [one, two], two]
   ]);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(one.getAttribute("fill"), interpolate1(ease(elapsed / duration)));
-    test.strictEqual(two.getAttribute("fill"), interpolate2(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(one.getAttribute("fill"), interpolate1(ease(elapsed / duration)));
+    assert.strictEqual(two.getAttribute("fill"), interpolate2(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, value) constructs an interpolator using the current value on start", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) constructs an interpolator using the current value on start", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateRgb("red", "blue"),
@@ -178,73 +167,68 @@ tape("transition.attr(name, value) constructs an interpolator using the current 
       transition = selection.transition().on("start", function() { selection.attr("fill", "red"); }).attr("fill", function() { return "blue"; });
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("fill"), interpolate(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("fill"), interpolate(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, null) creates an tween which removes the specified attribute post-start", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, null) creates an tween which removes the specified attribute post-start", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("fill", "red"),
       transition = selection.transition().attr("fill", null).on("start", started);
 
   function started() {
-    test.equal(root.getAttribute("fill"), "red");
+    assert.strictEqual(root.getAttribute("fill"), "red");
   }
 
   d3_timer.timeout(function(elapsed) {
-    test.equal(root.hasAttribute("fill"), false);
-    test.end();
-  });
+    assert.strictEqual(root.hasAttribute("fill"), false);
+});
 });
 
-tape("transition.attr(name, null) creates an tween which removes the specified namespaced attribute post-start", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, null) creates an tween which removes the specified namespaced attribute post-start", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("svg:fill", "red"),
       transition = selection.transition().attr("svg:fill", null).on("start", started);
 
   function started() {
-    test.equal(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), "red");
+    assert.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), "red");
   }
 
   d3_timer.timeout(function(elapsed) {
-    test.equal(root.hasAttributeNS("http://www.w3.org/2000/svg", "fill"), false);
-    test.end();
-  });
+    assert.strictEqual(root.hasAttributeNS("http://www.w3.org/2000/svg", "fill"), false);
+});
 });
 
-tape("transition.attr(name, value) creates an tween which removes the specified attribute post-start if the specified function returns null", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates an tween which removes the specified attribute post-start if the specified function returns null", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("fill", "red"),
       transition = selection.transition().attr("fill", function() {}).on("start", started);
 
   function started() {
-    test.equal(root.getAttribute("fill"), "red");
+    assert.strictEqual(root.getAttribute("fill"), "red");
   }
 
   d3_timer.timeout(function(elapsed) {
-    test.equal(root.hasAttribute("fill"), false);
-    test.end();
-  });
+    assert.strictEqual(root.hasAttribute("fill"), false);
+});
 });
 
-tape("transition.attr(name, value) creates an tween which removes the specified namespaced attribute post-start if the specified function returns null", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates an tween which removes the specified namespaced attribute post-start if the specified function returns null", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("svg:fill", "red"),
       transition = selection.transition().attr("svg:fill", function() {}).on("start", started);
 
   function started() {
-    test.equal(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), "red");
+    assert.strictEqual(root.getAttributeNS("http://www.w3.org/2000/svg", "fill"), "red");
   }
 
   d3_timer.timeout(function(elapsed) {
-    test.equal(root.hasAttributeNS("http://www.w3.org/2000/svg", "fill"), false);
-    test.end();
-  });
+    assert.strictEqual(root.hasAttributeNS("http://www.w3.org/2000/svg", "fill"), false);
+});
 });
 
-tape("transition.attr(name, value) interpolates numbers", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) interpolates numbers", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateNumber(1, 2),
@@ -252,13 +236,12 @@ tape("transition.attr(name, value) interpolates numbers", function(test) {
       transition = selection.transition().attr("foo", 2);
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("foo"), interpolate(ease(elapsed / duration)) + "");
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("foo"), interpolate(ease(elapsed / duration)) + "");
+}, 125);
 });
 
-tape("transition.attr(name, value) interpolates strings", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) interpolates strings", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateString("1px", "2px"),
@@ -266,13 +249,12 @@ tape("transition.attr(name, value) interpolates strings", function(test) {
       transition = selection.transition().attr("foo", "2px");
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("foo"), interpolate(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("foo"), interpolate(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, value) interpolates colors", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) interpolates colors", () => {
+  const root = jsdom().documentElement,
       ease = d3_ease.easeCubic,
       duration = 250,
       interpolate = d3_interpolate.interpolateRgb("#f00", "#00f"),
@@ -280,24 +262,21 @@ tape("transition.attr(name, value) interpolates colors", function(test) {
       transition = selection.transition().attr("foo", "#00f");
 
   d3_timer.timeout(function(elapsed) {
-    test.strictEqual(root.getAttribute("foo"), interpolate(ease(elapsed / duration)));
-    test.end();
-  }, 125);
+    assert.strictEqual(root.getAttribute("foo"), interpolate(ease(elapsed / duration)));
+}, 125);
 });
 
-tape("transition.attr(name, value) creates an attrTween with the specified name", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates an attrTween with the specified name", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("fill", "red"),
       transition = selection.transition().attr("fill", "blue");
-  test.equal(transition.attrTween("fill").call(root).call(root, 0.5), "rgb(128, 0, 128)");
-  test.end();
+  assert.strictEqual(transition.attrTween("fill").call(root).call(root, 0.5), "rgb(128, 0, 128)");
 });
 
-tape("transition.attr(name, value) creates a tween with the name \"attr.name\"", function(test) {
-  var root = jsdom().documentElement,
+it("transition.attr(name, value) creates a tween with the name \"attr.name\"", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root).attr("fill", "red"),
       transition = selection.transition().attr("fill", "blue");
   transition.tween("attr.fill").call(root).call(root, 0.5);
-  test.equal(root.getAttribute("fill"), "rgb(128, 0, 128)");
-  test.end();
+  assert.strictEqual(root.getAttribute("fill"), "rgb(128, 0, 128)");
 });

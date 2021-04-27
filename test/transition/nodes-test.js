@@ -1,8 +1,7 @@
-var tape = require("tape"),
+const tape = require("tape"),
     d3_selection = require("d3-selection"),
-    d3_transition = require("../../");
+    d3 = require("../../");
 
-tape("transition.nodes is the same as selection.nodes", function(test) {
-  test.equal(d3_transition.transition.prototype.nodes, d3_selection.selection.prototype.nodes);
-  test.end();
+it("transition.nodes is the same as selection.nodes", () => {
+  assert.strictEqual(d3.transition.prototype.nodes, d3_selection.selection.prototype.nodes);
 });

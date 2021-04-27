@@ -16,19 +16,29 @@ To compute intermediate state, transitions leverage a variety of [built-in inter
 
 ## Installing
 
-If you use NPM, `npm install d3-transition`. Otherwise, download the [latest release](https://github.com/d3/d3-transition/releases/latest). You can also load directly from [d3js.org](https://d3js.org), either as a [standalone library](https://d3js.org/d3-transition.v2.min.js) or as part of [D3](https://github.com/d3/d3). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3` global is exported:
+If you use npm, `npm install d3-transition`. You can also download the [latest release on GitHub](https://github.com/d3/d3-transition/releases/latest). For vanilla HTML in modern browsers, import d3-transition from Skypack:
 
 ```html
-<script src="https://d3js.org/d3-color.v2.min.js"></script>
-<script src="https://d3js.org/d3-dispatch.v2.min.js"></script>
-<script src="https://d3js.org/d3-ease.v2.min.js"></script>
-<script src="https://d3js.org/d3-interpolate.v2.min.js"></script>
-<script src="https://d3js.org/d3-selection.v2.min.js"></script>
-<script src="https://d3js.org/d3-timer.v2.min.js"></script>
-<script src="https://d3js.org/d3-transition.v2.min.js"></script>
+<script type="module">
+import {transition} from "https://cdn.skypack.dev/d3-transition@3";
+
+const t = transition();
+</script>
+```
+
+For legacy environments, you can load d3-transition’s UMD bundle from an npm-based CDN such as jsDelivr; a `d3` global is exported:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-dispatch@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-ease@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-selection@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-timer@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-transition@3"></script>
 <script>
 
-var transition = d3.transition();
+const transition = d3.transition();
 
 </script>
 ```

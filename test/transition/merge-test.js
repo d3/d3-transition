@@ -1,30 +1,28 @@
-var tape = require("tape"),
+const tape = require("tape"),
     jsdom = require("../jsdom"),
     d3_selection = require("d3-selection"),
-    d3_transition = require("../../");
+    d3 = require("../../");
 
-tape("transition.merge(other) merges elements from the specified other transition for null elements in this transition", function(test) {
-  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+it("transition.merge(other) merges elements from the specified other transition for null elements in this transition", () => {
+  const document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition0 = d3_selection.select(document.documentElement).transition(),
       transition1 = d3_selection.selectAll([null, two]).transition(transition0),
       transition2 = d3_selection.selectAll([one, null]).transition(transition0),
       transition3 = transition1.merge(transition2);
-  test.equal(transition3 instanceof d3_transition.transition, true);
-  test.deepEqual(transition3._groups, [[one, two]]);
-  test.equal(transition3._parents, transition1._parents);
-  test.equal(transition3._name, transition1._name);
-  test.equal(transition3._id, transition1._id);
-  test.end();
+  assert.strictEqual(transition3 instanceof d3.transition, true);
+  assert.deepStrictEqual(transition3._groups, [[one, two]]);
+  assert.strictEqual(transition3._parents, transition1._parents);
+  assert.strictEqual(transition3._name, transition1._name);
+  assert.strictEqual(transition3._id, transition1._id);
 });
 
-tape("transition.merge(other) throws an error if the other transition has a different id", function(test) {
-  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
+it("transition.merge(other) throws an error if the other transition has a different id", () => {
+  const document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
       one = document.querySelector("#one"),
       two = document.querySelector("#two"),
       transition1 = d3_selection.selectAll([null, two]).transition(),
       transition2 = d3_selection.selectAll([one, null]).transition();
-  test.throws(function() { transition1.merge(transition2); });
-  test.end();
+  assert.throws(function() { transition1.merge(transition2); });
 });

@@ -1,119 +1,115 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection"),
-    d3_transition = require("../");
+import assert from "assert";
+import * as d3 from "../src/index.js";
+import jsdom from "./jsdom.js";
+import * as d3_timer from "d3-timer";
+import * as d3_selection from "d3-selection";
 
-tape("d3.active(node) returns null if the specified node has no active transition with the null name", function(test) {
-  var root = jsdom().documentElement,
+it("d3.active(node) returns null if the specified node has no active transition with the null name", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
-  test.strictEqual(d3_transition.active(root), null);
+  assert.strictEqual(d3.active(root), null);
 
   // Two transitions created.
   selection.transition().delay(50).duration(50);
   selection.transition("foo").duration(50);
-  test.strictEqual(d3_transition.active(root), null);
+  assert.strictEqual(d3.active(root), null);
 
   // One transition scheduled; one active with a different name.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root), null);
+    assert.strictEqual(d3.active(root), null);
   });
 
   // No transitions remaining after the transition ends.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root), null);
-    test.end();
-  }, 100);
+    assert.strictEqual(d3.active(root), null);
+}, 100);
 });
 
-tape("d3.active(node, null) returns null if the specified node has no active transition with the null name", function(test) {
-  var root = jsdom().documentElement,
+it("d3.active(node, null) returns null if the specified node has no active transition with the null name", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
-  test.strictEqual(d3_transition.active(root, null), null);
+  assert.strictEqual(d3.active(root, null), null);
 
   // Two transitions created.
   selection.transition().delay(50).duration(50);
   selection.transition("foo").duration(50);
-  test.strictEqual(d3_transition.active(root, null), null);
+  assert.strictEqual(d3.active(root, null), null);
 
   // One transition scheduled; one active with a different name.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root, null), null);
+    assert.strictEqual(d3.active(root, null), null);
   });
 
   // No transitions remaining after the transition ends.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root, null), null);
-    test.end();
-  }, 100);
+    assert.strictEqual(d3.active(root, null), null);
+}, 100);
 });
 
-tape("d3.active(node, undefined) returns null if the specified node has no active transition with the null name", function(test) {
-  var root = jsdom().documentElement,
+it("d3.active(node, undefined) returns null if the specified node has no active transition with the null name", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
-  test.strictEqual(d3_transition.active(root, undefined), null);
+  assert.strictEqual(d3.active(root, undefined), null);
 
   // Two transitions created.
   selection.transition().delay(50).duration(50);
   selection.transition("foo").duration(50);
-  test.strictEqual(d3_transition.active(root, undefined), null);
+  assert.strictEqual(d3.active(root, undefined), null);
 
   // One transition scheduled; one active with a different name.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root, undefined), null);
+    assert.strictEqual(d3.active(root, undefined), null);
   });
 
   // No transitions remaining after the transition ends.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root, undefined), null);
-    test.end();
-  }, 100);
+    assert.strictEqual(d3.active(root, undefined), null);
+}, 100);
 });
 
-tape("d3.active(node, name) returns null if the specified node has no active transition with the specified name", function(test) {
-  var root = jsdom().documentElement,
+it("d3.active(node, name) returns null if the specified node has no active transition with the specified name", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root);
 
   // No transitions pending.
-  test.strictEqual(d3_transition.active(root, "foo"), null);
+  assert.strictEqual(d3.active(root, "foo"), null);
 
   // Two transitions created.
   selection.transition("foo").delay(50).duration(50);
   selection.transition().duration(50);
-  test.strictEqual(d3_transition.active(root, null), null);
+  assert.strictEqual(d3.active(root, null), null);
 
   // One transition scheduled; one active with a different name.
-  test.strictEqual(d3_transition.active(root, "foo"), null);
+  assert.strictEqual(d3.active(root, "foo"), null);
 
   // One transition scheduled.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root, "foo"), null);
+    assert.strictEqual(d3.active(root, "foo"), null);
   });
 
   // No transitions remaining after the transition ends.
   d3_timer.timeout(function() {
-    test.strictEqual(d3_transition.active(root, "foo"), null);
-    test.end();
-  }, 100);
+    assert.strictEqual(d3.active(root, "foo"), null);
+}, 100);
 });
 
-tape("d3.active(node) returns the active transition on the specified node with the null name", function(test) {
-  var root = jsdom().documentElement,
+it("d3.active(node) returns the active transition on the specified node with the null name", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition().on("start", check).tween("tween", tweened).on("end", ended);
 
   function check() {
-    var t = d3_transition.active(root);
-    test.deepEqual(t._groups, [[root]]);
-    test.deepEqual(t._parents, [null]);
-    test.strictEqual(t._name, null);
-    test.strictEqual(t._id, transition._id);
+    const t = d3.active(root);
+    assert.deepStrictEqual(t._groups, [[root]]);
+    assert.deepStrictEqual(t._parents, [null]);
+    assert.strictEqual(t._name, null);
+    assert.strictEqual(t._id, transition._id);
   }
 
   function tweened() {
@@ -125,21 +121,20 @@ tape("d3.active(node) returns the active transition on the specified node with t
 
   function ended() {
     check();
-    test.end();
-  }
+}
 });
 
-tape("d3.active(node, name) returns the active transition on the specified node with the specified name", function(test) {
-  var root = jsdom().documentElement,
+it("d3.active(node, name) returns the active transition on the specified node with the specified name", () => {
+  const root = jsdom().documentElement,
       selection = d3_selection.select(root),
       transition = selection.transition("foo").on("start", check).tween("tween", tweened).on("end", ended);
 
   function check() {
-    var t = d3_transition.active(root, "foo");
-    test.deepEqual(t._groups, [[root]]);
-    test.deepEqual(t._parents, [null]);
-    test.strictEqual(t._name, "foo");
-    test.strictEqual(t._id, transition._id);
+    const t = d3.active(root, "foo");
+    assert.deepStrictEqual(t._groups, [[root]]);
+    assert.deepStrictEqual(t._parents, [null]);
+    assert.strictEqual(t._name, "foo");
+    assert.strictEqual(t._id, transition._id);
   }
 
   function tweened() {
@@ -151,6 +146,5 @@ tape("d3.active(node, name) returns the active transition on the specified node 
 
   function ended() {
     check();
-    test.end();
-  }
+}
 });

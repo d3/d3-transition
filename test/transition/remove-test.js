@@ -1,49 +1,47 @@
-var tape = require("tape"),
+const tape = require("tape"),
     jsdom = require("../jsdom"),
     d3_timer = require("d3-timer"),
     d3_selection = require("d3-selection");
 
 require("../../");
 
-tape("transition.remove() creates an end listener to remove the element", function(test) {
-  var document = jsdom(),
+it("transition.remove() creates an end listener to remove the element", () => {
+  const document = jsdom(),
       root = document.documentElement,
       body = document.body,
       selection = d3_selection.select(body),
       transition = selection.transition().remove().on("start", started).on("end", ended);
 
   function started() {
-    test.equal(body.parentNode, root);
+    assert.strictEqual(body.parentNode, root);
   }
 
   function ended() {
-    test.equal(body.parentNode, null);
-    test.end();
-  }
+    assert.strictEqual(body.parentNode, null);
+}
 
   d3_timer.timeout(function(elapsed) {
-    test.equal(body.parentNode, root);
+    assert.strictEqual(body.parentNode, root);
   });
 });
 
-tape("transition.remove() creates an end listener named end.remove", function(test) {
-  var document = jsdom(),
+it("transition.remove() creates an end listener named end.remove", () => {
+  const document = jsdom(),
       root = document.documentElement,
       body = document.body,
       selection = d3_selection.select(body),
       transition = selection.transition().remove().on("start", started).on("end", ended);
 
   transition.on("end.remove").call(body);
-  test.equal(body.parentNode, null);
+  assert.strictEqual(body.parentNode, null);
   transition.on("end.remove", null);
   root.appendChild(body);
 
   function started() {
-    test.equal(body.parentNode, root);
+    assert.strictEqual(body.parentNode, root);
   }
 
   function ended() {
-    test.equal(body.parentNode, root);
-    test.end();
-  }
+    assert.strictEqual(body.parentNode, root);
+}
 });

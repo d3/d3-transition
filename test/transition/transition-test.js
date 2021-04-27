@@ -1,12 +1,12 @@
-var tape = require("tape"),
+const tape = require("tape"),
     jsdom = require("../jsdom"),
     d3_timer = require("d3-timer"),
     d3_selection = require("d3-selection");
 
 require("../../");
 
-tape("transition.transition() allows preceeding transitions with zero duration to end naturally", function(test) {
-  var end0 = false,
+it("transition.transition() allows preceeding transitions with zero duration to end naturally", () => {
+  const end0 = false,
       end1 = false,
       end2 = false,
       root = jsdom().documentElement,
@@ -16,9 +16,8 @@ tape("transition.transition() allows preceeding transitions with zero duration t
       transition2 = transition0.transition().duration(0).on("end", function() { end2 = true; });
 
   d3_timer.timeout(function(elapsed) {
-    test.equal(end0, true);
-    test.equal(end1, true);
-    test.equal(end2, true);
-    test.end();
-  }, 50);
+    assert.strictEqual(end0, true);
+    assert.strictEqual(end1, true);
+    assert.strictEqual(end2, true);
+}, 50);
 });
