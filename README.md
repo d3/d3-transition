@@ -20,9 +20,11 @@ If you use npm, `npm install d3-transition`. You can also download the [latest r
 
 ```html
 <script type="module">
+
 import {transition} from "https://cdn.skypack.dev/d3-transition@3";
 
 const t = transition();
+
 </script>
 ```
 
@@ -38,12 +40,12 @@ For legacy environments, you can load d3-transition’s UMD bundle from an npm-b
 <script src="https://cdn.jsdelivr.net/npm/d3-transition@3"></script>
 <script>
 
-const transition = d3.transition();
+const t = d3.transition();
 
 </script>
 ```
 
-[Try d3-transition in your browser.](https://tonicdev.com/npm/d3-transition)
+[Try d3-transition in your browser.](https://observablehq.com/collection/@d3/d3-transition)
 
 ## API Reference
 
@@ -306,7 +308,7 @@ For each selected element, sets the [text content](http://www.w3.org/TR/DOM-Leve
 To interpolate text rather than to set it on start, use [*transition*.textTween](#transition_textTween) or append a replacement element and cross-fade opacity. Text is not interpolated by default because it is usually undesirable.
 
 <a name="transition_textTween" href="#transition_textTween">#</a> <i>transition</i>.<b>textTween</b>(<i>factory</i>) · [Source](https://github.com/d3/d3-transition/blob/master/src/transition/textTween.js), [Examples](https://observablehq.com/@d3/transition-texttween)
- 
+
 If *factory* is specified and not null, assigns the text [tween](#transition_tween) to the specified interpolator *factory*. An interpolator factory is a function that returns an [interpolator](https://github.com/d3/d3-interpolate); when the transition starts, the *factory* is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator will then be invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1]. Lastly, the return value of the interpolator will be used to set the text. The interpolator must return a string.
 
 For example, to interpolate the text with integers from 0 to 100:
