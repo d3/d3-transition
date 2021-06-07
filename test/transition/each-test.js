@@ -1,18 +1,18 @@
-const tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_selection = require("d3-selection"),
-    d3 = require("../../");
+import assert from "assert";
+import {select, selectAll, selection} from "d3-selection";
+import {transition} from "../../src/index.js";
+import it from "../jsdom.js";
 
 it("transition.each is the same as selection.each", () => {
-  assert.strictEqual(d3.transition.prototype.each, d3_selection.selection.prototype.each);
+  assert.strictEqual(transition.prototype.each, selection.prototype.each);
 });
 
 it("transition.each() runs as expected", () => {
-  const root = jsdom().documentElement;
-  const a = 0;
-  d3_selection.select(root).transition().each(() => {++a});
+  const root = document.documentElement;
+  let a = 0;
+  select(root).transition().each(() => { ++a; });
   assert.strictEqual(a, 1);
   a = 0;
-  d3_selection.selectAll([null, root]).transition().each(() => {++a});
+  selectAll([null, root]).transition().each(() => { ++a; });
   assert.strictEqual(a, 1);
 });

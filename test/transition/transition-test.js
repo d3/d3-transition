@@ -1,23 +1,19 @@
-const tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection");
+import assert from "assert";
+import {select} from "d3-selection";
+import {timeout} from "d3-timer";
+import "../../src/index.js";
+import it from "../jsdom.js";
 
-require("../../");
-
-it("transition.transition() allows preceeding transitions with zero duration to end naturally", () => {
-  const end0 = false,
-      end1 = false,
-      end2 = false,
-      root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition0 = selection.transition().duration(0).on("end", function() { end0 = true; }),
-      transition1 = selection.transition().duration(0).on("end", function() { end1 = true; }),
-      transition2 = transition0.transition().duration(0).on("end", function() { end2 = true; });
-
-  d3_timer.timeout(function(elapsed) {
-    assert.strictEqual(end0, true);
-    assert.strictEqual(end1, true);
-    assert.strictEqual(end2, true);
-}, 50);
+it("transition.transition() allows preceeding transitions with zero duration to end naturally", async () => {
+  let end0 = false;
+  let end1 = false;
+  let end2 = false;
+  const s = select(document.documentElement);
+  const t = s.transition().duration(0).on("end", () => { end0 = true; });
+  s.transition().duration(0).on("end", () => { end1 = true; });
+  t.transition().duration(0).on("end", () => { end2 = true; });
+  await new Promise(resolve => timeout(resolve, 50));
+  assert.strictEqual(end0, true);
+  assert.strictEqual(end1, true);
+  assert.strictEqual(end2, true);
 });
