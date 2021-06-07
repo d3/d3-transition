@@ -136,6 +136,32 @@ transition
   .transition(transition)
 ```
 
+<a name="transition_selectChild" href="#transition_selectChild">#</a> <i>transition</i>.<b>selectChild</b>([<i>selector</i>]) · [Source](https://github.com/d3/d3-transition/blob/master/src/transition/select.js)
+
+For each selected element, selects the first child element that matches the specified *selector* string, if any, and returns a transition on the resulting selection. The *selector* may be specified either as a selector string or a function. If a function, it is evaluated for each selected element, in order, being passed the current datum (*d*), the current index (*i*), and the current group (*nodes*), with *this* as the current DOM element. The new transition has the same id, name and timing as this transition; however, if a transition with the same id already exists on a selected element, the existing transition is returned for that element.
+
+This method is equivalent to deriving the selection for this transition via [*transition*.selection](#transition_selection), creating a subselection via [*selection*.selectChild](https://github.com/d3/d3-selection#selection_selectChild), and then creating a new transition via [*selection*.transition](#selection_transition):
+
+```js
+transition
+  .selection()
+  .selectChild(selector)
+  .transition(transition)
+```
+
+<a name="transition_selectChildren" href="#transition_selectChildren">#</a> <i>transition</i>.<b>selectChildren</b>([<i>selector</i>]) · [Source](https://github.com/d3/d3-transition/blob/master/src/transition/selectAll.js)
+
+For each selected element, selects all children that match the specified *selector* string, if any, and returns a transition on the resulting selection. The *selector* may be specified either as a selector string or a function. If a function, it is evaluated for each selected element, in order, being passed the current datum (*d*), the current index (*i*), and the current group (*nodes*), with *this* as the current DOM element. The new transition has the same id, name and timing as this transition; however, if a transition with the same id already exists on a selected element, the existing transition is returned for that element.
+
+This method is equivalent to deriving the selection for this transition via [*transition*.selection](#transition_selection), creating a subselection via [*selection*.selectChildren](https://github.com/d3/d3-selection#selection_selectChildren), and then creating a new transition via [*selection*.transition](#selection_transition):
+
+```js
+transition
+  .selection()
+  .selectChildren(selector)
+  .transition(transition)
+```
+
 <a name="transition_filter" href="#transition_filter">#</a> <i>transition</i>.<b>filter</b>(<i>filter</i>) · [Source](https://github.com/d3/d3-transition/blob/master/src/transition/filter.js)
 
 For each selected element, selects only the elements that match the specified *filter*, and returns a transition on the resulting selection. The *filter* may be specified either as a selector string or a function. If a function, it is evaluated for each selected element, in order, being passed the current datum (*d*), the current index (*i*), and the current group (*nodes*), with *this* as the current DOM element. The new transition has the same id, name and timing as this transition; however, if a transition with the same id already exists on a selected element, the existing transition is returned for that element.
