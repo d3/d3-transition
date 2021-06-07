@@ -1,89 +1,69 @@
-var tape = require("tape"),
-    jsdom = require("./jsdom"),
-    d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection"),
-    d3_transition = require("../");
+import assert from "assert";
+import {select} from "d3-selection";
+import {timeout} from "d3-timer";
+import "../src/index.js";
+import it from "./jsdom.js";
 
-tape("transition.on(\"start\", error) terminates the transition", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().on("start", function() { throw new Error; });
+describe("with an uncaught error", () => {
+  let listeners;
 
-  process.once("uncaughtException", function() {});
-
-  // No transitions remaining after the transition ends.
-  d3_timer.timeout(function() {
-    test.strictEqual(root.__transition, undefined);
-    test.end();
+  beforeEach(() => {
+    listeners = process.listeners("uncaughtException");
+    process.removeAllListeners("uncaughtException");
+    process.once("uncaughtException", () => {});
   });
-});
 
-tape("transition.on(\"start\", error) with delay terminates the transition", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().delay(50).on("start", function() { throw new Error; });
-
-  process.once("uncaughtException", function() {});
-
-  // No transitions remaining after the transition ends.
-  d3_timer.timeout(function() {
-    test.strictEqual(root.__transition, undefined);
-    test.end();
-  }, 50);
-});
-
-tape("transition.tween(\"foo\", error) terminates the transition", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().tween("foo", function() { throw new Error; });
-
-  process.once("uncaughtException", function() {});
-
-  // No transitions remaining after the transition ends.
-  d3_timer.timeout(function() {
-    test.strictEqual(root.__transition, undefined);
-    test.end();
+  afterEach(() => {
+    for (const listener of listeners) {
+      process.on("uncaughtException", listener);
+    }
   });
-});
 
-tape("transition.tween(\"foo\", error) with delay terminates the transition", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().delay(50).tween("foo", function() { throw new Error; });
+  it("transition.on(\"start\", error) terminates the transition", async () => {
+    const root = document.documentElement;
+    const s = select(root);
+    s.transition().on("start", () => { throw new Error; });
+    await new Promise(resolve => timeout(resolve));
+    assert.strictEqual(root.__transition, undefined);
+  });
 
-  process.once("uncaughtException", function() {});
+  it("transition.on(\"start\", error) with delay terminates the transition", async () => {
+    const root = document.documentElement;
+    const s = select(root);
+    s.transition().delay(50).on("start", () => { throw new Error; });
+    await new Promise(resolve => timeout(resolve, 50));
+    assert.strictEqual(root.__transition, undefined);
+  });
 
-  // No transitions remaining after the transition ends.
-  d3_timer.timeout(function() {
-    test.strictEqual(root.__transition, undefined);
-    test.end();
-  }, 50);
-});
+  it("transition.tween(\"foo\", error) terminates the transition", async () => {
+    const root = document.documentElement;
+    const s = select(root);
+    s.transition().tween("foo", () => { throw new Error; });
+    await new Promise(resolve => timeout(resolve));
+    assert.strictEqual(root.__transition, undefined);
+  });
 
-tape("transition.tween(\"foo\", deferredError) terminates the transition", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().duration(50).tween("foo", function() { return function(t) { if (t === 1) throw new Error; }; });
+  it("transition.tween(\"foo\", error) with delay terminates the transition", async () => {
+    const root = document.documentElement;
+    const s = select(root);
+    s.transition().delay(50).tween("foo", () => { throw new Error; });
+    await new Promise(resolve => timeout(resolve, 50));
+    assert.strictEqual(root.__transition, undefined);
+  });
 
-  process.once("uncaughtException", function() {});
+  it("transition.tween(\"foo\", deferredError) terminates the transition", async () => {
+    const root = document.documentElement;
+    const s = select(root);
+    s.transition().duration(50).tween("foo", () => { return function(t) { if (t === 1) throw new Error; }; });
+    await new Promise(resolve => timeout(resolve, 50));
+    assert.strictEqual(root.__transition, undefined);
+  });
 
-  // No transitions remaining after the transition ends.
-  d3_timer.timeout(function() {
-    test.strictEqual(root.__transition, undefined);
-    test.end();
-  }, 50);
-});
-
-tape("transition.on(\"end\", error) terminates the transition", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().delay(50).duration(50).on("end", function() { throw new Error; });
-
-  process.once("uncaughtException", function() {});
-
-  // No transitions remaining after the transition ends.
-  d3_timer.timeout(function() {
-    test.strictEqual(root.__transition, undefined);
-    test.end();
-  }, 100);
+  it("transition.on(\"end\", error) terminates the transition", async () => {
+    const root = document.documentElement;
+    const s = select(root);
+    s.transition().delay(50).duration(50).on("end", () => { throw new Error; });
+    await new Promise(resolve => timeout(resolve, 100));
+    assert.strictEqual(root.__transition, undefined);
+  });
 });

@@ -1,16 +1,14 @@
-var tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_selection = require("d3-selection"),
-    d3_transition = require("../../");
+import assert from "assert";
+import {select, selectAll, selection} from "d3-selection";
+import {transition} from "../../src/index.js";
+import it from "../jsdom.js";
 
-tape("transition.size is the same as selection.size", function(test) {
-  test.equal(d3_transition.transition.prototype.size, d3_selection.selection.prototype.size);
-  test.end();
+it("transition.size is the same as selection.size", () => {
+  assert.strictEqual(transition.prototype.size, selection.prototype.size);
 });
 
-tape("transition.size() returns the expected value", function(test) {
-  var root = jsdom().documentElement;
-  test.equal(d3_selection.select(root).transition().size(), 1);
-  test.equal(d3_selection.selectAll([null, root]).transition().size(), 1);
-  test.end();
+it("transition.size() returns the expected value", () => {
+  const root = document.documentElement;
+  assert.strictEqual(select(root).transition().size(), 1);
+  assert.strictEqual(selectAll([null, root]).transition().size(), 1);
 });

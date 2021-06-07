@@ -1,49 +1,47 @@
-var tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection");
+import assert from "assert";
+import {select} from "d3-selection";
+import {timeout} from "d3-timer";
+import "../../src/index.js";
+import it from "../jsdom.js";
 
-require("../../");
-
-tape("transition.remove() creates an end listener to remove the element", function(test) {
-  var document = jsdom(),
-      root = document.documentElement,
-      body = document.body,
-      selection = d3_selection.select(body),
-      transition = selection.transition().remove().on("start", started).on("end", ended);
+it("transition.remove() creates an end listener to remove the element", async () => {
+  const root = document.documentElement;
+  const body = document.body;
+  const s = select(body);
+  const t = s.transition().remove().on("start", started).on("end", ended);
+  const end = t.end();
 
   function started() {
-    test.equal(body.parentNode, root);
+    assert.strictEqual(body.parentNode, root);
   }
 
   function ended() {
-    test.equal(body.parentNode, null);
-    test.end();
+    assert.strictEqual(body.parentNode, null);
   }
 
-  d3_timer.timeout(function(elapsed) {
-    test.equal(body.parentNode, root);
-  });
+  await new Promise(resolve => timeout(resolve));
+  assert.strictEqual(body.parentNode, root);
+  await end;
 });
 
-tape("transition.remove() creates an end listener named end.remove", function(test) {
-  var document = jsdom(),
-      root = document.documentElement,
-      body = document.body,
-      selection = d3_selection.select(body),
-      transition = selection.transition().remove().on("start", started).on("end", ended);
-
-  transition.on("end.remove").call(body);
-  test.equal(body.parentNode, null);
-  transition.on("end.remove", null);
-  root.appendChild(body);
+it("transition.remove() creates an end listener named end.remove", async () => {
+  const root = document.documentElement;
+  const body = document.body;
+  const s = select(body);
+  const t = s.transition().remove().on("start", started).on("end", ended);
+  const end = t.end();
 
   function started() {
-    test.equal(body.parentNode, root);
+    assert.strictEqual(body.parentNode, root);
   }
 
   function ended() {
-    test.equal(body.parentNode, root);
-    test.end();
+    assert.strictEqual(body.parentNode, root);
   }
+
+  t.on("end.remove").call(body);
+  assert.strictEqual(body.parentNode, null);
+  t.on("end.remove", null);
+  root.appendChild(body);
+  await end;
 });

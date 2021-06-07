@@ -1,318 +1,280 @@
-var tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_selection = require("d3-selection"),
-    d3_timer = require("d3-timer"),
-    state = require("../transition/state");
+import assert from "assert";
+import {select} from "d3-selection";
+import {timeout} from "d3-timer";
+import "../../src/index.js";
+import {CREATED, ENDED, ENDING, SCHEDULED, STARTED, STARTING} from "../../src/transition/schedule.js";
+import it from "../jsdom.js";
 
-require("../../");
-
-tape("selection.interrupt() returns the selection", function(test) {
-  var document = jsdom(),
-      selection = d3_selection.select(document);
-  test.equal(selection.interrupt(), selection);
-  test.end();
+it("selection.interrupt() returns the selection", () => {
+  const s = select(document);
+  assert.strictEqual(s.interrupt(), s);
 });
 
-tape("selection.interrupt() cancels any pending transitions on the selected elements", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition1 = selection.transition(),
-      transition2 = transition1.transition();
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, true);
-  test.equal(selection.interrupt(), selection);
-  test.equal(root.__transition, undefined);
-  test.end();
+it("selection.interrupt() cancels any pending transitions on the selected elements", () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t1 = s.transition();
+  const t2 = t1.transition();
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, true);
+  assert.strictEqual(s.interrupt(), s);
+  assert.strictEqual(root.__transition, undefined);
 });
 
-tape("selection.interrupt() only cancels pending transitions with the null name", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition1 = selection.transition("foo"),
-      transition2 = selection.transition();
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, true);
-  test.equal(selection.interrupt(), selection);
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, false);
-  test.end();
+it("selection.interrupt() only cancels pending transitions with the null name", () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t1 = s.transition("foo");
+  const t2 = s.transition();
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, true);
+  assert.strictEqual(s.interrupt(), s);
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, false);
 });
 
-tape("selection.interrupt(null) only cancels pending transitions with the null name", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition1 = selection.transition("foo"),
-      transition2 = selection.transition();
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, true);
-  test.equal(selection.interrupt(null), selection);
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, false);
-  test.end();
+it("selection.interrupt(null) only cancels pending transitions with the null name", () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t1 = s.transition("foo");
+  const t2 = s.transition();
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, true);
+  assert.strictEqual(s.interrupt(null), s);
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, false);
 });
 
-tape("selection.interrupt(undefined) only cancels pending transitions with the null name", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition1 = selection.transition("foo"),
-      transition2 = selection.transition();
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, true);
-  test.equal(selection.interrupt(undefined), selection);
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, false);
-  test.end();
+it("selection.interrupt(undefined) only cancels pending transitions with the null name", () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t1 = s.transition("foo");
+  const t2 = s.transition();
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, true);
+  assert.strictEqual(s.interrupt(undefined), s);
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, false);
 });
 
-tape("selection.interrupt(name) only cancels pending transitions with the specified name", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition1 = selection.transition("foo"),
-      transition2 = selection.transition();
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, true);
-  test.equal(selection.interrupt("foo"), selection);
-  test.equal(transition1._id in root.__transition, false);
-  test.equal(transition2._id in root.__transition, true);
-  test.end();
+it("selection.interrupt(name) only cancels pending transitions with the specified name", () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t1 = s.transition("foo");
+  const t2 = s.transition();
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, true);
+  assert.strictEqual(s.interrupt("foo"), s);
+  assert.strictEqual(t1._id in root.__transition, false);
+  assert.strictEqual(t2._id in root.__transition, true);
 });
 
-tape("selection.interrupt(name) coerces the name to a string", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition1 = selection.transition("foo"),
-      transition2 = selection.transition();
-  test.equal(transition1._id in root.__transition, true);
-  test.equal(transition2._id in root.__transition, true);
-  test.equal(selection.interrupt({toString: function() { return "foo"; }}), selection);
-  test.equal(transition1._id in root.__transition, false);
-  test.equal(transition2._id in root.__transition, true);
-  test.end();
+it("selection.interrupt(name) coerces the name to a string", () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t1 = s.transition("foo");
+  const t2 = s.transition();
+  assert.strictEqual(t1._id in root.__transition, true);
+  assert.strictEqual(t2._id in root.__transition, true);
+  assert.strictEqual(s.interrupt({toString() { return "foo"; }}), s);
+  assert.strictEqual(t1._id in root.__transition, false);
+  assert.strictEqual(t2._id in root.__transition, true);
 });
 
-tape("selection.interrupt() does nothing if there is no transition on the selected elements", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root);
-  test.equal(root.__transition, undefined);
-  test.equal(selection.interrupt(), selection);
-  test.equal(root.__transition, undefined);
-  test.end();
+it("selection.interrupt() does nothing if there is no transition on the selected elements", () => {
+  const root = document.documentElement;
+  const s = select(root);
+  assert.strictEqual(root.__transition, undefined);
+  assert.strictEqual(s.interrupt(), s);
+  assert.strictEqual(root.__transition, undefined);
 });
 
-tape("selection.interrupt() dispatches an interrupt event to the started transition on the selected elements", function(test) {
-  var root = jsdom().documentElement,
-      interrupts = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().on("interrupt", function() { ++interrupts; });
-  d3_timer.timeout(function() {
-    var schedule = root.__transition[transition._id];
-    test.equal(schedule.state, state.STARTED);
-    selection.interrupt();
-    test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, state.ENDED);
-    test.equal(root.__transition, undefined);
-    test.equal(interrupts, 1);
-    test.end();
-  });
+it("selection.interrupt() dispatches an interrupt event to the started transition on the selected elements", async () => {
+  const root = document.documentElement;
+  let interrupts = 0;
+  const s = select(root);
+  const t = s.transition().on("interrupt", () => { ++interrupts; });
+  await new Promise(resolve => timeout(() => {
+    const schedule = root.__transition[t._id];
+    assert.strictEqual(schedule.state, STARTED);
+    s.interrupt();
+    assert.strictEqual(schedule.timer._call, null);
+    assert.strictEqual(schedule.state, ENDED);
+    assert.strictEqual(root.__transition, undefined);
+    assert.strictEqual(interrupts, 1);
+    resolve();
+  }));
 });
 
-tape("selection.interrupt() destroys the schedule after dispatching the interrupt event", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().on("interrupt", interrupted);
-
-  d3_timer.timeout(function() {
-    selection.interrupt();
-  });
-
+it("selection.interrupt() destroys the schedule after dispatching the interrupt event", async () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t = s.transition().on("interrupt", interrupted);
+  await new Promise(resolve => timeout(() => {
+    s.interrupt();
+    resolve();
+  }));
   function interrupted() {
-    test.equal(transition.delay(), 0);
-    test.equal(transition.duration(), 250);
-    test.equal(transition.on("interrupt"), interrupted);
-    test.end();
+    assert.strictEqual(t.delay(), 0);
+    assert.strictEqual(t.duration(), 250);
+    assert.strictEqual(t.on("interrupt"), interrupted);
   }
 });
 
-tape("selection.interrupt() does not dispatch an interrupt event to a starting transition", function(test) {
-  var root = jsdom().documentElement,
-      interrupts = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().on("interrupt", function() { ++interrupts; }).on("start", started);
-
-  function started() {
-    var schedule = root.__transition[transition._id];
-    test.equal(schedule.state, state.STARTING);
-    selection.interrupt();
-    test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, state.ENDED);
-    test.equal(root.__transition, undefined);
-    test.equal(interrupts, 0);
-    test.end();
-  }
+it("selection.interrupt() does not dispatch an interrupt event to a starting transition", async () => {
+  const root = document.documentElement;
+  let interrupts = 0;
+  const s = select(root);
+  const t = s.transition().on("interrupt", () => { ++interrupts; });
+  await new Promise(resolve => t.on("start", () => {
+    const schedule = root.__transition[t._id];
+    assert.strictEqual(schedule.state, STARTING);
+    s.interrupt();
+    assert.strictEqual(schedule.timer._call, null);
+    assert.strictEqual(schedule.state, ENDED);
+    assert.strictEqual(root.__transition, undefined);
+    assert.strictEqual(interrupts, 0);
+    resolve();
+  }));
 });
 
-tape("selection.interrupt() prevents a created transition from starting", function(test) {
-  var root = jsdom().documentElement,
-      starts = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().on("start", function() { ++starts; }),
-      schedule = root.__transition[transition._id];
-
-  test.equal(schedule.state, state.CREATED);
-  selection.interrupt();
-  test.equal(schedule.timer._call, null);
-  test.equal(schedule.state, state.ENDED);
-  test.equal(root.__transition, undefined);
-
-  d3_timer.timeout(function() {
-    test.equal(starts, 0);
-    test.end();
-  }, 10);
+it("selection.interrupt() prevents a created transition from starting", async () => {
+  const root = document.documentElement;
+  let starts = 0;
+  const s = select(root);
+  const t = s.transition().on("start", () => { ++starts; });
+  const schedule = root.__transition[t._id];
+  assert.strictEqual(schedule.state, CREATED);
+  s.interrupt();
+  assert.strictEqual(schedule.timer._call, null);
+  assert.strictEqual(schedule.state, ENDED);
+  assert.strictEqual(root.__transition, undefined);
+  await new Promise(resolve => timeout(resolve, 10));
+  assert.strictEqual(starts, 0);
 });
 
-tape("selection.interrupt() prevents a scheduled transition from starting", function(test) {
-  var root = jsdom().documentElement,
-      starts = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().delay(50).on("start", function() { ++starts; }),
-      schedule = root.__transition[transition._id];
-
-  d3_timer.timeout(function() {
-    test.equal(schedule.state, state.SCHEDULED);
-    selection.interrupt();
-    test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, state.ENDED);
-    test.equal(root.__transition, undefined);
-  });
-
-  d3_timer.timeout(function() {
-    test.equal(starts, 0);
-    test.end();
-  }, 60);
+it("selection.interrupt() prevents a scheduled transition from starting", async () => {
+  const root = document.documentElement;
+  let starts = 0;
+  const s = select(root);
+  const t = s.transition().delay(50).on("start", () => { ++starts; });
+  const schedule = root.__transition[t._id];
+  await new Promise(resolve => timeout(resolve));
+  assert.strictEqual(schedule.state, SCHEDULED);
+  s.interrupt();
+  assert.strictEqual(schedule.timer._call, null);
+  assert.strictEqual(schedule.state, ENDED);
+  assert.strictEqual(root.__transition, undefined);
+  await new Promise(resolve => timeout(resolve, 60));
+  assert.strictEqual(starts, 0);
 });
 
-tape("selection.interrupt() prevents a starting transition from initializing tweens", function(test) {
-  var root = jsdom().documentElement,
-      tweens = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().tween("tween", function() { ++tweens; }).on("start", started),
-      schedule = root.__transition[transition._id];
-
-  function started() {
-    test.equal(schedule.state, state.STARTING);
-    selection.interrupt();
-    test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, state.ENDED);
-    test.equal(root.__transition, undefined);
-  }
-
-  d3_timer.timeout(function() {
-    test.equal(tweens, 0);
-    test.end();
-  }, 10);
+it("selection.interrupt() prevents a starting transition from initializing tweens", async () => {
+  const root = document.documentElement;
+  let tweens = 0;
+  const s = select(root);
+  const t = s.transition().tween("tween", () => { ++tweens; });
+  const schedule = root.__transition[t._id];
+  await new Promise(resolve => t.on("start", () => {
+    assert.strictEqual(schedule.state, STARTING);
+    s.interrupt();
+    assert.strictEqual(schedule.timer._call, null);
+    assert.strictEqual(schedule.state, ENDED);
+    assert.strictEqual(root.__transition, undefined);
+    resolve();
+  }));
+  await new Promise(resolve => timeout(resolve, 10));
+  assert.strictEqual(tweens, 0);
 });
 
-tape("selection.interrupt() during tween initialization prevents an active transition from continuing", function(test) {
-  var root = jsdom().documentElement,
-      tweens = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().tween("tween", function() { selection.interrupt(); return function() { ++tweens; }; }),
-      schedule = root.__transition[transition._id];
-
-  d3_timer.timeout(function() {
-    test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, state.ENDED);
-    test.equal(root.__transition, undefined);
-    test.equal(tweens, 0);
-    test.end();
-  }, 10);
+it("selection.interrupt() during tween initialization prevents an active transition from continuing", async () => {
+  const root = document.documentElement;
+  let tweens = 0;
+  const s = select(root);
+  const t = s.transition().tween("tween", () => { s.interrupt(); return () => { ++tweens; }; });
+  const schedule = root.__transition[t._id];
+  await new Promise(resolve => timeout(resolve, 10));
+  assert.strictEqual(schedule.timer._call, null);
+  assert.strictEqual(schedule.state, ENDED);
+  assert.strictEqual(root.__transition, undefined);
+  assert.strictEqual(tweens, 0);
 });
 
-tape("selection.interrupt() prevents an active transition from continuing", function(test) {
-  var root = jsdom().documentElement,
-      interrupted = false,
-      tweens = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().tween("tween", function() { return function() { if (interrupted) ++tweens; }; }),
-      schedule = root.__transition[transition._id];
-
-  d3_timer.timeout(function() {
+it("selection.interrupt() prevents an active transition from continuing", async () => {
+  const root = document.documentElement;
+  let interrupted = false;
+  let tweens = 0;
+  const s = select(root);
+  const t = s.transition().tween("tween", () => () => { if (interrupted) ++tweens; });
+  const schedule = root.__transition[t._id];
+  await new Promise(resolve => timeout(() => {
     interrupted = true;
-    test.equal(schedule.state, state.STARTED);
-    selection.interrupt();
-    test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, state.ENDED);
-    test.equal(root.__transition, undefined);
-  }, 10);
-
-  d3_timer.timeout(function() {
-    test.equal(tweens, 0);
-    test.end();
-  }, 50);
+    assert.strictEqual(schedule.state, STARTED);
+    s.interrupt();
+    assert.strictEqual(schedule.timer._call, null);
+    assert.strictEqual(schedule.state, ENDED);
+    assert.strictEqual(root.__transition, undefined);
+    resolve();
+  }, 10));
+  await new Promise(resolve => timeout(resolve, 50));
+  assert.strictEqual(tweens, 0);
 });
 
-tape("selection.interrupt() during the final tween invocation prevents the end event from being dispatched", function(test) {
-  var root = jsdom().documentElement,
-      ends = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().duration(50).tween("tween", tween).on("end", function() { ++ends; }),
-      schedule = root.__transition[transition._id];
-
+it("selection.interrupt() during the final tween invocation prevents the end event from being dispatched", async () => {
+  const root = document.documentElement;
+  let ends = 0;
+  const s = select(root);
+  const t = s.transition().duration(50).tween("tween", tween).on("end", () => { ++ends; });
+  const schedule = root.__transition[t._id];
   function tween() {
-    return function(t) {
+    return (t) => {
       if (t >= 1) {
-        test.equal(schedule.state, state.ENDING);
-        selection.interrupt();
+        assert.strictEqual(schedule.state, ENDING);
+        s.interrupt();
       }
     };
   }
-
-  d3_timer.timeout(function() {
-    test.equal(schedule.timer._call, null);
-    test.equal(schedule.state, state.ENDED);
-    test.equal(root.__transition, undefined);
-    test.equal(ends, 0);
-    test.end();
-  }, 60);
+  await new Promise(resolve => timeout(() => {
+    assert.strictEqual(schedule.timer._call, null);
+    assert.strictEqual(schedule.state, ENDED);
+    assert.strictEqual(root.__transition, undefined);
+    assert.strictEqual(ends, 0);
+    resolve();
+  }, 60));
 });
 
-tape("selection.interrupt() has no effect on an ended transition", function(test) {
-  var root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().duration(50).on("end", ended),
-      schedule = root.__transition[transition._id];
-
-  function ended() {
-    d3_timer.timeout(function() {
-      test.equal(schedule.state, state.ENDED);
-      test.equal(schedule.timer._call, null);
-      selection.interrupt();
-      test.equal(schedule.state, state.ENDED);
-      test.equal(schedule.timer._call, null);
-      test.equal(root.__transition, undefined);
-      test.end();
-    });
-  }
+it("selection.interrupt() has no effect on an ended transition", async () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t = s.transition().duration(50);
+  const schedule = root.__transition[t._id];
+  await t.end();
+  assert.strictEqual(schedule.state, ENDED);
+  assert.strictEqual(schedule.timer._call, null);
+  s.interrupt();
+  assert.strictEqual(schedule.state, ENDED);
+  assert.strictEqual(schedule.timer._call, null);
+  assert.strictEqual(root.__transition, undefined);
 });
 
-tape("selection.interrupt() has no effect on an interrupting transition", function(test) {
-  var root = jsdom().documentElement,
-      interrupts = 0,
-      selection = d3_selection.select(root),
-      transition = selection.transition().duration(50).on("interrupt", interrupted),
-      schedule = root.__transition[transition._id];
-
-  d3_timer.timeout(function() {
-    test.equal(schedule.state, state.STARTED);
-    selection.interrupt();
-    test.equal(schedule.state, state.ENDED);
-    test.equal(schedule.timer._call, null);
-    test.equal(interrupts, 1);
-    test.end();
-  });
+it("selection.interrupt() has no effect on an interrupting transition", async () => {
+  const root = document.documentElement;
+  let interrupts = 0;
+  const s = select(root);
+  const t = s.transition().duration(50).on("interrupt", interrupted);
+  const schedule = root.__transition[t._id];
 
   function interrupted() {
     ++interrupts;
-    selection.interrupt();
+    s.interrupt();
   }
+
+  await new Promise(resolve => timeout(() => {
+    assert.strictEqual(schedule.state, STARTED);
+    s.interrupt();
+    assert.strictEqual(schedule.state, ENDED);
+    assert.strictEqual(schedule.timer._call, null);
+    assert.strictEqual(interrupts, 1);
+    resolve();
+  }));
 });

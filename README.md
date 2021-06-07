@@ -16,24 +16,36 @@ To compute intermediate state, transitions leverage a variety of [built-in inter
 
 ## Installing
 
-If you use NPM, `npm install d3-transition`. Otherwise, download the [latest release](https://github.com/d3/d3-transition/releases/latest). You can also load directly from [d3js.org](https://d3js.org), either as a [standalone library](https://d3js.org/d3-transition.v2.min.js) or as part of [D3](https://github.com/d3/d3). AMD, CommonJS, and vanilla environments are supported. In vanilla, a `d3` global is exported:
+If you use npm, `npm install d3-transition`. You can also download the [latest release on GitHub](https://github.com/d3/d3-transition/releases/latest). For vanilla HTML in modern browsers, import d3-transition from Skypack:
 
 ```html
-<script src="https://d3js.org/d3-color.v2.min.js"></script>
-<script src="https://d3js.org/d3-dispatch.v2.min.js"></script>
-<script src="https://d3js.org/d3-ease.v2.min.js"></script>
-<script src="https://d3js.org/d3-interpolate.v2.min.js"></script>
-<script src="https://d3js.org/d3-selection.v2.min.js"></script>
-<script src="https://d3js.org/d3-timer.v2.min.js"></script>
-<script src="https://d3js.org/d3-transition.v2.min.js"></script>
-<script>
+<script type="module">
 
-var transition = d3.transition();
+import {transition} from "https://cdn.skypack.dev/d3-transition@3";
+
+const t = transition();
 
 </script>
 ```
 
-[Try d3-transition in your browser.](https://tonicdev.com/npm/d3-transition)
+For legacy environments, you can load d3-transition’s UMD bundle from an npm-based CDN such as jsDelivr; a `d3` global is exported:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-dispatch@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-ease@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-selection@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-timer@3"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-transition@3"></script>
+<script>
+
+const t = d3.transition();
+
+</script>
+```
+
+[Try d3-transition in your browser.](https://observablehq.com/collection/@d3/d3-transition)
 
 ## API Reference
 
@@ -296,7 +308,7 @@ For each selected element, sets the [text content](http://www.w3.org/TR/DOM-Leve
 To interpolate text rather than to set it on start, use [*transition*.textTween](#transition_textTween) or append a replacement element and cross-fade opacity. Text is not interpolated by default because it is usually undesirable.
 
 <a name="transition_textTween" href="#transition_textTween">#</a> <i>transition</i>.<b>textTween</b>(<i>factory</i>) · [Source](https://github.com/d3/d3-transition/blob/master/src/transition/textTween.js), [Examples](https://observablehq.com/@d3/transition-texttween)
- 
+
 If *factory* is specified and not null, assigns the text [tween](#transition_tween) to the specified interpolator *factory*. An interpolator factory is a function that returns an [interpolator](https://github.com/d3/d3-interpolate); when the transition starts, the *factory* is evaluated for each selected element, in order, being passed the current datum `d` and index `i`, with the `this` context as the current DOM element. The returned interpolator will then be invoked for each frame of the transition, in order, being passed the [eased](#transition_ease) time *t*, typically in the range [0, 1]. Lastly, the return value of the interpolator will be used to set the text. The interpolator must return a string.
 
 For example, to interpolate the text with integers from 0 to 100:
