@@ -123,7 +123,7 @@ it("selection.interrupt() destroys the schedule after dispatching the interrupt 
 
 it("selection.interrupt() does not dispatch an interrupt event to a starting transition", async () => {
   const root = document.documentElement;
-  const interrupts = 0;
+  let interrupts = 0;
   const s = select(root);
   const t = s.transition().on("interrupt", () => { ++interrupts; });
   await new Promise(resolve => t.on("start", () => {
@@ -140,7 +140,7 @@ it("selection.interrupt() does not dispatch an interrupt event to a starting tra
 
 it("selection.interrupt() prevents a created transition from starting", async () => {
   const root = document.documentElement;
-  const starts = 0;
+  let starts = 0;
   const s = select(root);
   const t = s.transition().on("start", () => { ++starts; });
   const schedule = root.__transition[t._id];
@@ -171,7 +171,7 @@ it("selection.interrupt() prevents a scheduled transition from starting", async 
 
 it("selection.interrupt() prevents a starting transition from initializing tweens", async () => {
   const root = document.documentElement;
-  const tweens = 0;
+  let tweens = 0;
   const s = select(root);
   const t = s.transition().tween("tween", () => { ++tweens; });
   const schedule = root.__transition[t._id];
@@ -189,7 +189,7 @@ it("selection.interrupt() prevents a starting transition from initializing tween
 
 it("selection.interrupt() during tween initialization prevents an active transition from continuing", async () => {
   const root = document.documentElement;
-  const tweens = 0;
+  let tweens = 0;
   const s = select(root);
   const t = s.transition().tween("tween", () => { s.interrupt(); return () => { ++tweens; }; });
   const schedule = root.__transition[t._id];

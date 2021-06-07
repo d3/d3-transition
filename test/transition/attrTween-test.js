@@ -17,8 +17,7 @@ it("transition.attrTween(name, value) defines an attribute tween using the inter
   }, 125));
 });
 
-it("transition.attrTween(name, value) invokes the value function with the expected context and arguments", async () => {
-  const document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>");
+it("transition.attrTween(name, value) invokes the value function with the expected context and arguments", "<h1 id='one'></h1><h1 id='two'></h1>", async () => {
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const result = [];

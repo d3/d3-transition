@@ -12,7 +12,7 @@ it("transition.styleTween(name, value) defines a style tween using the interpola
   const interpolate = interpolateHcl("red", "blue");
   const ease = easeCubic;
   select(root).transition().styleTween("color", () => interpolate);
-  await new Promise(resolve => timeout((elapsed) => {
+  await new Promise(resolve => timeout(elapsed => {
     assert.deepStrictEqual(root.style.getPropertyValue("color"), interpolate(ease(elapsed / 250)));
     assert.deepStrictEqual(root.style.getPropertyPriority("color"), "");
     resolve();
@@ -24,7 +24,7 @@ it("transition.styleTween(name, value, priority) defines a style tween using the
   const interpolate = interpolateHcl("red", "blue");
   const ease = easeCubic;
   select(root).transition().styleTween("color", () => interpolate, "important");
-  await new Promise(resolve => timeout((elapsed) => {
+  await new Promise(resolve => timeout(elapsed => {
     assert.deepStrictEqual(root.style.getPropertyValue("color"), interpolate(ease(elapsed / 250)));
     assert.deepStrictEqual(root.style.getPropertyPriority("color"), "important");
     resolve();
@@ -61,7 +61,7 @@ it("transition.styleTween(name, value) allows the specified function to return n
   const root = document.documentElement;
   const s = select(root).style("color", "red");
   s.transition().styleTween("color", () => {});
-  await new Promise(resolve => timeout((elapsed) => {
+  await new Promise(resolve => timeout(() => {
     assert.deepStrictEqual(root.style.getPropertyValue("color"), "red");
     resolve();
   }, 125));
@@ -72,7 +72,7 @@ it("transition.styleTween(name, value) coerces the specified name to a string", 
   const interpolate = interpolateHcl("red", "blue");
   const ease = easeCubic;
   select(root).transition().styleTween({toString() { return "color"; }}, () => interpolate);
-  await new Promise(resolve => timeout((elapsed) => {
+  await new Promise(resolve => timeout(elapsed => {
     assert.deepStrictEqual(root.style.getPropertyValue("color"), interpolate(ease(elapsed / 250)));
     resolve();
   }, 125));
@@ -90,7 +90,7 @@ it("transition.styleTween(name, null) removes the specified style tween", async 
   const t = select(root).transition().styleTween("color", () => interpolate).styleTween("color", null);
   assert.strictEqual(t.styleTween("color"), null);
   assert.strictEqual(t.tween("style.color"), null);
-  await new Promise(resolve => timeout((elapsed) => {
+  await new Promise(resolve => timeout(() => {
     assert.strictEqual(root.style.getPropertyValue("color"), "");
     resolve();
   }, 125));

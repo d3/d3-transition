@@ -1,128 +1,116 @@
-const tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection"),
-    state = require("./state");
+import assert from "assert";
+import {select, selectAll} from "d3-selection";
+import {timeout} from "d3-timer";
+import "../../src/index.js";
+import {ENDED, ENDING, STARTING} from "../../src/transition/schedule.js";
+import it from "../jsdom.js";
 
-require("../../");
-
-it("transition.on(type, listener) throws an error if listener is not a function", () => {
-  const root = jsdom().documentElement,
-      transition = d3_selection.select(root).transition();
-  assert.throws(function() { transition.on("start", 42); });
+it("transition.on(type, listener) throws an error if listener is not a function", async () => {
+  const root = document.documentElement;
+  const t = select(root).transition();
+  assert.throws(() => { t.on("start", 42); });
 });
 
-it("transition.on(typename) returns the listener with the specified typename, if any", () => {
-  const root = jsdom().documentElement,
-      foo = function() {},
-      bar = function() {},
-      transition = d3_selection.select(root).transition().on("start", foo).on("start.bar", bar);
-  assert.strictEqual(transition.on("start"), foo);
-  assert.strictEqual(transition.on("start.foo"), undefined);
-  assert.strictEqual(transition.on("start.bar"), bar);
-  assert.strictEqual(transition.on("end"), undefined);
+it("transition.on(typename) returns the listener with the specified typename, if any", async () => {
+  const root = document.documentElement;
+  const foo = () => {};
+  const bar = () => {};
+  const t = select(root).transition().on("start", foo).on("start.bar", bar);
+  assert.strictEqual(t.on("start"), foo);
+  assert.strictEqual(t.on("start.foo"), undefined);
+  assert.strictEqual(t.on("start.bar"), bar);
+  assert.strictEqual(t.on("end"), undefined);
 });
 
-it("transition.on(typename) throws an error if the specified type is not supported", () => {
-  const root = jsdom().documentElement,
-      transition = d3_selection.select(root).transition();
-  assert.throws(function() { transition.on("foo"); });
+it("transition.on(typename) throws an error if the specified type is not supported", async () => {
+  const root = document.documentElement;
+  const t = select(root).transition();
+  assert.throws(() => { t.on("foo"); });
 });
 
-it("transition.on(typename, listener) throws an error if the specified type is not supported", () => {
-  const root = jsdom().documentElement,
-      transition = d3_selection.select(root).transition();
-  assert.throws(function() { transition.on("foo", function() {}); });
+it("transition.on(typename, listener) throws an error if the specified type is not supported", async () => {
+  const root = document.documentElement;
+  const t = select(root).transition();
+  assert.throws(() => { t.on("foo", () => {}); });
 });
 
-it("transition.on(typename, listener) throws an error if the specified listener is not a function", () => {
-  const root = jsdom().documentElement,
-      transition = d3_selection.select(root).transition();
-  assert.throws(function() { transition.on("foo", 42); });
+it("transition.on(typename, listener) throws an error if the specified listener is not a function", async () => {
+  const root = document.documentElement;
+  const t = select(root).transition();
+  assert.throws(() => { t.on("foo", 42); });
 });
 
-it("transition.on(typename, null) removes the listener with the specified typename, if any", () => {
-  const root = jsdom().documentElement,
-      starts = 0,
-      transition = d3_selection.select(root).transition().on("start.foo", function() { ++starts; }),
-      schedule = root.__transition[transition._id];
-
-  assert.strictEqual(transition.on("start.foo", null), transition);
-  assert.strictEqual(transition.on("start.foo"), undefined);
+it("transition.on(typename, null) removes the listener with the specified typename, if any", async () => {
+  const root = document.documentElement;
+  let starts = 0;
+  const t = select(root).transition().on("start.foo", () => { ++starts; });
+  const schedule = root.__transition[t._id];
+  assert.strictEqual(t.on("start.foo", null), t);
+  assert.strictEqual(t.on("start.foo"), undefined);
   assert.strictEqual(schedule.on.on("start.foo"), undefined);
-
-  d3_timer.timeout(function() {
-    assert.strictEqual(starts, 0);
-});
+  await new Promise(resolve => timeout(resolve));
+  assert.strictEqual(starts, 0);
 });
 
-it("transition.on(\"start\", listener) registers a listener for the start event", () => {
-  const root = jsdom().documentElement,
-      transition = d3_selection.select(root).transition().on("start", started),
-      schedule = root.__transition[transition._id];
-
-  function started() {
-    assert.strictEqual(schedule.state, state.STARTING);
-}
+it("transition.on(\"start\", listener) registers a listener for the start event", async () => {
+  const root = document.documentElement;
+  const t = select(root).transition();
+  const schedule = root.__transition[t._id];
+  await new Promise(resolve => t.on("start", () => {
+    assert.strictEqual(schedule.state, STARTING)
+    resolve();
+  }));
 });
 
-it("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during start)", () => {
-  const root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().on("interrupt", interrupted),
-      schedule = root.__transition[transition._id];
-
-  function interrupted() {
-    assert.strictEqual(schedule.state, state.ENDED);
-}
-
-  d3_timer.timeout(function() {
-    selection.interrupt();
-  });
+it("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during start)", async () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t = s.transition();
+  const schedule = root.__transition[t._id];
+  timeout(() => s.interrupt());
+  await new Promise(resolve => t.on("interrupt", () => {
+    assert.strictEqual(schedule.state, ENDED);
+    resolve();
+  }));
 });
 
-it("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during run)", () => {
-  const root = jsdom().documentElement,
-      selection = d3_selection.select(root),
-      transition = selection.transition().on("interrupt", interrupted),
-      schedule = root.__transition[transition._id];
-
-  function interrupted() {
-    assert.strictEqual(schedule.state, state.ENDED);
-}
-
-  d3_timer.timeout(function() {
-    selection.interrupt();
-  }, 50);
+it("transition.on(\"interrupt\", listener) registers a listener for the interrupt event (during run)", async () => {
+  const root = document.documentElement;
+  const s = select(root);
+  const t = s.transition();
+  const schedule = root.__transition[t._id];
+  timeout(() => s.interrupt(), 50);
+  await new Promise(resolve => t.on("interrupt", () => {
+    assert.strictEqual(schedule.state, ENDED);
+    resolve();
+  }));
 });
 
-it("transition.on(\"end\", listener) registers a listener for the end event", () => {
-  const root = jsdom().documentElement,
-      transition = d3_selection.select(root).transition().duration(50).on("end", ended),
-      schedule = root.__transition[transition._id];
-
-  function ended() {
-    assert.strictEqual(schedule.state, state.ENDING);
-}
+it("transition.on(\"end\", listener) registers a listener for the end event", async () => {
+  const root = document.documentElement;
+  const t = select(root).transition().duration(50);
+  const schedule = root.__transition[t._id];
+  await new Promise(resolve => t.on("end", () => {
+    assert.strictEqual(schedule.state, ENDING);
+    resolve();
+  }));
 });
 
-it("transition.on(typename, listener) uses copy-on-write to apply changes", () => {
-  const document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
-      one = document.querySelector("#one"),
-      two = document.querySelector("#two"),
-      foo = function() {},
-      bar = function() {},
-      transition = d3_selection.selectAll([one, two]).transition(),
-      schedule1 = one.__transition[transition._id],
-      schedule2 = two.__transition[transition._id];
-
-  transition.on("start", foo);
+it("transition.on(typename, listener) uses copy-on-write to apply changes", "<h1 id='one'></h1><h1 id='two'></h1>", async () => {
+  const one = document.querySelector("#one");
+  const two = document.querySelector("#two");
+  const foo = () => {};
+  const bar = () => {};
+  const t = selectAll([one, two]).transition();
+  const schedule1 = one.__transition[t._id];
+  const schedule2 = two.__transition[t._id];
+  t.on("start", foo);
   assert.strictEqual(schedule1.on.on("start"), foo);
   assert.strictEqual(schedule2.on, schedule1.on);
-  transition.on("start", bar);
+  t.on("start", bar);
   assert.strictEqual(schedule1.on.on("start"), bar);
   assert.strictEqual(schedule2.on, schedule1.on);
-  d3_selection.select(two).transition(transition).on("start", foo);
+  select(two).transition(t).on("start", foo);
   assert.strictEqual(schedule1.on.on("start"), bar);
   assert.strictEqual(schedule2.on.on("start"), foo);
 });

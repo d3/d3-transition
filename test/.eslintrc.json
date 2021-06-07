@@ -5,6 +5,9 @@
     "ecmaVersion": 8
   },
   "env": {
-    "mocha": true
+    "mocha": true,
+    "node": true,
+    "es6": true,
+    "browser": true
   }
 }

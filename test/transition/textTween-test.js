@@ -1,35 +1,33 @@
-const tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_ease = require("d3-ease"),
-    d3_timer = require("d3-timer"),
-    d3_interpolate = require("d3-interpolate"),
-    d3_selection = require("d3-selection"),
-    state = require("./state");
+import assert from "assert";
+import {easeCubic} from "d3-ease";
+import {interpolateHcl} from "d3-interpolate";
+import {select} from "d3-selection";
+import {timeout} from "d3-timer";
+import "../../src/index.js";
+import it from "../jsdom.js";
 
-require("../../");
-
-it("transition.textTween(value) defines a text tween using the interpolator returned by the specified function", () => {
-  const root = jsdom().documentElement,
-      interpolate = d3_interpolate.interpolateHcl("red", "blue"),
-      ease = d3_ease.easeCubic,
-      transition = d3_selection.select(root).transition().textTween(function() { return interpolate; });
-
-  d3_timer.timeout(function(elapsed) {
+it("transition.textTween(value) defines a text tween using the interpolator returned by the specified function", async () => {
+  const root = document.documentElement;
+  const interpolate = interpolateHcl("red", "blue");
+  const ease = easeCubic;
+  select(root).transition().textTween(() => interpolate);
+  await new Promise(resolve => timeout(elapsed => {
     assert.deepStrictEqual(root.textContent, interpolate(ease(elapsed / 250)));
-}, 125);
+    resolve();
+  }, 125));
 });
 
 it("transition.textTween() returns the existing text tween", () => {
-  const root = jsdom().documentElement,
-      factory = function() {},
-      transition = d3_selection.select(root).transition().textTween(factory);
-  assert.strictEqual(transition.textTween(), factory);
+  const root = document.documentElement;
+  const factory = () => {};
+  const t = select(root).transition().textTween(factory);
+  assert.strictEqual(t.textTween(), factory);
 });
 
 it("transition.textTween(null) removes an existing text tween", () => {
-  const root = jsdom().documentElement,
-      factory = function() {},
-      transition = d3_selection.select(root).transition().textTween(factory);
-  transition.textTween(undefined);
-  assert.strictEqual(transition.textTween(), null);
+  const root = document.documentElement;
+  const factory = () => {};
+  const t = select(root).transition().textTween(factory);
+  t.textTween(undefined);
+  assert.strictEqual(t.textTween(), null);
 });

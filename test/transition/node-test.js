@@ -1,7 +1,8 @@
-const tape = require("tape"),
-    d3_selection = require("d3-selection"),
-    d3 = require("../../");
+import assert from "assert";
+import {selection} from "d3-selection";
+import {transition} from "../../src/index.js";
+import it from "../jsdom.js";
 
 it("transition.node is the same as selection.node", () => {
-  assert.strictEqual(d3.transition.prototype.node, d3_selection.selection.prototype.node);
+  assert.strictEqual(transition.prototype.node, selection.prototype.node);
 });

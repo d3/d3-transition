@@ -6,12 +6,14 @@ import {transition} from "../../src/index.js";
 import it from "../jsdom.js";
 
 it("selection.transition() returns an instanceof transition", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t = s.transition();
   assert.strictEqual(t instanceof transition, true);
 });
 
 it("selection.transition() uses the default timing parameters", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t = s.transition();
   const schedule = root.__transition[t._id];
@@ -22,6 +24,7 @@ it("selection.transition() uses the default timing parameters", () => {
 });
 
 it("selection.transition() assigns a monotonically-increasing id", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t1 = s.transition();
   const t2 = s.transition();
@@ -31,6 +34,7 @@ it("selection.transition() assigns a monotonically-increasing id", () => {
 });
 
 it("selection.transition() uses a default name of null", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t = s.transition();
   const schedule = root.__transition[t._id];
@@ -38,6 +42,7 @@ it("selection.transition() uses a default name of null", () => {
 });
 
 it("selection.transition(null) uses a name of null", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t = s.transition(null);
   const schedule = root.__transition[t._id];
@@ -45,6 +50,7 @@ it("selection.transition(null) uses a name of null", () => {
 });
 
 it("selection.transition(undefined) uses a name of null", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t = s.transition(undefined);
   const schedule = root.__transition[t._id];
@@ -52,6 +58,7 @@ it("selection.transition(undefined) uses a name of null", () => {
 });
 
 it("selection.transition(name) uses the specified name", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t = s.transition("foo");
   const schedule = root.__transition[t._id];
@@ -59,6 +66,7 @@ it("selection.transition(name) uses the specified name", () => {
 });
 
 it("selection.transition(name) coerces the name to a string", () => {
+  const root = document.documentElement;
   const s = select(root);
   const t = s.transition({toString() { return "foo"; }});
   const schedule = root.__transition[t._id];
@@ -74,19 +82,15 @@ it("selection.transition(transition) inherits the id, name and timing from the c
   const schedule2 = two.__transition[t._id];
   const t1b = select(one.firstChild).transition(t);
   const schedule1b = one.firstChild.__transition[t._id];
-
   assert.strictEqual(t1b._id, t._id);
   assert.strictEqual(schedule1b.name, schedule1.name);
   assert.strictEqual(schedule1b.delay, schedule1.delay);
   assert.strictEqual(schedule1b.duration, schedule1.duration);
   assert.strictEqual(schedule1b.ease, schedule1.ease);
   assert.strictEqual(schedule1b.time, schedule1.time);
-
   await new Promise(resolve => timeout(resolve, 10));
-
   const t2b = select(two.firstChild).transition(t);
   const schedule2b = two.firstChild.__transition[t._id];
-
   assert.strictEqual(t2b._id, t._id);
   assert.strictEqual(schedule2b.name, schedule2.name);
   assert.strictEqual(schedule2b.delay, schedule2.delay);
@@ -96,6 +100,7 @@ it("selection.transition(transition) inherits the id, name and timing from the c
 });
 
 it("selection.transition(transition) reselects the existing transition with the specified transition’s id, if any", () => {
+  const root = document.documentElement;
   const foo = () => {};
   const bar = () => {};
   const s = select(root);
@@ -103,7 +108,6 @@ it("selection.transition(transition) reselects the existing transition with the 
   const schedule1 = root.__transition[t1._id];
   const t2 = s.transition(t1).tween("tween", bar);
   const schedule2 = root.__transition[t2._id];
-
   assert.strictEqual(t1._id, t2._id);
   assert.strictEqual(schedule1, schedule2);
   assert.strictEqual(t1.tween("tween"), bar);
