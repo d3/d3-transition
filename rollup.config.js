@@ -11,7 +11,7 @@ const copyright = readFileSync("./LICENSE", "utf-8")
 
 const config = {
   input: "src/index.js",
-  external: Object.keys(meta.dependencies || {}).filter(key => /^d3-/.test(key)),
+  external: Object.keys({...meta.dependencies, ...meta.peerDependencies}).filter(key => /^d3-/.test(key)),
   output: {
     file: `dist/${meta.name}.js`,
     name: "d3",
