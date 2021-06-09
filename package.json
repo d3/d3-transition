@@ -1,6 +1,6 @@
 {
   "name": "d3-transition",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Animated transitions for D3 selections.",
   "homepage": "https://d3js.org/d3-transition/",
   "repository": {
