@@ -60,6 +60,6 @@
     "node": ">=12"
   },
   "peerDependencies": {
-    "d3-selection": "2"
+    "d3-selection": "2 - 3"
   }
 }
