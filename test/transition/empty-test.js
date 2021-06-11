@@ -1,8 +1,7 @@
-var tape = require("tape"),
-    d3_selection = require("d3-selection"),
-    d3_transition = require("../../");
+import assert from "assert";
+import {selection} from "d3-selection";
+import {transition} from "../../src/index.js";
 
-tape("transition.empty is the same as selection.empty", function(test) {
-  test.equal(d3_transition.transition.prototype.empty, d3_selection.selection.prototype.empty);
-  test.end();
+it("transition.empty is the same as selection.empty", () => {
+  assert.strictEqual(transition.prototype.empty, selection.prototype.empty);
 });

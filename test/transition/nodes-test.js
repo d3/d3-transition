@@ -1,8 +1,8 @@
-var tape = require("tape"),
-    d3_selection = require("d3-selection"),
-    d3_transition = require("../../");
+import assert from "assert";
+import {selection} from "d3-selection";
+import {transition} from "../../src/index.js";
+import it from "../jsdom.js";
 
-tape("transition.nodes is the same as selection.nodes", function(test) {
-  test.equal(d3_transition.transition.prototype.nodes, d3_selection.selection.prototype.nodes);
-  test.end();
+it("transition.nodes is the same as selection.nodes", () => {
+  assert.strictEqual(transition.prototype.nodes, selection.prototype.nodes);
 });

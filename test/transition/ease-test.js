@@ -1,72 +1,68 @@
-var tape = require("tape"),
-    jsdom = require("../jsdom"),
-    d3_ease = require("d3-ease"),
-    d3_timer = require("d3-timer"),
-    d3_selection = require("d3-selection"),
-    state = require("./state");
+import assert from "assert";
+import {easeBounce, easeCubic} from "d3-ease";
+import {select, selectAll} from "d3-selection";
+import {timeout} from "d3-timer";
+import "../../src/index.js";
+import {ENDING, RUNNING} from "../../src/transition/schedule.js";
+import it from "../jsdom.js";
 
-require("../../");
-
-tape("transition.ease() returns the easing function for the first non-null node", function(test) {
-  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
-      one = document.querySelector("#one"),
-      two = document.querySelector("#two"),
-      transition1 = d3_selection.select(one).transition(),
-      transition2 = d3_selection.select(two).transition().ease(d3_ease.easeBounce);
-  test.strictEqual(one.__transition[transition1._id].ease, d3_ease.easeCubic);
-  test.strictEqual(two.__transition[transition2._id].ease, d3_ease.easeBounce);
-  test.strictEqual(transition1.ease(), d3_ease.easeCubic);
-  test.strictEqual(transition2.ease(), d3_ease.easeBounce);
-  test.strictEqual(d3_selection.select(one).transition(transition1).ease(), d3_ease.easeCubic);
-  test.strictEqual(d3_selection.select(two).transition(transition2).ease(), d3_ease.easeBounce);
-  test.strictEqual(d3_selection.selectAll([null, one]).transition(transition1).ease(), d3_ease.easeCubic);
-  test.strictEqual(d3_selection.selectAll([null, two]).transition(transition2).ease(), d3_ease.easeBounce);
-  test.end();
+it("transition.ease() returns the easing function for the first non-null node", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+  const one = document.querySelector("#one");
+  const two = document.querySelector("#two");
+  const t1 = select(one).transition();
+  const t2 = select(two).transition().ease(easeBounce);
+  assert.strictEqual(one.__transition[t1._id].ease, easeCubic);
+  assert.strictEqual(two.__transition[t2._id].ease, easeBounce);
+  assert.strictEqual(t1.ease(), easeCubic);
+  assert.strictEqual(t2.ease(), easeBounce);
+  assert.strictEqual(select(one).transition(t1).ease(), easeCubic);
+  assert.strictEqual(select(two).transition(t2).ease(), easeBounce);
+  assert.strictEqual(selectAll([null, one]).transition(t1).ease(), easeCubic);
+  assert.strictEqual(selectAll([null, two]).transition(t2).ease(), easeBounce);
 });
 
-tape("transition.ease(ease) throws an error if ease is not a function", function(test) {
-  var root = jsdom().documentElement,
-      transition = d3_selection.select(root).transition();
-  test.throws(function() { transition.ease(42); });
-  test.throws(function() { transition.ease(null); });
-  test.end();
+it("transition.ease(ease) throws an error if ease is not a function", () => {
+  const root = document.documentElement;
+  const t = select(root).transition();
+  assert.throws(() => { t.ease(42); });
+  assert.throws(() => { t.ease(null); });
 });
 
-tape("transition.ease(ease) sets the easing function for each selected element to the specified function", function(test) {
-  var document = jsdom("<h1 id='one'></h1><h1 id='two'></h1>"),
-      one = document.querySelector("#one"),
-      two = document.querySelector("#two"),
-      transition = d3_selection.selectAll([one, two]).transition().ease(d3_ease.easeBounce);
-  test.strictEqual(one.__transition[transition._id].ease, d3_ease.easeBounce);
-  test.strictEqual(two.__transition[transition._id].ease, d3_ease.easeBounce);
-  test.end();
+it("transition.ease(ease) sets the easing function for each selected element to the specified function", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+  const one = document.querySelector("#one");
+  const two = document.querySelector("#two");
+  const t = selectAll([one, two]).transition().ease(easeBounce);
+  assert.strictEqual(one.__transition[t._id].ease, easeBounce);
+  assert.strictEqual(two.__transition[t._id].ease, easeBounce);
 });
 
-tape("transition.ease(ease) passes the easing function the normalized time in [0, 1]", function(test) {
-  var root = jsdom().documentElement,
-      actual,
-      ease = function(t) { actual = t; return t; };
+it("transition.ease(ease) passes the easing function the normalized time in [0, 1]", async () => {
+  let actual;
+  const root = document.documentElement;
+  const ease = t => { actual = t; return t; };
 
-  d3_selection.select(root).transition().ease(ease);
+  select(root).transition().ease(ease);
 
-  d3_timer.timeout(function(now) {
-    test.equal(actual, now / 250);
-    test.end();
-  }, 100);
+  await new Promise(resolve => timeout((elapsed) => {
+    assert.strictEqual(actual, elapsed / 250);
+    resolve()
+  }, 100));
 });
 
-tape("transition.ease(ease) does not invoke the easing function on the last frame", function(test) {
-  var root = jsdom().documentElement,
-      ease = function(t) { test.equal(schedule.state, state.RUNNING); return t; },
-      transition = d3_selection.select(root).transition().ease(ease).on("end", function() { test.end(); }),
-      schedule = root.__transition[transition._id];
+it("transition.ease(ease) does not invoke the easing function on the last frame", async () => {
+  const root = document.documentElement;
+  const ease = t => { assert.strictEqual(schedule.state, RUNNING); return t; };
+  const t = select(root).transition().ease(ease);
+  const schedule = root.__transition[t._id];
+  await t.end();
 });
 
-tape("transition.ease(ease) observes the eased time returned by the easing function", function(test) {
-  var root = jsdom().documentElement,
-      expected,
-      ease = function() { return expected = Math.random() * 2 - 0.5; },
-      tween = function() { return function(t) { test.equal(t, schedule.state === state.ENDING ? 1 : expected); }; },
-      transition = d3_selection.select(root).transition().ease(ease).tween("tween", tween).on("end", function() { test.end(); }),
-      schedule = root.__transition[transition._id];
+it("transition.ease(ease) observes the eased time returned by the easing function", async () => {
+  const root = document.documentElement;
+  let expected;
+  const ease = () => { return expected = Math.random() * 2 - 0.5; };
+  const tween = () => { return t => { assert.strictEqual(t, schedule.state === ENDING ? 1 : expected); }; };
+  const t = select(root).transition().ease(ease).tween("tween", tween);
+  const schedule = root.__transition[t._id];
+  await t.end();
 });
