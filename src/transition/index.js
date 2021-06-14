@@ -19,6 +19,8 @@ import transition_textTween from "./textTween.js";
 import transition_transition from "./transition.js";
 import transition_tween from "./tween.js";
 import transition_end from "./end.js";
+import transition_paused from "./paused.js";
+import transition_progress from "./progress.js";
 
 var id = 0;
 
@@ -66,6 +68,8 @@ Transition.prototype = transition.prototype = {
   tween: transition_tween,
   delay: transition_delay,
   duration: transition_duration,
+  paused: transition_paused,
+  progress: transition_progress,
   ease: transition_ease,
   easeVarying: transition_easeVarying,
   end: transition_end,

@@ -1,7 +1,7 @@
 import {dispatch} from "d3-dispatch";
 import {timer, timeout} from "d3-timer";
 
-var emptyOn = dispatch("start", "end", "cancel", "interrupt");
+var emptyOn = dispatch("start", "end", "cancel", "interrupt", "progress");
 var emptyTween = [];
 
 export var CREATED = 0;
@@ -127,7 +127,35 @@ function create(node, id, self) {
     tween.length = j + 1;
   }
 
+  function getProgress(elapsed) {
+    if (self.paused) {
+      if (self.progress >= 0) {
+        elapsed = self._lastprogress !== self.progress ? self.progress * self.duration : -1;
+      } else {
+        self.progress = elapsed / self.duration;
+      }
+      if (self._lastprogress !== self.progress) {
+        self.on.call("progress", node, node.__data__, self.index, self.group, self.progress);
+        self._lastprogress = self.progress;
+      }
+    } else if (self.progress >= 0) {
+      elapsed = elapsed - (self.progress * self.duration);
+      self.timer.restart(tick, 0, self.time + elapsed);
+      elapsed = self.progress = - (self.progress + 1e-10);
+    } else {
+      if (elapsed >= self.duration) {
+        self.progress = -1;
+      } else {
+        self.progress = - (elapsed / self.duration);
+      }
+      self.on.call("progress", node, node.__data__, self.index, self.group, -self.progress);
+    }
+    return elapsed;
+  }
+
   function tick(elapsed) {
+    elapsed = getProgress(elapsed);
+    if (elapsed < 0) return;
     var t = elapsed < self.duration ? self.ease.call(null, elapsed / self.duration) : (self.timer.restart(stop), self.state = ENDING, 1),
         i = -1,
         n = tween.length;

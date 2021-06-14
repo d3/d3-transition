@@ -404,6 +404,27 @@ Specifies a factory for the transition [easing function](https://github.com/d3/d
 
 ### Control Flow
 
+The [paused](#transition_paused) and [progress](#transition_progress) of a transition is configurable in runtime.
+
+<a name="transition_paused" href="#transition_paused">#</a> <i>transition</i>.<b>paused</b>([<i>value</i>]) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/paused.js "Source")
+
+To pause the transition animation, set the transition paused to `true`, or `false` to resume. The *value* may be specified either as a constant or a function.
+
+```js
+transition.paused(true);
+```
+
+If a *value* is not specified, returns the current value of the paused for the first (non-null) element in the transition. This is generally useful only if you know that the transition contains exactly one element.
+
+
+<a name="transition_progress" href="#transition_progress">#</a> <i>transition</i>.<b>progress</b>([<i>value</i>]) [<>](https://github.com/d3/d3-transition/blob/master/src/transition/progress.js "Source")
+
+The progress is a value between 0 (begin) to 1 (end). You can set or get the progress of the transition at any time.
+
+```js
+transition.progress(0.5);
+```
+
 For advanced usage, transitions provide methods for custom control flow.
 
 <a name="transition_end" href="#transition_end">#</a> <i>transition</i>.<b>end</b>() · [Source](https://github.com/d3/d3-transition/blob/master/src/transition/end.js)
@@ -415,6 +436,7 @@ Returns a promise that resolves when every selected element finishes transitioni
 Adds or removes a *listener* to each selected element for the specified event *typenames*. The *typenames* is one of the following string event types:
 
 * `start` - when the transition starts.
+* `progress` - notify when the transition progresses.
 * `end` - when the transition ends.
 * `interrupt` - when the transition is interrupted.
 * `cancel` - when the transition is cancelled.
