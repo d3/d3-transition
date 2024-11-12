@@ -12,6 +12,7 @@ import transition_remove from "./remove.js";
 import transition_select from "./select.js";
 import transition_selectAll from "./selectAll.js";
 import transition_selection from "./selection.js";
+import transition_stackTransition from "./stackTransition.js";
 import transition_style from "./style.js";
 import transition_styleTween from "./styleTween.js";
 import transition_text from "./text.js";
@@ -59,6 +60,7 @@ Transition.prototype = transition.prototype = {
   attr: transition_attr,
   attrTween: transition_attrTween,
   style: transition_style,
+  stackTransition: transition_stackTransition,
   styleTween: transition_styleTween,
   text: transition_text,
   textTween: transition_textTween,
