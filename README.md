@@ -7,6 +7,6 @@ A transition is a [selection](https://github.com/d3/d3-selection)-like interface
 ## Resources
 
 - [Documentation](https://d3js.org/d3-transition)
-- [Examples](https://observablehq.com/collection/@d3/d3-transition)
+- [Examples](https://observablehq.com/@d3/-/collection/d3-transition)
 - [Releases](https://github.com/d3/d3-transition/releases)
 - [Getting help](https://d3js.org/community)
