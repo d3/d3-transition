@@ -1,3 +1,4 @@
+import {describe, beforeEach, afterEach} from "vitest";
 import assert from "assert";
 import {select} from "d3-selection";
 import {timeout} from "d3-timer";
