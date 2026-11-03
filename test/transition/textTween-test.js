@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "node:assert";
 import {easeCubic} from "d3-ease";
 import {interpolateHcl} from "d3-interpolate";
 import {select} from "d3-selection";

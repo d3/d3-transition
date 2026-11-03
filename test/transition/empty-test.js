@@ -1,5 +1,5 @@
+import assert from "node:assert";
 import {it} from "vitest";
-import assert from "assert";
 import {selection} from "d3-selection";
 import {transition} from "../../src/index.js";
 

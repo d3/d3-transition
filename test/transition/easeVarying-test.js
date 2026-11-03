@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "node:assert";
 import {easePolyIn} from "d3-ease";
 import {select} from "d3-selection";
 import "../../src/index.js";

@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "node:assert";
 import {easeBounce, easeCubic} from "d3-ease";
 import {select, selectAll} from "d3-selection";
 import {now, timeout} from "d3-timer";

@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "node:assert";
 import {select, selectAll} from "d3-selection";
 import it from "../jsdom.js";
 import "../../src/index.js";

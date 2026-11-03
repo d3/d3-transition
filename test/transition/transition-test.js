@@ -1,4 +1,4 @@
-import assert from "assert";
+import assert from "node:assert";
 import {select} from "d3-selection";
 import {timeout} from "d3-timer";
 import "../../src/index.js";
