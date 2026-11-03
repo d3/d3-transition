@@ -1,9 +1,10 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {select, selectAll} from "d3-selection";
-import "../../src/index.js";
-import it from "../jsdom.js";
+import "d3-transition";
 
-it("transition.duration() returns the duration for the first non-null node", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.duration() returns the duration for the first non-null node", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t1 = select(one).transition();
@@ -18,7 +19,8 @@ it("transition.duration() returns the duration for the first non-null node", "<h
   assert.strictEqual(selectAll([null, two]).transition(t2).duration(), 50);
 });
 
-it("transition.duration(number) sets the duration for each selected element to the specified number", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.duration(number) sets the duration for each selected element to the specified number", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t = selectAll([one, two]).transition().duration(50);
@@ -26,7 +28,8 @@ it("transition.duration(number) sets the duration for each selected element to t
   assert.strictEqual(two.__transition[t._id].duration, 50);
 });
 
-it("transition.duration(value) coerces the specified value to a number", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.duration(value) coerces the specified value to a number", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t = selectAll([one, two]).transition().duration("50");
@@ -34,7 +37,8 @@ it("transition.duration(value) coerces the specified value to a number", "<h1 id
   assert.strictEqual(two.__transition[t._id].duration, 50);
 });
 
-it("transition.duration(function) passes the expected arguments and context to the function", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.duration(function) passes the expected arguments and context to the function", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const result = [];
@@ -46,7 +50,8 @@ it("transition.duration(function) passes the expected arguments and context to t
   ]);
 });
 
-it("transition.duration(function) sets the duration for each selected element to the number returned by the specified function", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.duration(function) sets the duration for each selected element to the number returned by the specified function", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t = selectAll([one, two]).transition().duration(function(d, i) { return i * 20; });
@@ -54,7 +59,8 @@ it("transition.duration(function) sets the duration for each selected element to
   assert.strictEqual(two.__transition[t._id].duration, 20);
 });
 
-it("transition.duration(function) coerces the value returned by the specified function to a number", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.duration(function) coerces the value returned by the specified function to a number", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t = selectAll([one, two]).transition().duration(function(d, i) { return i * 20 + ""; });

@@ -1,12 +1,13 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {easeBounce, easeCubic} from "d3-ease";
 import {select, selectAll} from "d3-selection";
 import {timeout} from "d3-timer";
-import "../../src/index.js";
+import "d3-transition";
 import {ENDING, RUNNING} from "../../src/transition/schedule.js";
-import it from "../jsdom.js";
 
-it("transition.ease() returns the easing function for the first non-null node", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.ease() returns the easing function for the first non-null node", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t1 = select(one).transition();
@@ -28,7 +29,8 @@ it("transition.ease(ease) throws an error if ease is not a function", () => {
   assert.throws(() => { t.ease(null); });
 });
 
-it("transition.ease(ease) sets the easing function for each selected element to the specified function", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.ease(ease) sets the easing function for each selected element to the specified function", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t = selectAll([one, two]).transition().ease(easeBounce);

@@ -1,9 +1,10 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {select, selection} from "d3-selection";
-import "../../src/index.js";
-import it from "../jsdom.js";
+import "d3-transition";
 
-it("transition.selection() returns the transition’s selection", "<h1 id='one'>one</h1><h1 id='two'>two</h1>", () => {
+it("transition.selection() returns the transition’s selection", () => {
+  document.body.innerHTML = "<h1 id='one'>one</h1><h1 id='two'>two</h1>";
   const s0 = select(document.body).selectAll("h1");
   const t = s0.transition();
   const s1 = t.selection();

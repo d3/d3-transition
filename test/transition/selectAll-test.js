@@ -1,9 +1,10 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {selectAll} from "d3-selection";
-import {transition} from "../../src/index.js";
-import it from "../jsdom.js";
+import {transition} from "d3-transition";
 
-it("transition.selectAll(selector) selects the descendants matching the specified selector, then derives a transition", "<h1 id='one'><child/></h1><h1 id='two'><child/></h1>", () => {
+it("transition.selectAll(selector) selects the descendants matching the specified selector, then derives a transition", () => {
+  document.body.innerHTML = "<h1 id='one'><child/></h1><h1 id='two'><child/></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t1 = selectAll([one, two]).data([1, 2]).transition().delay(function(d) { return d * 10; });
@@ -19,7 +20,8 @@ it("transition.selectAll(selector) selects the descendants matching the specifie
   assert.strictEqual(two.firstChild.__transition[t1._id].delay, 20);
 });
 
-it("transition.selectAll(function) selects the descendants returned by the specified function, then derives a transition", "<h1 id='one'><child/></h1><h1 id='two'><child/></h1>", () => {
+it("transition.selectAll(function) selects the descendants returned by the specified function, then derives a transition", () => {
+  document.body.innerHTML = "<h1 id='one'><child/></h1><h1 id='two'><child/></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t1 = selectAll([one, two]).data([1, 2]).transition().delay(function(d) { return d * 10; });

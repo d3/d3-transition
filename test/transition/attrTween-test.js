@@ -1,11 +1,11 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {easeCubic} from "d3-ease";
 import {interpolateHcl} from "d3-interpolate";
 import {select, selectAll} from "d3-selection";
 import {timeout, now} from "d3-timer";
-import "../../src/index.js";
+import "d3-transition";
 import {ENDING} from "../../src/transition/schedule.js";
-import it from "../jsdom.js";
 
 it("transition.attrTween(name, value) defines an attribute tween using the interpolator returned by the specified function", async () => {
   const root = document.documentElement;
@@ -17,7 +17,8 @@ it("transition.attrTween(name, value) defines an attribute tween using the inter
   }, 125));
 });
 
-it("transition.attrTween(name, value) invokes the value function with the expected context and arguments", "<h1 id='one'></h1><h1 id='two'></h1>", async () => {
+it("transition.attrTween(name, value) invokes the value function with the expected context and arguments", async () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const result = [];

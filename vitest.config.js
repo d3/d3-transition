@@ -1,9 +1,11 @@
 import {defineConfig} from "vitest/config";
 
 export default defineConfig({
+  resolve: {alias: {"d3-transition": "/src/index.js"}},
   test: {
+    pool: "vmThreads",
+    environment: "jsdom",
     include: ["test/**/*-test.js"],
-    setupFiles: ["test/setup.js"],
-    fileParallelism: false // timing-sensitive tests
+    setupFiles: ["test/setup.js"]
   }
 });

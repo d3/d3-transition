@@ -1,9 +1,9 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {select, selectAll} from "d3-selection";
 import {timeout} from "d3-timer";
-import "../../src/index.js";
+import "d3-transition";
 import {ENDED, ENDING, STARTING} from "../../src/transition/schedule.js";
-import it from "../jsdom.js";
 
 it("transition.on(type, listener) throws an error if listener is not a function", async () => {
   const root = document.documentElement;
@@ -96,7 +96,8 @@ it("transition.on(\"end\", listener) registers a listener for the end event", as
   }));
 });
 
-it("transition.on(typename, listener) uses copy-on-write to apply changes", "<h1 id='one'></h1><h1 id='two'></h1>", async () => {
+it("transition.on(typename, listener) uses copy-on-write to apply changes", async () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const foo = () => {};

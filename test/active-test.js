@@ -1,8 +1,8 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {select} from "d3-selection";
 import {timeout} from "d3-timer";
-import {active} from "../src/index.js";
-import it from "./jsdom.js";
+import {active} from "d3-transition";
 
 it("active(node) returns null if the specified node has no active transition with the null name", async () => {
   const root = document.documentElement;

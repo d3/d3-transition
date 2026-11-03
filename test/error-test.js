@@ -1,9 +1,8 @@
 import assert from "node:assert";
-import {describe, beforeEach, afterEach} from "vitest";
+import {describe, it, beforeEach, afterEach} from "vitest";
 import {select} from "d3-selection";
 import {timeout} from "d3-timer";
-import "../src/index.js";
-import it from "./jsdom.js";
+import "d3-transition";
 
 describe("with an uncaught error", () => {
   let listeners;

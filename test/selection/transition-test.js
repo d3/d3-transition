@@ -1,9 +1,9 @@
 import assert from "node:assert";
+import {it} from "vitest";
 import {easeBounce, easeCubic} from "d3-ease";
 import {select, selectAll} from "d3-selection";
 import {now, timeout} from "d3-timer";
-import {transition} from "../../src/index.js";
-import it from "../jsdom.js";
+import {transition} from "d3-transition";
 
 it("selection.transition() returns an instanceof transition", () => {
   const root = document.documentElement;
@@ -73,7 +73,8 @@ it("selection.transition(name) coerces the name to a string", () => {
   assert.strictEqual(schedule.name, "foo");
 });
 
-it("selection.transition(transition) inherits the id, name and timing from the corresponding parent in the specified transition", "<h1 id='one'><child></h1><h1 id='two'><child></h1>", async () => {
+it("selection.transition(transition) inherits the id, name and timing from the corresponding parent in the specified transition", async () => {
+  document.body.innerHTML = "<h1 id='one'><child></h1><h1 id='two'><child></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const s = selectAll([one, two]);
@@ -114,7 +115,8 @@ it("selection.transition(transition) reselects the existing transition with the 
   assert.strictEqual(t2.tween("tween"), bar);
 });
 
-it("selection.transition(transition) throws an error if the specified transition is not found", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("selection.transition(transition) throws an error if the specified transition is not found", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t1 = select(one).transition();
