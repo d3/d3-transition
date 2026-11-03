@@ -1,9 +1,9 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {select} from "d3-selection";
 import {timeout} from "d3-timer";
-import "../../src/index.js";
+import "d3-transition";
 import {CREATED, ENDED, ENDING, SCHEDULED, STARTED, STARTING} from "../../src/transition/schedule.js";
-import it from "../jsdom.js";
 
 it("selection.interrupt() returns the selection", () => {
   const s = select(document);

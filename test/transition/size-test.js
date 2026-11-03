@@ -1,7 +1,7 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {select, selectAll, selection} from "d3-selection";
-import {transition} from "../../src/index.js";
-import it from "../jsdom.js";
+import {transition} from "d3-transition";
 
 it("transition.size is the same as selection.size", () => {
   assert.strictEqual(transition.prototype.size, selection.prototype.size);

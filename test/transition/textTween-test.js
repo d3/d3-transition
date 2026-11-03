@@ -1,10 +1,10 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {easeCubic} from "d3-ease";
 import {interpolateHcl} from "d3-interpolate";
 import {select} from "d3-selection";
 import {timeout} from "d3-timer";
-import "../../src/index.js";
-import it from "../jsdom.js";
+import "d3-transition";
 
 it("transition.textTween(value) defines a text tween using the interpolator returned by the specified function", async () => {
   const root = document.documentElement;

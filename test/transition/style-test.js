@@ -1,10 +1,10 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {easeCubic} from "d3-ease";
 import {interpolateNumber, interpolateRgb, interpolateString} from "d3-interpolate";
 import {select, selectAll} from "d3-selection";
 import {timeout} from "d3-timer";
-import "../../src/index.js";
-import it from "../jsdom.js";
+import "d3-transition";
 
 it("transition.style(name, value) creates an tween to the specified value", async () => {
   const root = document.documentElement;
@@ -32,7 +32,8 @@ it("transition.style(name, value) creates an tween to the value returned by the 
   }, 125));
 });
 
-it("transition.style(name, value) immediately evaluates the specified function with the expected context and arguments", "<h1 id='one' style='color:#0ff;'></h1><h1 id='two' style='color:#f0f;'></h1>", async () => {
+it("transition.style(name, value) immediately evaluates the specified function with the expected context and arguments", async () => {
+  document.body.innerHTML = "<h1 id='one' style='color:#0ff;'></h1><h1 id='two' style='color:#f0f;'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const ease = easeCubic;
@@ -53,7 +54,8 @@ it("transition.style(name, value) immediately evaluates the specified function w
   }, 125));
 });
 
-it("transition.style(name, value) recycles tweens ", "<h1 id='one' style='color:#f0f;'></h1><h1 id='two' style='color:#f0f;'></h1>", () => {
+it("transition.style(name, value) recycles tweens ", () => {
+  document.body.innerHTML = "<h1 id='one' style='color:#f0f;'></h1><h1 id='two' style='color:#f0f;'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t = selectAll([one, two]).transition().style("color", "red");

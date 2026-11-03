@@ -1,8 +1,8 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {select} from "d3-selection";
 import {timeout} from "d3-timer";
-import "../../src/index.js";
-import it from "../jsdom.js";
+import "d3-transition";
 
 it("transition.transition() allows preceeding transitions with zero duration to end naturally", async () => {
   let end0 = false;

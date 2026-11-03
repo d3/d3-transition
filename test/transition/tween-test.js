@@ -1,10 +1,10 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {easeCubic} from "d3-ease";
 import {select, selectAll} from "d3-selection";
 import {now, timeout} from "d3-timer";
-import "../../src/index.js";
+import "d3-transition";
 import {ENDING} from "../../src/transition/schedule.js";
-import it from "../jsdom.js";
 
 it("transition.tween(name, value) defines an tween using the interpolator returned by the specified function", async () => {
   const root = document.documentElement;
@@ -17,7 +17,8 @@ it("transition.tween(name, value) defines an tween using the interpolator return
   }, 125));
 });
 
-it("transition.tween(name, value) invokes the value function with the expected context and arguments", "<h1 id='one'></h1><h1 id='two'></h1>", async () => {
+it("transition.tween(name, value) invokes the value function with the expected context and arguments", async () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const result = [];
@@ -49,7 +50,8 @@ it("transition.tween(name, value) allows the specified function to return null f
   s.transition().tween("foo", () => {});
 });
 
-it("transition.tween(name, value) uses copy-on-write to apply changes", "<h1 id='one'></h1><h1 id='two'></h1>", async () => {
+it("transition.tween(name, value) uses copy-on-write to apply changes", async () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const foo = () => {};
@@ -68,7 +70,8 @@ it("transition.tween(name, value) uses copy-on-write to apply changes", "<h1 id=
   assert.deepStrictEqual(schedule2.tween, [{name: "foo", value: foo}]);
 });
 
-it("transition.tween(name, value) uses copy-on-write to apply removals", "<h1 id='one'></h1><h1 id='two'></h1>", async () => {
+it("transition.tween(name, value) uses copy-on-write to apply removals", async () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const foo = () => {};

@@ -1,7 +1,7 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {select} from "d3-selection";
-import {interrupt} from "../src/index.js";
-import it from "./jsdom.js";
+import {interrupt} from "d3-transition";
 
 it("interrupt(node) cancels any pending transitions on the specified node", () => {
   const root = document.documentElement;

@@ -1,9 +1,10 @@
-import assert from "assert";
+import assert from "node:assert";
+import {it} from "vitest";
 import {select, selectAll} from "d3-selection";
-import {transition} from "../../src/index.js";
-import it from "../jsdom.js";
+import {transition} from "d3-transition";
 
-it("transition.merge(other) merges elements from the specified other transition for null elements in this transition", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.merge(other) merges elements from the specified other transition for null elements in this transition", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t0 = select(document.documentElement).transition();
@@ -17,7 +18,8 @@ it("transition.merge(other) merges elements from the specified other transition 
   assert.strictEqual(t3._id, t1._id);
 });
 
-it("transition.merge(other) throws an error if the other transition has a different id", "<h1 id='one'></h1><h1 id='two'></h1>", () => {
+it("transition.merge(other) throws an error if the other transition has a different id", () => {
+  document.body.innerHTML = "<h1 id='one'></h1><h1 id='two'></h1>";
   const one = document.querySelector("#one");
   const two = document.querySelector("#two");
   const t1 = selectAll([null, two]).transition();

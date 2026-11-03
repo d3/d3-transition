@@ -147,7 +147,7 @@ function create(node, id, self) {
     self.state = ENDED;
     self.timer.stop();
     delete schedules[id];
-    for (var i in schedules) return; // eslint-disable-line no-unused-vars
+    for (var i in schedules) return;
     delete node.__transition;
   }
 }
